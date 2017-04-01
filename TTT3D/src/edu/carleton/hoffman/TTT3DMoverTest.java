@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Martin on 3/30/2017.
@@ -23,10 +26,36 @@ class TTT3DMoverTest {
 
     @org.junit.jupiter.api.Test
     void winningMoves() {
-        // empty board, board with winning moves for other player,
+
         // board with one winning move for current player on one level
-        // board with one winning move
-        readBoardFromFile("test boards/test.txt");
+        // board with one winning move on different levels
+
+        // empty board test.
+        TTT3DMover mover = new TTT3DMover();
+        TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
+        List<TTT3DMove> winningMoves =  mover.winningMoves(empty);
+        if (winningMoves.size() > 0) {
+            System.out.println("empty test failed");
+        }
+
+        //tests 'X' win on one level
+        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel");
+        winningMoves =  mover.winningMoves(xWinOneLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has %d winning moves.", winningMoves.size());
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 0 && winningMove.row != 0 && winningMove.column != 3 && winningMove.player.compareTo('X') ) {
+                System.out.println("xWinOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinOneLevel passed!");
+            }
+
+        }
+
+
+
+
     }
 
     @org.junit.jupiter.api.Test
@@ -106,19 +135,6 @@ class TTT3DMoverTest {
             }
             countMoves++;
         }
-
-        /*TTT3DBoard board = new TTT3DBoard();
-        for (TTT3DMove move : moves) {
-            if (move != null) {
-                System.out.println(move.level);
-                System.out.println(move.row);
-                System.out.println(move.column);
-                System.out.println(move.player);
-                board.makeMove(move);
-                System.out.println(board.valueInSquare(move.level, move.row, move.column));
-                System.out.println();
-            }
-        }*/
 
         return board;
     }

@@ -31,6 +31,7 @@ public class TTT3DMover {
      * to win the game in a single turn.
      */
     public List<TTT3DMove> winningMoves(TTT3DBoard board) {
+
         return new ArrayList<TTT3DMove>();
     }
 
@@ -42,6 +43,7 @@ public class TTT3DMover {
      * player should play to avoid losing on the opponent's next turn.
      */
     public List<TTT3DMove> blockingMoves(TTT3DBoard board) {
+
         return new ArrayList<TTT3DMove>();
     }
 

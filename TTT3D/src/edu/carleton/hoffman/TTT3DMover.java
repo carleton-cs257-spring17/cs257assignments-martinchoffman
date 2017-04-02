@@ -56,9 +56,7 @@ public class TTT3DMover {
      * forcing move, the opponent will be forced to make two different blocking moves
      * in a single turn to avoid losing.
      */
-    public List<TTT3DMove> forcingMoves(TTT3DBoard board) {
-        return new ArrayList<TTT3DMove>();
-    }
+    public List<TTT3DMove> forcingMoves(TTT3DBoard board) { return new ArrayList<TTT3DMove>(); }
 
     /**
      * @param board a 3D tic-tac-toe board, including existing X and O positions
@@ -66,7 +64,5 @@ public class TTT3DMover {
      * @return the move that this object determines would be the best choice for the
      * board's current player.
      */
-    public TTT3DMove bestMove(TTT3DBoard board) {
-        return new TTT3DMove(0, 0, 0, board.getWhoseTurn());
-    }
+    public TTT3DMove bestMove(TTT3DBoard board) { return new TTT3DMove(0, 0, 0, board.getWhoseTurn()); }
 }

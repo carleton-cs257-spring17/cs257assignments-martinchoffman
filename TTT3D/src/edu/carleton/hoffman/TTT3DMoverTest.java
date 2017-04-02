@@ -38,36 +38,309 @@ class TTT3DMoverTest {
             System.out.println("empty test failed");
         }
 
-        //tests 'X' win on one level
-        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel");
+        //tests 'X' wins on one level
+        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel.txt");
         winningMoves =  mover.winningMoves(xWinOneLevel);
         if (winningMoves.size() == 0 || winningMoves.size() > 1) {
-            System.out.println("xWinOneLevel failed. List has %d winning moves.", winningMoves.size());
+            System.out.printf("xWinOneLevel failed. List has %d winning moves.%n", winningMoves.size());
         } else {
             TTT3DMove winningMove = winningMoves.get(0);
-            if (winningMove.level != 0 && winningMove.row != 0 && winningMove.column != 3 && winningMove.player.compareTo('X') ) {
+            if (winningMove.level != 0 || winningMove.row != 0 || winningMove.column != 3 || winningMove.player != 'X') {
                 System.out.println("xWinOneLevel failed. Winning move is in incorrect spot");
             } else {
                 System.out.println("xWinOneLevel passed!");
             }
+        }
 
+        //tests 'X' win on one level vertical
+        TTT3DBoard xWinVerticalOneLevel = readBoardFromFile("test boards/xWinVerticalOneLevel.txt");
+        winningMoves =  mover.winningMoves(xWinVerticalOneLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +winningMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 0 || winningMove.row != 3 || winningMove.column != 0 || winningMove.player != 'X') {
+                System.out.println("xWinVerticalOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinVerticalOneLevel passed!");
+            }
+        }
+
+        //tests 'X' win on one level diagonal
+        TTT3DBoard xWinDiagonalOneLevel = readBoardFromFile("test boards/xWinDiagonalOneLevel.txt");
+        winningMoves =  mover.winningMoves(xWinDiagonalOneLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +winningMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 0 || winningMove.row != 3 || winningMove.column != 3 || winningMove.player != 'X') {
+                System.out.println("xWinDiagonalOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinDiagonalOneLevel passed!");
+            }
         }
 
 
+        // tests 'X' win on multiple levels horizontal
+        TTT3DBoard xWinHorizontalMultLevel = readBoardFromFile("test boards/xWinHorizontalMultLevel.txt");
+        winningMoves =  mover.winningMoves(xWinHorizontalMultLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +winningMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 3 || winningMove.row != 0 || winningMove.column != 3 || winningMove.player != 'X') {
+                System.out.println("xWinHorizontalMult failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinHorizontalMult passed!");
+            }
+        }
 
+        //tests 'X' win on multiple levels vertical
+        TTT3DBoard xWinVerticalMultLevel = readBoardFromFile("test boards/xWinVerticalMultLevel.txt");
+        winningMoves =  mover.winningMoves(xWinVerticalMultLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +winningMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 0 || winningMove.row != 3 || winningMove.column != 0 || winningMove.player != 'X') {
+                System.out.println("xWinVerticalMultLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinVerticalMultLevel passed!");
+            }
+        }
 
+        //tests 'X' win on multiple levels diagonal
+        TTT3DBoard xWinMultLevel = readBoardFromFile("test boards/xWinMultLevel.txt");
+        winningMoves =  mover.winningMoves(xWinMultLevel);
+        if (winningMoves.size() == 0 || winningMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +winningMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove winningMove = winningMoves.get(0);
+            if (winningMove.level != 0 || winningMove.row != 3 || winningMove.column != 0 || winningMove.player != 'X') {
+                System.out.println("xWinMultLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinMultLevel passed!");
+            }
+        }
+
+        //tests multiple 'X' wins on multiple and single levels
+        TTT3DBoard x3WinningMoves = readBoardFromFile("test boards/x3WinningMoves.txt");
+        winningMoves =  mover.winningMoves(x3WinningMoves);
+        if (winningMoves.size() == 0 || winningMoves.size() >3) {
+            System.out.printf("xWinMultLevel failed. List has %d winning moves.", winningMoves.size());
+        } else {
+            for (TTT3DMove move : winningMoves) {
+                if (move.level == 2) {
+                    if (move.row != 2 || move.column != 2 || move.player != 'X') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test 1/3 passed");
+                    }
+
+            }
+                else if (move.column == 3){
+                    if (move.row != 0 || move.level != 3 || move.player != 'X') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test  part 2/3 passed");
+                    }
+
+                }
+                else {
+                    if (move.level != 3 || move.row != 3 || move.column != 0 || move.player != 'X') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test 3/3 passed");
+                    }
+                }
+            }
+        }
     }
 
     @org.junit.jupiter.api.Test
     void blockingMoves() {
+        // empty board test.
+        TTT3DMover mover = new TTT3DMover();
+        TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
+        List<TTT3DMove> blockingMoves =  mover.blockingMoves(empty);
+        if (blockingMoves.size() > 0) {
+            System.out.println("empty test failed");
+        }
+
+        //tests 'X' wins on one level
+        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinOneLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.printf("xWinOneLevel failed. List has %d winning moves.%n", blockingMoves.size());
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 0 || blockingMove.row != 0 || blockingMove.column != 3 || blockingMove.player != 'O') {
+                System.out.println("xWinOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinOneLevel passed!");
+            }
+        }
+
+        //tests 'O' win on one level vertical
+        TTT3DBoard xWinVerticalOneLevel = readBoardFromFile("test boards/xWinVerticalOneLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinVerticalOneLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
+                System.out.println("xWinVerticalOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinVerticalOneLevel passed!");
+            }
+        }
+
+        //tests 'O' win on one level diagonal
+        TTT3DBoard xWinDiagonalOneLevel = readBoardFromFile("test boards/xWinDiagonalOneLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinDiagonalOneLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 3 || blockingMove.player != 'O') {
+                System.out.println("xWinDiagonalOneLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinDiagonalOneLevel passed!");
+            }
+        }
+
+
+        // tests 'O' win on multiple levels horizontal
+        TTT3DBoard xWinHorizontalMultLevel = readBoardFromFile("test boards/xWinHorizontalMultLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinHorizontalMultLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 3 || blockingMove.row != 0 || blockingMove.column != 3 || blockingMove.player != 'O') {
+                System.out.println("xWinHorizontalMult failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinHorizontalMult passed!");
+            }
+        }
+
+        //tests 'O' win on multiple levels vertical
+        TTT3DBoard xWinVerticalMultLevel = readBoardFromFile("test boards/xWinVerticalMultLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinVerticalMultLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
+                System.out.println("xWinVerticalMultLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinVerticalMultLevel passed!");
+            }
+        }
+
+        //tests 'O' win on multiple levels diagonal
+        TTT3DBoard xWinMultLevel = readBoardFromFile("test boards/xWinMultLevel.txt");
+        blockingMoves =  mover.blockingMoves(xWinMultLevel);
+        if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
+            System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+        } else {
+            TTT3DMove blockingMove = blockingMoves.get(0);
+            if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
+                System.out.println("xWinMultLevel failed. Winning move is in incorrect spot");
+            } else {
+                System.out.println("xWinMultLevel passed!");
+            }
+        }
+
+        //tests multiple 'O' wins on multiple and single levels
+        TTT3DBoard x3WinningMoves = readBoardFromFile("test boards/x3WinningMoves.txt");
+        blockingMoves =  mover.blockingMoves(x3WinningMoves);
+        if (blockingMoves.size() == 0 || blockingMoves.size() >3) {
+            System.out.printf("xWinMultLevel failed. List has %d winning moves.", blockingMoves.size());
+        } else {
+            for (TTT3DMove move : blockingMoves) {
+                if (move.level == 2) {
+                    if (move.row != 2 || move.column != 2 || move.player != 'O') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test 1/3 passed");
+                    }
+
+                }
+                else if (move.column == 3){
+                    if (move.row != 0 || move.level != 3 || move.player != 'O') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test  part 2/3 passed");
+                    }
+
+                }
+                else {
+                    if (move.level != 3 || move.row != 3 || move.column != 0 || move.player != 'O') {
+                        System.out.println("x3WinningMoves failed. Winning move is incorrect");
+                    } else {
+                        System.out.println("x3 Test 3/3 passed");
+                    }
+                }
+            }
+        }
     }
 
     @org.junit.jupiter.api.Test
     void forcingMoves() {
+        TTT3DMover mover = new TTT3DMover();
+
+        TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
+        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel.txt");
+        TTT3DBoard xWinVerticalOneLevel = readBoardFromFile("test boards/xWinVerticalOneLevel.txt");
+        TTT3DBoard xWinDiagonalOneLevel = readBoardFromFile("test boards/xWinDiagonalOneLevel.txt");
+        TTT3DBoard xWinHorizontalMultLevel = readBoardFromFile("test boards/xWinHorizontalMultLevel.txt");
+        TTT3DBoard xWinVerticalMultLevel = readBoardFromFile("test boards/xWinVerticalMultLevel.txt");
+        TTT3DBoard xWinMultLevel = readBoardFromFile("test boards/xWinMultLevel.txt");
+        TTT3DBoard x3WinningMoves = readBoardFromFile("test boards/x3WinningMoves.txt");
+
+        List<TTT3DMove> forcingMoves =  mover.forcingMoves(empty);
+        if (forcingMoves.size() > 0) {
+            System.out.println("empty test failed");
+        }
+
+        forcingMoves =  mover.forcingMoves(xWinOneLevel);
+        for (TTT3DMove move : forcingMoves) {
+            TTT3DBoard xWinOneLevelCopy = new TTT3DBoard(xWinOneLevel);
+            xWinOneLevelCopy.makeMove(move);
+            List<TTT3DMove> winningMoves = mover.winningMoves(xWinOneLevelCopy);
+            if (winningMoves.size() > 1) {
+                System.out.println("Test passed");
+            } else {
+                System.out.println("Test failed");
+            }
+        }
+
     }
 
     @org.junit.jupiter.api.Test
     void bestMove() {
+        TTT3DMover mover = new TTT3DMover();
+
+        TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
+        if (mover.bestMove(empty) == null) {
+            System.out.println("empty test failed");
+        }
+
+        TTT3DBoard xBest = readBoardFromFile("test boards/xBest.txt");
+        List<TTT3DMove> bestMoves = new ArrayList<TTT3DMove>();
+        bestMoves.add(new TTT3DMove(0, 0, 1, 'X'));
+        bestMoves.add(new TTT3DMove(0, 1, 2, 'X'));
+        bestMoves.add(new TTT3DMove(0, 2, 1, 'X'));
+        bestMoves.add(new TTT3DMove(0, 1, 0, 'X'));
+        TTT3DMove bestMove = mover.bestMove(xBest);
+        for (TTT3DMove move : bestMoves) {
+            if (move == bestMove) {
+                System.out.println("Test passed");
+            } else {
+                
+            }
+        }
     }
 
     TTT3DBoard readBoardFromFile(String filePath) {

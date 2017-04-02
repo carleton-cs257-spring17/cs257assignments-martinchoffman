@@ -1,7 +1,7 @@
 Level: 0
 X   -   O   -
 X   -   -   -
-X   O   O   -
+X   O   -   -
 -   -   -   -
 
 Level: 1

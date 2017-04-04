@@ -303,7 +303,7 @@ class TTT3DMoverTest {
 		TTT3DMover mover = new TTT3DMover();
 
 		// Test empty
-		List<TTT3DMove> forcingMoves =  mover.forcingMoves(boards.get("empty"););
+		List<TTT3DMove> forcingMoves =  mover.forcingMoves(boards.get("empty"));
 		if (forcingMoves.size() > 0) {
 			System.out.println("empty test failed");
 		} else {
@@ -311,9 +311,9 @@ class TTT3DMoverTest {
 		}
 
 		// Test no available force
-		forcingMoves =  mover.forcingMoves(boards.get("xForceNone"););
+		forcingMoves =  mover.forcingMoves(boards.get("xForceNone"));
 		for (TTT3DMove move : forcingMoves) {
-			TTT3DBoard xForceNoneCopy = new TTT3DBoard(boards.get("xForceNone"););
+			TTT3DBoard xForceNoneCopy = new TTT3DBoard(boards.get("xForceNone"));
 			xForceNoneCopy.makeMove(move);
 			List<TTT3DMove> winningMoves = mover.winningMoves(xForceNoneCopy);
 			if (winningMoves.size() == 0) {
@@ -324,9 +324,9 @@ class TTT3DMoverTest {
 		}
 
 		// Test force on one level
-		forcingMoves =  mover.forcingMoves(boards.get("xForce-S-000"););
+		forcingMoves =  mover.forcingMoves(boards.get("xForce-S-000"));
 		for (TTT3DMove move : forcingMoves) {
-			TTT3DBoard xForceOneLevelCopy = new TTT3DBoard(boards.get("xForce-S-000"););
+			TTT3DBoard xForceOneLevelCopy = new TTT3DBoard(boards.get("xForce-S-000"));
 			xForceOneLevelCopy.makeMove(move);
 			List<TTT3DMove> winningMoves = mover.winningMoves(xForceOneLevelCopy);
 			if (winningMoves.size() == 2) {
@@ -341,9 +341,9 @@ class TTT3DMoverTest {
 		}
 
 		// Test force on multiple levels
-		forcingMoves =  mover.forcingMoves(boards.get("xForce-M-000"););
+		forcingMoves =  mover.forcingMoves(boards.get("xForce-M-000"));
 		for (TTT3DMove move : forcingMoves) {
-			TTT3DBoard xForceMultiLevelCopy = new TTT3DBoard(boards.get("xForce-M-000"););
+			TTT3DBoard xForceMultiLevelCopy = new TTT3DBoard(boards.get("xForce-M-000"));
 			xForceMultiLevelCopy.makeMove(move);
 			List<TTT3DMove> winningMoves = mover.winningMoves(xForceMultiLevelCopy);
 			if (winningMoves.size() == 2) {
@@ -367,7 +367,7 @@ class TTT3DMoverTest {
 		TTT3DMover mover = new TTT3DMover();
 
 		// Empty test
-		if (mover.bestMove(boards.get("empty");) == null) {
+		if (mover.bestMove(boards.get("empty")) == null) {
 			System.out.println("empty test failed");
 		} else {
 			System.out.println("empty test failed");
@@ -375,7 +375,7 @@ class TTT3DMoverTest {
 
 		// The hierarchy of best moves should be win > block > force
 		// Test win
-		TTT3DMove bestMove = mover.bestMove(boards.get("xBestWin-103"););
+		TTT3DMove bestMove = mover.bestMove(boards.get("xBestWin-103"));
 		if (bestMove.level == 1 && bestMove.row == 0 && bestMove.column == 3 && bestMove.player == 'X') {
 			System.out.println("Test passed");
 		} else {
@@ -383,7 +383,7 @@ class TTT3DMoverTest {
 		}
 
 		// Test block
-		bestMove = mover.bestMove(boards.get("xBestBlock-233"););
+		bestMove = mover.bestMove(boards.get("xBestBlock-233"));
 		if (bestMove.level == 2 && bestMove.row == 3 && bestMove.column == 3 && bestMove.player == 'X') {
 			System.out.println("Test passed");
 		} else {
@@ -391,7 +391,7 @@ class TTT3DMoverTest {
 		}
 
 		// Test force
-		bestMove = mover.bestMove(boards.get("xBestForce-001"););
+		bestMove = mover.bestMove(boards.get("xBestForce-001"));
 		if (bestMove.level == 0 && bestMove.row == 0 && bestMove.column == 0 && bestMove.player == 'X') {
 			System.out.println("Test passed");
 		} else {

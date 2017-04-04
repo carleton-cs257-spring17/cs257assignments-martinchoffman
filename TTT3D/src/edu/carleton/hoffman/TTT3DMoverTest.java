@@ -36,6 +36,7 @@ class TTT3DMoverTest {
         List<TTT3DMove> winningMoves =  mover.winningMoves(empty);
         if (winningMoves.size() > 0) {
             System.out.println("empty test failed");
+            EXIT_WITH_ERR();
         }
 
         //tests 'X' wins on one level
@@ -165,6 +166,17 @@ class TTT3DMoverTest {
         List<TTT3DMove> blockingMoves =  mover.blockingMoves(empty);
         if (blockingMoves.size() > 0) {
             System.out.println("empty test failed");
+        } else {
+            System.out.println("empty test passed");
+        }
+
+        //tests 'X' with no wins
+        TTT3DBoard xNoWin = readBoardFromFile("test boards/xNoWin.txt");
+        blockingMoves =  mover.blockingMoves(xNoWin);
+        if (blockingMoves.size() == 0) {
+            System.out.printf("xNoWin passed. List has %d winning moves.%n", blockingMoves.size());
+        } else {
+            System.out.println("xNoWin passed!");
         }
 
         //tests 'X' wins on one level
@@ -291,31 +303,60 @@ class TTT3DMoverTest {
         TTT3DMover mover = new TTT3DMover();
 
         TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
-        TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel.txt");
-        TTT3DBoard xWinVerticalOneLevel = readBoardFromFile("test boards/xWinVerticalOneLevel.txt");
-        TTT3DBoard xWinDiagonalOneLevel = readBoardFromFile("test boards/xWinDiagonalOneLevel.txt");
-        TTT3DBoard xWinHorizontalMultLevel = readBoardFromFile("test boards/xWinHorizontalMultLevel.txt");
-        TTT3DBoard xWinVerticalMultLevel = readBoardFromFile("test boards/xWinVerticalMultLevel.txt");
-        TTT3DBoard xWinMultLevel = readBoardFromFile("test boards/xWinMultLevel.txt");
-        TTT3DBoard x3WinningMoves = readBoardFromFile("test boards/x3WinningMoves.txt");
+        TTT3DBoard xForceOneLevel = readBoardFromFile("test boards/xForceOneLevel.txt");
+        TTT3DBoard xForceMultiLevel = readBoardFromFile("test boards/xForceMultiLevel.txt");
+        TTT3DBoard xNoForce = readBoardFromFile("test boards/xNoForce.txt");
 
         List<TTT3DMove> forcingMoves =  mover.forcingMoves(empty);
         if (forcingMoves.size() > 0) {
             System.out.println("empty test failed");
+        } else {
+            System.out.println("empty test passed");
         }
 
-        forcingMoves =  mover.forcingMoves(xWinOneLevel);
+        forcingMoves =  mover.forcingMoves(xForceOneLevel);
         for (TTT3DMove move : forcingMoves) {
-            TTT3DBoard xWinOneLevelCopy = new TTT3DBoard(xWinOneLevel);
-            xWinOneLevelCopy.makeMove(move);
-            List<TTT3DMove> winningMoves = mover.winningMoves(xWinOneLevelCopy);
-            if (winningMoves.size() > 1) {
-                System.out.println("Test passed");
+            TTT3DBoard xForceOneLevelCopy = new TTT3DBoard(xForceOneLevel);
+            xForceOneLevelCopy.makeMove(move);
+            List<TTT3DMove> winningMoves = mover.winningMoves(xForceOneLevelCopy);
+            if (winningMoves.size() == 2) {
+                if (move.level == 0 && move.row == 0 && move.column == 0 && move.player == 'X') {
+                    System.out.println("Test passed");
+                } else {
+                    System.out.println("Test failed, wrong forcing move");
+                }
             } else {
                 System.out.println("Test failed");
             }
         }
 
+        forcingMoves =  mover.forcingMoves(xForceMultiLevel);
+        for (TTT3DMove move : forcingMoves) {
+            TTT3DBoard xForceMultiLevelCopy = new TTT3DBoard(xForceMultiLevel);
+            xForceMultiLevelCopy.makeMove(move);
+            List<TTT3DMove> winningMoves = mover.winningMoves(xForceMultiLevelCopy);
+            if (winningMoves.size() == 2) {
+                if (move.level == 0 && move.row == 0 && move.column == 0 && move.player == 'X') {
+                    System.out.println("Test passed");
+                } else {
+                    System.out.println("Test failed, wrong forcing move");
+                }
+            } else {
+                System.out.println("Test failed");
+            }
+        }
+
+        forcingMoves =  mover.forcingMoves(xNoForce);
+        for (TTT3DMove move : forcingMoves) {
+            TTT3DBoard xNoForceCopy = new TTT3DBoard(xNoForce);
+            xNoForceCopy.makeMove(move);
+            List<TTT3DMove> winningMoves = mover.winningMoves(xNoForceCopy);
+            if (winningMoves.size() == 0) {
+                System.out.println("Test passed");
+            } else {
+                System.out.println("Test failed");
+            }
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -325,21 +366,35 @@ class TTT3DMoverTest {
         TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
         if (mover.bestMove(empty) == null) {
             System.out.println("empty test failed");
+        } else {
+            System.out.println("empty test failed");
         }
 
-        TTT3DBoard xBest = readBoardFromFile("test boards/xBest.txt");
-        List<TTT3DMove> bestMoves = new ArrayList<TTT3DMove>();
-        bestMoves.add(new TTT3DMove(0, 0, 1, 'X'));
-        bestMoves.add(new TTT3DMove(0, 1, 2, 'X'));
-        bestMoves.add(new TTT3DMove(0, 2, 1, 'X'));
-        bestMoves.add(new TTT3DMove(0, 1, 0, 'X'));
-        TTT3DMove bestMove = mover.bestMove(xBest);
-        for (TTT3DMove move : bestMoves) {
-            if (move == bestMove) {
-                System.out.println("Test passed");
-            } else {
-                
-            }
+            // If no winning, blocking, or forcing move, best move should be in a
+        // row/col with another X that does not have an O
+
+        TTT3DBoard xBestWinning = readBoardFromFile("test boards/xBestWinning.txt");
+        TTT3DMove bestMove = mover.bestMove(xBestWinning);
+        if (bestMove.level == 1 && bestMove.row == 0 && bestMove.column == 3 && bestMove.player == 'X') {
+            System.out.println("Test passed");
+        } else {
+            System.out.println("Test failed");
+        }
+
+        TTT3DBoard xBestBlocking = readBoardFromFile("test boards/xBestBlocking.txt");
+        bestMove = mover.bestMove(xBestBlocking);
+        if (bestMove.level == 2 && bestMove.row == 3 && bestMove.column == 3 && bestMove.player == 'X') {
+            System.out.println("Test passed");
+        } else {
+            System.out.println("Test failed");
+        }
+
+        TTT3DBoard xBestForcing = readBoardFromFile("test boards/xBestForcing.txt");
+        bestMove = mover.bestMove(xBestForcing);
+        if (bestMove.level == 0 && bestMove.row == 0 && bestMove.column == 0 && bestMove.player == 'X') {
+            System.out.println("Test passed");
+        } else {
+            System.out.println("Test failed");
         }
     }
 

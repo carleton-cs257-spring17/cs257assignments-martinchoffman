@@ -1,0 +1,50 @@
+"Test"
+    Level: 0
+    X	X	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 1
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 2
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 3
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	O	-
+
+
+"Test2"
+    Level: 0
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 1
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 2
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+
+    Level: 3
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O
+    X	O	X	O

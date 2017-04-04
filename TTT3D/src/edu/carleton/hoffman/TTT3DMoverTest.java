@@ -10,7 +10,11 @@ import java.util.List;
 
 
 /**
- * Created by Martin on 3/30/2017.
+ * TTT3DMoverTest has a number of useful tests that cover all the methods of TTT3DMove.
+ *
+ * @author Martin Hoffman
+ * @author Chris Tordi
+ * @version 30 March 2017.
  */
 class TTT3DMoverTest {
     @org.junit.jupiter.api.BeforeEach
@@ -26,20 +30,19 @@ class TTT3DMoverTest {
 
     @org.junit.jupiter.api.Test
     void winningMoves() {
-
-        // board with one winning move for current player on one level
-        // board with one winning move on different levels
-
-        // empty board test.
+        // Empty board
         TTT3DMover mover = new TTT3DMover();
         TTT3DBoard empty = readBoardFromFile("test boards/empty.txt");
         List<TTT3DMove> winningMoves =  mover.winningMoves(empty);
+        assert(winningMoves.size() > 0);
+
         if (winningMoves.size() > 0) {
             System.out.println("empty test failed");
-            EXIT_WITH_ERR();
+        } else {
+            System.out.println("empty test failed");
         }
 
-        //tests 'X' wins on one level
+        // One winning move
         TTT3DBoard xWinOneLevel = readBoardFromFile("test boards/xWinOneLevel.txt");
         winningMoves =  mover.winningMoves(xWinOneLevel);
         if (winningMoves.size() == 0 || winningMoves.size() > 1) {

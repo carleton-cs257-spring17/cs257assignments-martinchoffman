@@ -2,11 +2,9 @@ package edu.carleton.hoffman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -18,14 +16,16 @@ import java.util.List;
  */
 class TTT3DMoverTest {
 	@org.junit.jupiter.api.BeforeEach
-	void setUp() {
-		System.out.println("Setting up...");
-		TTT3DBoard testBoard = new TTT3DBoard();
-	}
+	void setUp() { System.out.println("Setting up..."); }
 
 	@org.junit.jupiter.api.AfterEach
-	void tearDown() {
-		System.out.println("Tearing down...");
+	void tearDown() { System.out.println("Tearing down..."); }
+
+	@org.junit.jupiter.api.Test
+	void test() {
+		Map<String, TTT3DBoard> boards = readBoardsFromFile("test boards/test2.txt");
+		System.out.println(boards.get("Test").valueInSquare(0, 0, 1));
+		System.out.println(boards.get("Test2").valueInSquare(0, 0, 1));
 	}
 
 	@org.junit.jupiter.api.Test
@@ -469,5 +469,116 @@ class TTT3DMoverTest {
 		}
 
 		return board;
+	}
+
+	private Map<String, TTT3DBoard> readBoardsFromFile(String filePath) {
+		// Attempt to open file located at filePath
+		File inputFile = new File(filePath);
+		Scanner scanner = null;
+
+		try {
+			scanner = new Scanner(inputFile);
+		} catch(FileNotFoundException e) {
+			System.err.println(e);
+			System.exit(1);
+		}
+
+		// Create string of characters in input file
+		String text = "";
+		while(scanner.hasNext()) {
+			text += scanner.next();
+		}
+
+		// Split text around " character
+		List<String> splitText = new ArrayList<String>();
+		for (String str : text.split("[\"]")) {
+			if (str.length() > 1) {
+				splitText.add(str);
+			}
+		}
+
+		// Clean X's, O's, and -'s
+		List<String> splitTextClean = new ArrayList<String>();
+		for (String str : splitText) {
+			if (splitText.indexOf(str) % 2 == 1) {
+				String cleanStr = "";
+				for (int i = 0; i < str.length(); i++) {
+					if (str.substring(i, i + 1).matches("[XO-]")) {
+						cleanStr += str.substring(i, i + 1);
+					}
+				}
+				splitTextClean.add(cleanStr);
+			} else {
+				splitTextClean.add(str);
+			}
+		}
+
+		// If there aren't an even number of strings, a board is missing a title or vice versa
+		assert (splitTextClean.size() % 2 == 0);
+
+		// Separate label text from board text
+		List<String> boardLabels = new ArrayList<String>();
+		List<String> boardTexts = new ArrayList<String>();
+		for (int i = 0; i < splitTextClean.size(); i++) {
+			// Labels should be even entries, boards should be odd entries
+			if (i % 2 == 0) {
+				boardLabels.add(splitTextClean.get(i));
+			} else {
+				assert splitTextClean.get(i).length() == 64;		// A board without 64 spaces is incomplete
+				boardTexts.add(splitTextClean.get(i));
+			}
+		}
+
+		// Convert board text to move objects
+		List<ArrayList<TTT3DMove>> moveSets = new ArrayList<ArrayList<TTT3DMove>>();
+		int moveSetIndex = 0;
+		for (String boardText : boardTexts) {
+			moveSets.add(new ArrayList<TTT3DMove>());
+			for (int i = 0; i < boardText.length(); i++) {
+				if (boardText.toCharArray()[i] != '-') {
+					// Calculates level, row, and column based on position in the boardText string
+					moveSets.get(moveSetIndex).add(new TTT3DMove(0 + i / 16, (i % 16) / 4, i % 4, boardText.toCharArray()[i]));
+				}
+			}
+			moveSetIndex += 1;
+		}
+
+		// Separate moves for player 'X' and player 'O' in moveSetsXO
+		List<ArrayList<ArrayList<TTT3DMove>>> moveSetsXO = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+		for (ArrayList<TTT3DMove> moveSet : moveSets) {
+			ArrayList<ArrayList<TTT3DMove>> moveSetXO = new ArrayList<ArrayList<TTT3DMove>>();
+			ArrayList<TTT3DMove> xMoves = new ArrayList<TTT3DMove>();
+			ArrayList<TTT3DMove> oMoves = new ArrayList<TTT3DMove>();
+			for (TTT3DMove move : moveSet) {
+				assert (move.player == 'X' || move.player == 'O');
+				if (move.player == 'X') {
+					xMoves.add(move);
+				} else {
+					oMoves.add(move);
+				}
+			}
+			moveSetXO.add(xMoves);
+			moveSetXO.add(oMoves);
+			moveSetsXO.add(moveSetXO);
+		}
+
+		// Convert moves to board objects and link to labels in a dictionary
+		Map<String, TTT3DBoard> boards = new HashMap<String, TTT3DBoard>();
+		for (int i = 0; i < boardLabels.size(); i++) {		// Number of boards should equal number of labels
+			TTT3DBoard board = new TTT3DBoard();
+			String boardLabel = boardLabels.get(i);
+			// Alternate between 'X' and 'O' moves to satisfy turn requirements of board. Assumes first move is an 'X'
+			ArrayList<TTT3DMove> xMoves = moveSetsXO.get(i).get(0);
+			ArrayList<TTT3DMove> oMoves = moveSetsXO.get(i).get(1);
+			for (int j = 0; j < xMoves.size(); j++) {
+				board.makeMove(xMoves.get(j));
+				if (j < oMoves.size()) {		// oMoves may be one move shorter than xMoves
+					board.makeMove(oMoves.get(j));
+				}
+			}
+			boards.put(boardLabel, board);
+		}
+
+		return boards;
 	}
 }

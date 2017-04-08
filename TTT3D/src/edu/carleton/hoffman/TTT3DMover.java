@@ -1,7 +1,12 @@
 package edu.carleton.hoffman;
 
+import sun.applet.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * TTT3DMover's job is to analyze a TTT3DBoard and make choices about what move
@@ -65,4 +70,123 @@ public class TTT3DMover {
      * board's current player.
      */
     public TTT3DMove bestMove(TTT3DBoard board) { return new TTT3DMove(0, 0, 0, board.getWhoseTurn()); }
+
+    TTT3DBoard readBoardFromFile(String filePath) {
+        // Attempt to open file located at filePath
+        File inputFile = new File(filePath);
+        Scanner scanner = null;
+
+        try {
+            scanner = new Scanner(inputFile);
+        } catch(FileNotFoundException e) {
+            System.err.println(e);
+            System.exit(1);
+        }
+
+        // Create string of X's O's and _'s
+        String chrs = "";
+        Character whoseTurn = new Character(' ');
+        int count64 = 0;
+        while(scanner.hasNext()) {
+            String chr = scanner.next();
+            if (count64 == 63) {
+                whoseTurn = chr.charAt(0);
+            } else if (chr.matches("[XO-]")) {
+                chrs += chr;
+                count64++;
+            }
+        }
+
+        // Convert chrs to move objects
+        List<TTT3DMove> moves = new ArrayList<TTT3DMove>();
+        for (int i = 0; i < chrs.length(); i++) {
+            char chr = chrs.charAt(i);
+            if (chr != '-') {
+                moves.add(new TTT3DMove(0+i/16, (i%16)/4, i%4, chr));
+            }
+        }
+
+        // Separate moves for player 'X'
+        List<TTT3DMove> xMoves = new ArrayList<TTT3DMove>();
+        for (TTT3DMove move : moves) {
+            if (move != null && move.player == 'X') {
+                xMoves.add(move);
+            }
+        }
+
+        // Separate moves for player 'O'
+        List<TTT3DMove> oMoves = new ArrayList<TTT3DMove>();
+        for (TTT3DMove move : moves) {
+            if (move != null && move.player == 'O') {
+                oMoves.add(move);
+            }
+        }
+
+        TTT3DBoard board = new TTT3DBoard();
+        if ((whoseTurn == 'X' && xMoves.size() == oMoves.size()) || oMoves.size() > xMoves.size()) {
+            board = new TTT3DBoard();
+            for (int i = 0; i < xMoves.size(); i++) {
+                board.makeMove(xMoves.get(i));
+                if (i < oMoves.size()) {
+                    board.makeMove(oMoves.get(i));
+                }
+            }
+        } else if ((whoseTurn == 'O' && xMoves.size() == oMoves.size()) || xMoves.size() > oMoves.size()) {
+            board = new TTT3DBoard('O');
+            for (int i = 0; i < oMoves.size(); i++) {
+                board.makeMove(oMoves.get(i));
+                if (i < xMoves.size()) {
+                    board.makeMove(xMoves.get(i));
+                }
+            }
+        } else {
+            System.err.println("Illegal board!");
+        }
+
+        return board;
+    }
+
+    public static void main(String[] args) {
+        String function = args[0];
+        String filePath = args[1];
+
+        TTT3DMover mover = new TTT3DMover();
+        TTT3DBoard board = mover.readBoardFromFile(filePath);
+    }
 }
+
+/*      if (xMoves.size() == oMoves.size()) {
+            if (whoseTurn == 'X') {
+                TTT3DBoard board = new TTT3DBoard();
+                for (int i = 0; i < xMoves.size(); i++) {
+                    board.makeMove(xMoves.get(i));
+                    if (i < oMoves.size()) {
+                        board.makeMove(oMoves.get(i));
+                    }
+                }
+            } else if (whoseTurn == 'O') {
+                TTT3DBoard board = new TTT3DBoard('O');
+                for (int i = 0; i < oMoves.size(); i++) {
+                    board.makeMove(oMoves.get(i));
+                    if (i < xMoves.size()) {
+                        board.makeMove(xMoves.get(i));
+                    }
+                }
+            }
+        } else if (xMoves.size() > oMoves.size()) {
+            TTT3DBoard board = new TTT3DBoard();
+            for (int i = 0; i < xMoves.size(); i++) {
+                board.makeMove(xMoves.get(i));
+                if (i < oMoves.size()) {
+                    board.makeMove(oMoves.get(i));
+                }
+            }
+        } else {
+            TTT3DBoard board = new TTT3DBoard('O');
+            for (int i = 0; i < oMoves.size(); i++) {
+                board.makeMove(oMoves.get(i));
+                if (i < xMoves.size()) {
+                    board.makeMove(xMoves.get(i));
+                }
+            }
+        }*/

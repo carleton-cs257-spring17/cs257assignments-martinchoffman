@@ -3,21 +3,27 @@ package edu.carleton.hoffman;
 import java.util.Arrays;
 
 /**
- * edu.carleton.hoffman.TTT3DBoard represents a simple 4x4x4 3D tic-tac-toe game. Each instance
+ * TTT3DBoard represents a simple 4x4x4 3D tic-tac-toe game. Each instance
  * stores includes the contents of each of the 64 squares, plus an indicator
  * of whose turn it is ('X' or 'O').
- *
+ * <p>
+ * In the 3D tic-tac-toe context, a
+ * <p>
  * To keep things simple, we use the uppercase letters X and O rather than
  * something more complicated (e.g. an enumerated type) to represent players
  * and their moves. Empty squares are represented using a hyphen.
- *
+ * <p>
  * FOR DISCUSSION:
- * (1) How do you feel about my use of "this" to refer to instance variables?
+ * (1) How do you feel about my use of "this" to refer to instance variables?<br>
  * (2) Does it make sense to define BOARD_SIZE and EMPTY_SQUARE instead of
  * just using 4 and '-' throughout the code? If so, then why not also define
- * constants for 'X' and 'O'?
- * (3)
- *
+ * constants for 'X' and 'O'?<br>
+ * (3) What's missing?
+ *        Initialization and/or setter for whoseTurn.
+ *        Has somebody won yet?
+ *        What should makeMove do if the move is illegal?<br>
+ * (4) What do you think about my use of the "ternary operator" (?:) in
+ * the second constructor and at the bottom of makeMove?
  *
  * @author Jeff Ondich
  * @version 30 March 2017
@@ -38,16 +44,16 @@ public class TTT3DBoard {
     }
 
     /**
-     * Initialize an empty game board. If whoStarts is 'X', then 'X' will
+     * Initialize an empty game board. If startingPlayer is 'X', then 'X' will
      * have the first turn. Otherwise, 'O' will move first.
      */
-    public TTT3DBoard(Character whoStarts) {
+    public TTT3DBoard(Character startingPlayer) {
         int squareArrayLength = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
         this.squareValues = new Character[squareArrayLength];
         for (int k = 0; k < squareArrayLength; k++) {
             this.squareValues[k] = EMPTY_SQUARE;
         }
-        this.whoseTurn = (whoStarts == 'X' ? 'X' : 'O');
+        this.whoseTurn = (startingPlayer == 'X' ? 'X' : 'O');
     }
 
     /**
@@ -58,6 +64,31 @@ public class TTT3DBoard {
         int squareArrayLength = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
         this.squareValues = new Character[squareArrayLength];
         System.arraycopy(otherBoard.squareValues, 0, this.squareValues, 0, squareArrayLength);
+    }
+
+    /**
+     * Initializes this board from the contents of the specified file.
+     *
+     * The file format for a board consists of five lines of text. The first four lines
+     * represent the four rows of the 3D tic-tac-toe board, with X's, O's, hyphens (to
+     * represent empty squares), and space characters as needed for human readability.
+     * The fifth line should contain only an X or an O, to indicate whose turn it is.
+     * For example:<br><br>
+     *     <pre>
+     *     XO-- X--- X--- ----
+     *     X--- ---- ---- ----
+     *     ---- -O-- ---- -O--
+     *     XO-- ---- ---- ----
+     *     O
+     *     </pre>
+     *
+     *     represents a board where X has taken 4 turns, O has taken three turns, and
+     *     it's O's turn now. You may use space characters in any way you wish. Any
+     *     characters other than X, O, -, space, or newline should cause loadFromFile
+     *     to throw an exception.
+     *     @param fileName the file containing the board to be loaded.
+     */
+    public void loadFromFile(String fileName) {
     }
 
     /**
@@ -87,8 +118,6 @@ public class TTT3DBoard {
         return this.squareValues[indexForPosition(level, row, column)];
     }
 
-
-
     /**
      * Apply the specified move to this game board. If the move is legal,
      * this game board reflects the change and the whoseTurn changes to the
@@ -116,7 +145,6 @@ public class TTT3DBoard {
         this.squareValues[indexForPosition(move.level, move.row, move.column)] = this.whoseTurn;
         this.whoseTurn = (this.whoseTurn == 'X' ? 'O' : 'X');
     }
-
 
     /**
      * @param level the level of the board position

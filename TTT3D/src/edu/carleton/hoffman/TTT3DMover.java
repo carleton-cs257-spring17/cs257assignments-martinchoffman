@@ -57,16 +57,17 @@ public class TTT3DMover {
         String stringBoard = "";
         // iterates through levels
         for (int i = 0; i < 4; i++) {
-            stringBoard = stringBoard + "\n";
+            if (i > 0) {
+                stringBoard = stringBoard + "\n";
+            }
             //iterates through rows
             for (int j = 0; i < 4; j++) {
                 //iterates through columns
                 for (int k = 0; k < 4; k++) {
+                    stringBoard = stringBoard + board.valueInSquare(i,j,k);
                     if (k == 3) {
                         stringBoard = stringBoard + " ";
                     }
-                    stringBoard = stringBoard + board.valueInSquare(i,j,k);
-
                 }
             }
         }

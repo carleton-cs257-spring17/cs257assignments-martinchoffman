@@ -1,3 +1,5 @@
+
+
 package edu.carleton.hoffman;
 
 import java.io.File;
@@ -7,13 +9,14 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-/**
+/*
  * TTT3DMoverTest has a number of useful tests that cover all the methods of TTT3DMove.
  *
  * @author Martin Hoffman
  * @author Chris Tordi
  * @version 30 March 2017.
  */
+
 class TTT3DMoverTest {
 	@org.junit.jupiter.api.BeforeEach
 	void setUp() { System.out.println("Setting up..."); }
@@ -177,7 +180,7 @@ class TTT3DMoverTest {
 		// Test no available block
 		blockingMoves = mover.blockingMoves(boards.get("xWin-None"));
 		if (blockingMoves.size() == 0) {
-			System.out.printf("xNoWin passed. List has %d winning moves.%n", blockingMoves.size());
+			System.out.printf("xNoWin passed. List has %d blocking moves.%n", blockingMoves.size());
 		} else {
 			System.out.println("xNoWin passed!");
 		}
@@ -185,11 +188,11 @@ class TTT3DMoverTest {
 		// Test block on horizontal
 		blockingMoves = mover.blockingMoves(boards.get("xWin-H-003"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.printf("xWinOneLevel failed. List has %d winning moves.%n", blockingMoves.size());
+			System.out.printf("xWinOneLevel failed. List has %d blocking moves.%n", blockingMoves.size());
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 0 || blockingMove.row != 0 || blockingMove.column != 3 || blockingMove.player != 'O') {
-				System.out.println("xWinOneLevel failed. Winning move is in incorrect spot");
+				System.out.println("xWinOneLevel failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinOneLevel passed!");
 			}
@@ -198,11 +201,11 @@ class TTT3DMoverTest {
 		// Test block on vertical
 		blockingMoves = mover.blockingMoves(boards.get("xWin-V-030"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+			System.out.println("xWinOneLevel failed. List has" + blockingMoves.size()+ " blocking moves.");
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
-				System.out.println("xWinVerticalOneLevel failed. Winning move is in incorrect spot");
+				System.out.println("xWinVerticalOneLevel failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinVerticalOneLevel passed!");
 			}
@@ -211,11 +214,11 @@ class TTT3DMoverTest {
 		// Test block on diagonal
 		blockingMoves = mover.blockingMoves(boards.get("xWin-D-033"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+			System.out.println("xWinOneLevel failed. List has" + blockingMoves.size()+ "blocking moves.");
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 3 || blockingMove.player != 'O') {
-				System.out.println("xWinDiagonalOneLevel failed. Winning move is in incorrect spot");
+				System.out.println("xWinDiagonalOneLevel failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinDiagonalOneLevel passed!");
 			}
@@ -225,11 +228,11 @@ class TTT3DMoverTest {
 		// Test block on multi-level horizontal
 		blockingMoves = mover.blockingMoves(boards.get("xWin-HM-303"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+			System.out.println("xWinOneLevel failed. List has" + blockingMoves.size()+ " blocking moves.");
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 3 || blockingMove.row != 0 || blockingMove.column != 3 || blockingMove.player != 'O') {
-				System.out.println("xWinHorizontalMult failed. Winning move is in incorrect spot");
+				System.out.println("xWinHorizontalMult failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinHorizontalMult passed!");
 			}
@@ -238,11 +241,11 @@ class TTT3DMoverTest {
 		// Test block on multi-level vertical
 		blockingMoves = mover.blockingMoves(boards.get("xWin-VM-220"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+			System.out.println("xWinOneLevel failed. List has" + blockingMoves.size()+ " blocking moves.");
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
-				System.out.println("xWinVerticalMultLevel failed. Winning move is in incorrect spot");
+				System.out.println("xWinVerticalMultLevel failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinVerticalMultLevel passed!");
 			}
@@ -251,11 +254,11 @@ class TTT3DMoverTest {
 		// Test block on multi-level diagonal
 		blockingMoves = mover.blockingMoves(boards.get("xWin-DM-333"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() > 1) {
-			System.out.println("xWinOneLevel failed. List has" +blockingMoves.size()+ "winning moves.");
+			System.out.println("xWinOneLevel failed. List has" + blockingMoves.size() + " blocking moves.");
 		} else {
 			TTT3DMove blockingMove = blockingMoves.get(0);
 			if (blockingMove.level != 0 || blockingMove.row != 3 || blockingMove.column != 0 || blockingMove.player != 'O') {
-				System.out.println("xWinMultLevel failed. Winning move is in incorrect spot");
+				System.out.println("xWinMultLevel failed. blocking move is in incorrect spot");
 			} else {
 				System.out.println("xWinMultLevel passed!");
 			}
@@ -264,12 +267,12 @@ class TTT3DMoverTest {
 		// Test block on multiple wins, multiple levels
 		blockingMoves = mover.blockingMoves(boards.get("xWin-MM-222-330-303"));
 		if (blockingMoves.size() == 0 || blockingMoves.size() >3) {
-			System.out.printf("xWinMultLevel failed. List has %d winning moves.", blockingMoves.size());
+			System.out.printf("xWinMultLevel failed. List has %d blocking moves.", blockingMoves.size());
 		} else {
 			for (TTT3DMove move : blockingMoves) {
 				if (move.level == 2) {
 					if (move.row != 2 || move.column != 2 || move.player != 'O') {
-						System.out.println("x3WinningMoves failed. Winning move is incorrect");
+						System.out.println("x3WinningMoves failed. blocking move is incorrect");
 					} else {
 						System.out.println("x3 Test 1/3 passed");
 					}
@@ -277,7 +280,7 @@ class TTT3DMoverTest {
 				}
 				else if (move.column == 3){
 					if (move.row != 0 || move.level != 3 || move.player != 'O') {
-						System.out.println("x3WinningMoves failed. Winning move is incorrect");
+						System.out.println("x3WinningMoves failed. blocking move is incorrect");
 					} else {
 						System.out.println("x3 Test  part 2/3 passed");
 					}
@@ -285,7 +288,7 @@ class TTT3DMoverTest {
 				}
 				else {
 					if (move.level != 3 || move.row != 3 || move.column != 0 || move.player != 'O') {
-						System.out.println("x3WinningMoves failed. Winning move is incorrect");
+						System.out.println("x3WinningMoves failed. blocking move is incorrect");
 					} else {
 						System.out.println("x3 Test 3/3 passed");
 					}
@@ -313,6 +316,7 @@ class TTT3DMoverTest {
 		// Test no available force
 		forcingMoves =  mover.forcingMoves(boards.get("xForceNone"));
 		for (TTT3DMove move : forcingMoves) {
+
 			TTT3DBoard xForceNoneCopy = new TTT3DBoard(boards.get("xForceNone"));
 			xForceNoneCopy.makeMove(move);
 			List<TTT3DMove> winningMoves = mover.winningMoves(xForceNoneCopy);

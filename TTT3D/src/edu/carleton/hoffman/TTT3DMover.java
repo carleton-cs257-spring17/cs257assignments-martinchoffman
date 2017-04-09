@@ -52,6 +52,28 @@ public class TTT3DMover {
         return new ArrayList<TTT3DMove>();
     }
 
+    public String writeToString(TTT3DBoard board) {
+
+        String stringBoard = "";
+        // iterates through levels
+        for (int i = 0; i < 4; i++) {
+            stringBoard = stringBoard + "\n";
+            //iterates through rows
+            for (int j = 0; i < 4; j++) {
+                //iterates through columns
+                for (int k = 0; k < 4; k++) {
+                    if (k == 3) {
+                        stringBoard = stringBoard + " ";
+                    }
+                    stringBoard = stringBoard + board.valueInSquare(i,j,k);
+
+                }
+            }
+        }
+
+        return stringBoard;
+    }
+
     /**
      * @param board a 3D tic-tac-toe board, including existing X and O positions
      *              as well as a marker for whose turn comes next
@@ -69,9 +91,12 @@ public class TTT3DMover {
      * @return the move that this object determines would be the best choice for the
      * board's current player.
      */
-    public TTT3DMove bestMove(TTT3DBoard board) { return new TTT3DMove(0, 0, 0, board.getWhoseTurn()); }
+    public TTT3DMove bestMove(TTT3DBoard board) {
 
-    TTT3DBoard readBoardFromFile(String filePath) {
+        return new TTT3DMove(0, 0, 0, board.getWhoseTurn());
+    }
+
+    public TTT3DBoard readBoardFromFile(String filePath) {
         // Attempt to open file located at filePath
         File inputFile = new File(filePath);
         Scanner scanner = null;
@@ -152,6 +177,8 @@ public class TTT3DMover {
 
         TTT3DMover mover = new TTT3DMover();
         TTT3DBoard board = mover.readBoardFromFile(filePath);
+        System.out.println(mover.writeToString(board));
+
     }
 }
 

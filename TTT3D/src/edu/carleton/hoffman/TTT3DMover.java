@@ -4,6 +4,7 @@ import sun.applet.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,8 +37,82 @@ public class TTT3DMover {
      * to win the game in a single turn.
      */
     public List<TTT3DMove> winningMoves(TTT3DBoard board) {
+        Character whoseTurn = board.getWhoseTurn();
+        List<TTT3DMove> winningMoves = new ArrayList<TTT3DMove>();
 
-        return new ArrayList<TTT3DMove>();
+        List<ArrayList<ArrayList<TTT3DMove>>> horizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+        for (int lvl = 0; lvl < 4; lvl++) {
+            horizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
+            for (int row = 0; row < 4; row++) {
+                horizontals.get(lvl).add(new ArrayList<TTT3DMove>());
+                for (int col = 0; col < 4; col++) {
+                    if (board.valueInSquare(lvl, row, col) != '-') {
+                        horizontals.get(lvl).get(row).add(new TTT3DMove(lvl, row, col, board.valueInSquare(lvl, row, col)));
+                    }
+                }
+            }
+        }
+
+        List<ArrayList<ArrayList<TTT3DMove>>> verticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+        for (int lvl = 0; lvl < 4; lvl++) {
+            verticals.add(new ArrayList<ArrayList<TTT3DMove>>());
+            for (int col = 0; col < 4; col++) {
+                verticals.get(lvl).add(new ArrayList<TTT3DMove>());
+                for (int row = 0; row < 4; row++) {
+                    if (board.valueInSquare(lvl, row, col) != '-') {
+                        verticals.get(lvl).get(col).add(new TTT3DMove(lvl, row, col, board.valueInSquare(lvl, row, col)));
+                    }
+                }
+            }
+        }
+
+        List<ArrayList<ArrayList<TTT3DMove>>> diagonals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+        for (int lvl = 0; lvl < 4; lvl++) {
+            diagonals.add(new ArrayList<ArrayList<TTT3DMove>>());
+            for (int col = 0; col < 4; col++) {
+                diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
+                diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
+                for (int i = 0 ; i < 4; i++) {
+                    if (board.valueInSquare(lvl, i, i) != '-') {
+                        diagonals.get(lvl).get(0).add(new TTT3DMove(lvl, i, i, board.valueInSquare(lvl, i, i)));
+                    }
+                    if (board.valueInSquare(lvl, 3-i, i) != '-') {
+                        diagonals.get(lvl).get(1).add(new TTT3DMove(lvl, 3-i, i, board.valueInSquare(lvl, 3-i, i)));
+                    }
+                }
+            }
+        }
+
+        for (ArrayList<ArrayList<TTT3DMove>> level : horizontals) {
+            for (ArrayList<TTT3DMove> row : level) {
+                int count = 0;
+                boolean bool = true;
+                while (row.size() == 3 && bool == true) {
+                    for (TTT3DMove move : row) {
+                        if (move.player != board.getWhoseTurn()) {
+                            bool = false;
+                        } else {
+                            count++;
+                        }
+                    }
+                }
+                if (count == 3 && bool == true) {
+                    int colID = 0;
+                    for (TTT3DMove move : row) {
+                        colID += move.column;
+                    }
+                    TTT3DMove move = row.get(0);
+                    int curLevel = move.level;
+                    int curRow = move.row;
+                    Character curPlayer = move.player;
+                    winningMoves.add(new TTT3DMove(curLevel, curRow, 6 - colID, curPlayer));
+                }
+            }
+        }
+
+        // Remember 3D diagonal and vertical bitches
+
+        return winningMoves;
     }
 
     /**
@@ -53,7 +128,10 @@ public class TTT3DMover {
     }
 
     public String writeToString(TTT3DBoard board) {
+        return writeToString(board, new ArrayList<TTT3DMove>());
+    }
 
+    public String writeToString(TTT3DBoard board, List<TTT3DMove> asterisks) {
         String stringBoard = "";
         // iterates through levels
         for (int i = 0; i < 4; i++) {
@@ -61,10 +139,18 @@ public class TTT3DMover {
                 stringBoard = stringBoard + "\n";
             }
             //iterates through rows
-            for (int j = 0; i < 4; j++) {
+            for (int j = 0; j < 4; j++) {
                 //iterates through columns
                 for (int k = 0; k < 4; k++) {
-                    stringBoard = stringBoard + board.valueInSquare(i,j,k);
+                    for (TTT3DMove move : asterisks) {
+                        if (move.level == i && move.row == j && move.column == k) {
+                            stringBoard += '*';
+                        }
+                    }
+
+                    if (stringBoard.length() == 0 || stringBoard.charAt(stringBoard.length() - 1) != '*') {
+                        stringBoard = stringBoard + board.valueInSquare(i,j,k);
+                    }
                     if (k == 3) {
                         stringBoard = stringBoard + " ";
                     }
@@ -114,12 +200,15 @@ public class TTT3DMover {
         Character whoseTurn = new Character(' ');
         int count64 = 0;
         while(scanner.hasNext()) {
-            String chr = scanner.next();
-            if (count64 == 63) {
-                whoseTurn = chr.charAt(0);
-            } else if (chr.matches("[XO-]")) {
-                chrs += chr;
-                count64++;
+            String line = scanner.next();
+            for (int i = 0; i < line.length(); i++) {
+                String chr = line.substring(i, i + 1);
+                if (count64 == 63) {
+                    whoseTurn = chr.charAt(0);
+                } else if (chr.matches("[XO-]")) {
+                    chrs += chr;
+                    count64++;
+                }
             }
         }
 
@@ -135,7 +224,8 @@ public class TTT3DMover {
         // Separate moves for player 'X'
         List<TTT3DMove> xMoves = new ArrayList<TTT3DMove>();
         for (TTT3DMove move : moves) {
-            if (move != null && move.player == 'X') {
+            if (move.player == 'X') {
+                System.out.println(move.level);
                 xMoves.add(move);
             }
         }
@@ -143,7 +233,7 @@ public class TTT3DMover {
         // Separate moves for player 'O'
         List<TTT3DMove> oMoves = new ArrayList<TTT3DMove>();
         for (TTT3DMove move : moves) {
-            if (move != null && move.player == 'O') {
+            if (move.player == 'O') {
                 oMoves.add(move);
             }
         }
@@ -178,43 +268,7 @@ public class TTT3DMover {
 
         TTT3DMover mover = new TTT3DMover();
         TTT3DBoard board = mover.readBoardFromFile(filePath);
-        System.out.println(mover.writeToString(board));
-
+        List<TTT3DMove> winningMoves = mover.winningMoves(board);
+        System.out.println(mover.writeToString(board, winningMoves));
     }
 }
-
-/*      if (xMoves.size() == oMoves.size()) {
-            if (whoseTurn == 'X') {
-                TTT3DBoard board = new TTT3DBoard();
-                for (int i = 0; i < xMoves.size(); i++) {
-                    board.makeMove(xMoves.get(i));
-                    if (i < oMoves.size()) {
-                        board.makeMove(oMoves.get(i));
-                    }
-                }
-            } else if (whoseTurn == 'O') {
-                TTT3DBoard board = new TTT3DBoard('O');
-                for (int i = 0; i < oMoves.size(); i++) {
-                    board.makeMove(oMoves.get(i));
-                    if (i < xMoves.size()) {
-                        board.makeMove(xMoves.get(i));
-                    }
-                }
-            }
-        } else if (xMoves.size() > oMoves.size()) {
-            TTT3DBoard board = new TTT3DBoard();
-            for (int i = 0; i < xMoves.size(); i++) {
-                board.makeMove(xMoves.get(i));
-                if (i < oMoves.size()) {
-                    board.makeMove(oMoves.get(i));
-                }
-            }
-        } else {
-            TTT3DBoard board = new TTT3DBoard('O');
-            for (int i = 0; i < oMoves.size(); i++) {
-                board.makeMove(oMoves.get(i));
-                if (i < xMoves.size()) {
-                    board.makeMove(xMoves.get(i));
-                }
-            }
-        }*/

@@ -37,7 +37,6 @@ public class TTT3DMover {
      * to win the game in a single turn.
      */
     public List<TTT3DMove> winningMoves(TTT3DBoard board) {
-        Character whoseTurn = board.getWhoseTurn();
         List<TTT3DMove> winningMoves = new ArrayList<TTT3DMove>();
 
         List<ArrayList<ArrayList<TTT3DMove>>> horizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
@@ -255,30 +254,66 @@ public class TTT3DMover {
             }
         }
 
-        List<ArrayList<TTT3DMove>> dDiagonal = new ArrayList<ArrayList<TTT3DMove>>();
-        dDiagonal.add(new ArrayList<TTT3DMove>());
-        dDiagonal.add(new ArrayList<TTT3DMove>());
-        dDiagonal.add(new ArrayList<TTT3DMove>());
-        dDiagonal.add(new ArrayList<TTT3DMove>());
+        List<ArrayList<TTT3DMove>> dDiagonals = new ArrayList<ArrayList<TTT3DMove>>();
+        dDiagonals.add(new ArrayList<TTT3DMove>());
+        dDiagonals.add(new ArrayList<TTT3DMove>());
+        dDiagonals.add(new ArrayList<TTT3DMove>());
+        dDiagonals.add(new ArrayList<TTT3DMove>());
         for (int i = 0 ; i < 4; i++) {
             if (board.valueInSquare(i, i, i) != '-') {
-                dDiagonal.get(0).add(new TTT3DMove(i, i, i, board.valueInSquare(i, i, i)));
-                System.out.println("Level " + i + " Row: " + i + " Col: " + i + " Player: " + board.valueInSquare(i, i, i));
+                dDiagonals.get(0).add(new TTT3DMove(i, i, i, board.valueInSquare(i, i, i)));
             }
             if (board.valueInSquare(i, 3-i, i) != '-') {
-                dDiagonal.get(1).add(new TTT3DMove(i, 3-i, i, board.valueInSquare(i, 3-i, i)));
-                System.out.println("Level " + i + " Row: " + (3-i) + " Col: " + i + " Player: " + board.valueInSquare(i, 3-i, i));
+                dDiagonals.get(1).add(new TTT3DMove(i, 3-i, i, board.valueInSquare(i, 3-i, i)));
             }
             if (board.valueInSquare(3-i, i, i) != '-') {
-                dDiagonal.get(1).add(new TTT3DMove(3-i, i, i, board.valueInSquare(3-i, i, i)));
-                System.out.println("Level " + (3-i) + " Row: " + i + " Col: " + i + " Player: " + board.valueInSquare(3-i, i, i));
+                dDiagonals.get(2).add(new TTT3DMove(3-i, i, i, board.valueInSquare(3-i, i, i)));
             }
             if (board.valueInSquare(3-i, 3-i, i) != '-') {
-                dDiagonal.get(1).add(new TTT3DMove(3-i, 3-i, i, board.valueInSquare(3-i, 3-i, i)));
-                System.out.println("Level " + (3-i) + " Row: " + (3-i) + " Col: " + i + " Player: " + board.valueInSquare(3-i, 3-i, i));
+                dDiagonals.get(3).add(new TTT3DMove(3-i, 3-i, i, board.valueInSquare(3-i, 3-i, i)));
             }
         }
 
+        for (ArrayList<TTT3DMove> diagonal : dDiagonals) {
+            int count = 0;
+            boolean bool = true;
+            for (TTT3DMove move : diagonal) {
+                if (diagonal.size() != 3) {
+                    break;
+                } else if (move.player != board.getWhoseTurn()) {
+                    bool = false;
+                    break;
+                } else {
+                    count++;
+                }
+            }
+            if (count == 3 && bool == true) {
+                int lvlID = 0;
+                int rowID = 0;
+                int colID = 0;
+                for (TTT3DMove move : diagonal) {
+                    lvlID += move.level;
+                    rowID += move.row;
+                    colID += move.column;
+                }
+                TTT3DMove move = diagonal.get(0);
+                Character curPlayer = move.player;
+                winningMoves.add(new TTT3DMove(6-lvlID, 6-rowID, 6 - colID, curPlayer));
+            }
+        }
+
+        List<TTT3DMove> removedWins = new ArrayList<TTT3DMove>();
+        for (TTT3DMove move : winningMoves) {
+            for (TTT3DMove move2 : winningMoves) {
+                if (move.level == move2.level && move.row == move2.row && move.column == move2.column && move.player == move2.player && move != move2) {
+                    removedWins.add(move2);
+                }
+            }
+        }
+
+        for (int i = 0; i < removedWins.size() / 2; i++) {
+            winningMoves.remove(removedWins.get(i));
+        }
         return winningMoves;
     }
 
@@ -290,8 +325,10 @@ public class TTT3DMover {
      * player should play to avoid losing on the opponent's next turn.
      */
     public List<TTT3DMove> blockingMoves(TTT3DBoard board) {
+        Character whoseTurn = board.getWhoseTurn();
+        List<TTT3DMove> blockingMoves = new ArrayList<TTT3DMove>();
 
-        return new ArrayList<TTT3DMove>();
+        return blockingMoves;
     }
 
     public String writeToString(TTT3DBoard board) {

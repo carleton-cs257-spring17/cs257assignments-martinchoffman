@@ -64,6 +64,7 @@ public class TTT3DBoard {
         int squareArrayLength = BOARD_SIZE * BOARD_SIZE * BOARD_SIZE;
         this.squareValues = new Character[squareArrayLength];
         System.arraycopy(otherBoard.squareValues, 0, this.squareValues, 0, squareArrayLength);
+        this.whoseTurn = otherBoard.getWhoseTurn();
     }
 
     /**

@@ -36,7 +36,7 @@ public class TTT3DMover {
      */
     public List<TTT3DMove> winningMoves(TTT3DBoard board) {
         List<TTT3DMove> winningMoves = new ArrayList<TTT3DMove>();
-        // Populate a bullshit data structure
+        // Populate a data structure with each row of the board
         List<ArrayList<ArrayList<TTT3DMove>>> horizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int lvl = 0; lvl < 4; lvl++) {
             horizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -50,7 +50,7 @@ public class TTT3DMover {
                 }
             }
         }
-        // scans moves in horizontals and increments  count if  move.player == board.getWhoseTurn
+        // Scans moves in horizontals and increments  count if  move.player == board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : horizontals) {
             for (ArrayList<TTT3DMove> row : level) {
                 int count = 0;
@@ -81,7 +81,7 @@ public class TTT3DMover {
                 }
             }
         }
-        //
+        // Populate a data structure with each column of the board
         List<ArrayList<ArrayList<TTT3DMove>>> verticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int lvl = 0; lvl < 4; lvl++) {
             verticals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -126,7 +126,7 @@ public class TTT3DMover {
                 }
             }
         }
-        //
+        // Populate a data structure with each diagonal of the board
         List<ArrayList<ArrayList<TTT3DMove>>> diagonals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int lvl = 0; lvl < 4; lvl++) {
             diagonals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -174,7 +174,7 @@ public class TTT3DMover {
                 }
             }
         }
-        //
+        // Populate a data structure with each 3D vertical of the board
         List<ArrayList<ArrayList<TTT3DMove>>> dVerticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int col = 0; col < 4; col++) {
             dVerticals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -219,7 +219,7 @@ public class TTT3DMover {
                 }
             }
         }
-    //
+        // Populate a data structure with each 3D diagonal row of the board
         List<ArrayList<ArrayList<TTT3DMove>>> dHorizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int row = 0; row < 4; row++) {
             dHorizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -269,7 +269,7 @@ public class TTT3DMover {
                 }
             }
         }
-        //
+        // Populate a data structure with each 3D diagonal of the board
         List<ArrayList<TTT3DMove>> dDiagonals = new ArrayList<ArrayList<TTT3DMove>>();
         dDiagonals.add(new ArrayList<TTT3DMove>());
         dDiagonals.add(new ArrayList<TTT3DMove>());
@@ -345,9 +345,8 @@ public class TTT3DMover {
      * player should play to avoid losing on the opponent's next turn.
      */
     public List<TTT3DMove> blockingMoves(TTT3DBoard board) {
-
+        // Populate a data structure with each row of the board
         List<TTT3DMove> blockingMoves = new ArrayList<TTT3DMove>();
-        //
         List<ArrayList<ArrayList<TTT3DMove>>> horizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int lvl = 0; lvl < 4; lvl++) {
             horizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -361,38 +360,7 @@ public class TTT3DMover {
                 }
             }
         }
-        //
-        List<ArrayList<ArrayList<TTT3DMove>>> verticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
-        for (int lvl = 0; lvl < 4; lvl++) {
-            verticals.add(new ArrayList<ArrayList<TTT3DMove>>());
-            for (int col = 0; col < 4; col++) {
-                verticals.get(lvl).add(new ArrayList<TTT3DMove>());
-                for (int row = 0; row < 4; row++) {
-                    if (board.valueInSquare(lvl, row, col) != '-') {
-                        verticals.get(lvl).get(col).add(new TTT3DMove(lvl, row, col,
-                                                                      board.valueInSquare(lvl, row, col)));
-                    }
-                }
-            }
-        }
-        //
-        List<ArrayList<ArrayList<TTT3DMove>>> diagonals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
-        for (int lvl = 0; lvl < 4; lvl++) {
-            diagonals.add(new ArrayList<ArrayList<TTT3DMove>>());
-            diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
-            diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
-            for (int i = 0 ; i < 4; i++) {
-                if (board.valueInSquare(lvl, i, i) != '-') {
-                    diagonals.get(lvl).get(0).add(new TTT3DMove(lvl, i, i, board.valueInSquare(lvl, i, i)));
-                }
-                if (board.valueInSquare(lvl, 3-i, i) != '-') {
-                    diagonals.get(lvl).get(1).add(new TTT3DMove(lvl, 3-i, i, board.valueInSquare(lvl, 3-i, i)));
-                }
-
-            }
-        }
-
-        // Scans moves in horizontals and increments  count if  move.player != board.getWhoseTurn
+        // Scans moves in horizontals and increments count if  move.player != board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : horizontals) {
             for (ArrayList<TTT3DMove> row : level) {
                 int count = 0;
@@ -418,6 +386,20 @@ public class TTT3DMover {
                     int curLevel = move.level;
                     int curRow = move.row;
                     blockingMoves.add(new TTT3DMove(curLevel, curRow, 6 - colID, board.getWhoseTurn()));
+                }
+            }
+        }
+        // Populate a data structure with each column of the board
+        List<ArrayList<ArrayList<TTT3DMove>>> verticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+        for (int lvl = 0; lvl < 4; lvl++) {
+            verticals.add(new ArrayList<ArrayList<TTT3DMove>>());
+            for (int col = 0; col < 4; col++) {
+                verticals.get(lvl).add(new ArrayList<TTT3DMove>());
+                for (int row = 0; row < 4; row++) {
+                    if (board.valueInSquare(lvl, row, col) != '-') {
+                        verticals.get(lvl).get(col).add(new TTT3DMove(lvl, row, col,
+                                                                      board.valueInSquare(lvl, row, col)));
+                    }
                 }
             }
         }
@@ -448,6 +430,22 @@ public class TTT3DMover {
                     int curCol = move.column;
                     blockingMoves.add(new TTT3DMove(curLevel, 6 - rowID, curCol, board.getWhoseTurn()));
                 }
+            }
+        }
+        // Populate a data structure with each diagonal of the board
+        List<ArrayList<ArrayList<TTT3DMove>>> diagonals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+        for (int lvl = 0; lvl < 4; lvl++) {
+            diagonals.add(new ArrayList<ArrayList<TTT3DMove>>());
+            diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
+            diagonals.get(lvl).add(new ArrayList<TTT3DMove>());
+            for (int i = 0 ; i < 4; i++) {
+                if (board.valueInSquare(lvl, i, i) != '-') {
+                    diagonals.get(lvl).get(0).add(new TTT3DMove(lvl, i, i, board.valueInSquare(lvl, i, i)));
+                }
+                if (board.valueInSquare(lvl, 3-i, i) != '-') {
+                    diagonals.get(lvl).get(1).add(new TTT3DMove(lvl, 3-i, i, board.valueInSquare(lvl, 3-i, i)));
+                }
+
             }
         }
         // Scans moves in diagonals and increments  count if  move.player != board.getWhoseTurn
@@ -481,7 +479,7 @@ public class TTT3DMover {
                 }
             }
         }
-
+        // Populate a data structure with each 3D vertical of the board
         List<ArrayList<ArrayList<TTT3DMove>>> dVerticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int col = 0; col < 4; col++) {
             dVerticals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -524,7 +522,7 @@ public class TTT3DMover {
                 }
             }
         }
-
+        // Populate a data structure with each 3D diagonal row of the board
         List<ArrayList<ArrayList<TTT3DMove>>> dHorizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
         for (int row = 0; row < 4; row++) {
             dHorizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
@@ -572,7 +570,7 @@ public class TTT3DMover {
                 }
             }
         }
-
+        // Populate a data structure with each 3D diagonal of the board
         List<ArrayList<TTT3DMove>> dDiagonals = new ArrayList<ArrayList<TTT3DMove>>();
         dDiagonals.add(new ArrayList<TTT3DMove>());
         dDiagonals.add(new ArrayList<TTT3DMove>());

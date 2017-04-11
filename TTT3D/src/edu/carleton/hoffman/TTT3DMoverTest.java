@@ -376,7 +376,7 @@ class TTT3DMoverTest {
 		}
 	}
 
-	@org.junit.jupiter.api.Test
+	/*@org.junit.jupiter.api.Test
 	void bestMove() {
 		// Import boards
 		Map<String, TTT3DBoard> boards = readBoardsFromFile("test boards (one file)/xWins.txt");
@@ -415,7 +415,7 @@ class TTT3DMoverTest {
 		} else {
 			System.out.println("Test failed");
 		}
-	}
+	} */
 
 	private Map<String, TTT3DBoard> readBoardsFromFile(String filePath) {
 		// Attempt to open file located at filePath

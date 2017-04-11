@@ -1,5 +1,5 @@
 X--- -OO- ---- ---X
 -X-- -X-- O-X- -OOO
---X- -X-- O--- -OOO
-XXX- XOOO XOO- -XXX
+--X- -X-- ---- -OOO
+XX-- XOOO XOO- -XXX
 X

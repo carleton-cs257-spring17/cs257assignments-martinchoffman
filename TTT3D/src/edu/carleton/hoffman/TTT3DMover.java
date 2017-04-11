@@ -35,96 +35,92 @@ public class TTT3DMover {
      * to win the game in a single turn.
      */
     public List<TTT3DMove> winningMoves(TTT3DBoard board) {
-        List<TTT3DMove> winningMoves = new ArrayList<TTT3DMove>();
-        // Populate a data structure with each row of the board
-        List<ArrayList<ArrayList<TTT3DMove>>> horizontals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
+		List<TTT3DMove> winningMoves = new ArrayList<TTT3DMove>();
+		// Populate a data structure with each row of the board
+		List<ArrayList<TTT3DMove>> horizontals = new ArrayList<ArrayList<TTT3DMove>>();
+		int rowCount = 0;
         for (int lvl = 0; lvl < 4; lvl++) {
-            horizontals.add(new ArrayList<ArrayList<TTT3DMove>>());
             for (int row = 0; row < 4; row++) {
-                horizontals.get(lvl).add(new ArrayList<TTT3DMove>());
-                for (int col = 0; col < 4; col++) {
-                    if (board.valueInSquare(lvl, row, col) != '-') {
-                        horizontals.get(lvl).get(row).add(new TTT3DMove(lvl, row, col,
-                                                          board.valueInSquare(lvl, row, col)));
+                horizontals.add(new ArrayList<TTT3DMove>());
+				for (int col = 0; col < 4; col++) {
+                	if (board.valueInSquare(lvl, row, col) != '-') {
+                        horizontals.get(rowCount).add(new TTT3DMove(lvl, row, col, board.valueInSquare(lvl, row, col)));
                     }
                 }
+                rowCount++;
             }
         }
-        // Scans moves in horizontals and increments  count if  move.player == board.getWhoseTurn
-        for (ArrayList<ArrayList<TTT3DMove>> level : horizontals) {
-            for (ArrayList<TTT3DMove> row : level) {
-                int count = 0;
-                boolean bool = true;
-                for (TTT3DMove move : row) {
-                    if (row.size() != 3) {
-                        break;
-                    } else if (move.player != board.getWhoseTurn()) {
-                        bool = false;
-                        break;
-                    } else {
-                        count++;
-                    }
-                }
-                // Runs if there exists a 1D row with 3 moves that have move.player == board.getWhoseTurn
-                // and an empty move space
-                if (count == 3 && bool) {
-                    int colID = 0;
-                    for (TTT3DMove move : row) {
-                        colID += move.column;
-                    }
-                    // Adds move to winning move in correct spot
-                    TTT3DMove move = row.get(0);
-                    int curLevel = move.level;
-                    int curRow = move.row;
-                    Character curPlayer = move.player;
-                    winningMoves.add(new TTT3DMove(curLevel, curRow, 6 - colID, curPlayer));
-                }
-            }
+        // Scans moves in horizontals and increments count if move.player == board.getWhoseTurn
+		for (ArrayList<TTT3DMove> row : horizontals) {
+        	int count = 0;
+			boolean bool = true;
+			for (TTT3DMove move : row) {
+				if (row.size() != 3) {
+					break;
+				} else if (move.player != board.getWhoseTurn()) {
+					bool = false;
+					break;
+				} else {
+					count++;
+				}
+			}
+			// Runs if there exists a 1D row with 3 moves that have move.player == board.getWhoseTurn
+			// and an empty move space
+			if (count == 3 && bool) {
+				int colID = 0;
+				for (TTT3DMove move : row) {
+					colID += move.column;
+				}
+				// Adds move to winning move in correct spot
+				TTT3DMove move = row.get(0);
+				int curLevel = move.level;
+				int curRow = move.row;
+				Character curPlayer = move.player;
+				winningMoves.add(new TTT3DMove(curLevel, curRow, 6 - colID, curPlayer));
+			}
         }
         // Populate a data structure with each column of the board
-        List<ArrayList<ArrayList<TTT3DMove>>> verticals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
-        for (int lvl = 0; lvl < 4; lvl++) {
-            verticals.add(new ArrayList<ArrayList<TTT3DMove>>());
+        List<ArrayList<TTT3DMove>> verticals = new ArrayList<ArrayList<TTT3DMove>>();
+		rowCount = 0;
+		for (int lvl = 0; lvl < 4; lvl++) {
             for (int col = 0; col < 4; col++) {
-                verticals.get(lvl).add(new ArrayList<TTT3DMove>());
+                verticals.add(new ArrayList<TTT3DMove>());
                 for (int row = 0; row < 4; row++) {
                     if (board.valueInSquare(lvl, row, col) != '-') {
-                        verticals.get(lvl).get(col).add(new TTT3DMove(lvl, row, col,
-                                                                      board.valueInSquare(lvl, row, col)));
+                        verticals.get(rowCount).add(new TTT3DMove(lvl, row, col, board.valueInSquare(lvl, row, col)));
                     }
                 }
+                rowCount++;
             }
         }
-        // Scans moves in verticals and increments  count if  move.player == board.getWhoseTurn
-        for (ArrayList<ArrayList<TTT3DMove>> level : verticals) {
-            for (ArrayList<TTT3DMove> col : level) {
-                int count = 0;
-                boolean bool = true;
-                for (TTT3DMove move : col) {
-                    if (col.size() != 3) {
-                        break;
-                    } else if (move.player != board.getWhoseTurn()) {
-                        bool = false;
-                        break;
-                    } else {
-                        count++;
-                    }
-                }
-                // Runs if there exists a 1D column with 3 moves that have move.player == board.getWhoseTurn
-                // and an empty move space
-                if (count == 3 && bool) {
-                    int rowID = 0;
-                    for (TTT3DMove move : col) {
-                        rowID += move.row;
-                    }
-                    // Adds a possible winning vertical move to winningMoves
-                    TTT3DMove move = col.get(0);
-                    int curLevel = move.level;
-                    int curCol = move.column;
-                    Character curPlayer = move.player;
-                    winningMoves.add(new TTT3DMove(curLevel, 6 - rowID, curCol, curPlayer));
-                }
-            }
+        // Scans moves in verticals and increments count if move.player == board.getWhoseTurn
+        for (ArrayList<TTT3DMove> col : verticals) {
+			int count = 0;
+			boolean bool = true;
+			for (TTT3DMove move : col) {
+				if (col.size() != 3) {
+					break;
+				} else if (move.player != board.getWhoseTurn()) {
+					bool = false;
+					break;
+				} else {
+					count++;
+				}
+			}
+			// Runs if there exists a 1D column with 3 moves that have move.player == board.getWhoseTurn
+			// and an empty move space
+			if (count == 3 && bool) {
+				int rowID = 0;
+				for (TTT3DMove move : col) {
+					rowID += move.row;
+				}
+				// Adds a possible winning vertical move to winningMoves
+				TTT3DMove move = col.get(0);
+				int curLevel = move.level;
+				int curCol = move.column;
+				Character curPlayer = move.player;
+				winningMoves.add(new TTT3DMove(curLevel, 6 - rowID, curCol, curPlayer));
+			}
         }
         // Populate a data structure with each diagonal of the board
         List<ArrayList<ArrayList<TTT3DMove>>> diagonals = new ArrayList<ArrayList<ArrayList<TTT3DMove>>>();
@@ -188,7 +184,7 @@ public class TTT3DMover {
                 }
             }
         }
-        // Scans moves in dverticals and increments  count if  move.player == board.getWhoseTurn
+        // Scans moves in dverticals and increments count if move.player == board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : dVerticals) {
             for (ArrayList<TTT3DMove> col : level) {
                 int count = 0;
@@ -236,7 +232,7 @@ public class TTT3DMover {
 
             }
         }
-        // Scans moves in dHorizontals and increments  count if  move.player == board.getWhoseTurn
+        // Scans moves in dHorizontals and increments count if move.player == board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> row : dHorizontals) {
             for (ArrayList<TTT3DMove> diagonal : row) {
                 int count = 0;
@@ -290,7 +286,7 @@ public class TTT3DMover {
                                                     board.valueInSquare(3-i, 3-i, i)));
             }
         }
-        // Scans moves in dDiagonals and increments  count if  move.player == board.getWhoseTurn
+        // Scans moves in dDiagonals and increments count if move.player == board.getWhoseTurn
         for (ArrayList<TTT3DMove> diagonal : dDiagonals) {
             int count = 0;
             boolean bool = true;
@@ -403,7 +399,7 @@ public class TTT3DMover {
                 }
             }
         }
-        // Scans moves in verticals and increments  count if  move.player != board.getWhoseTurn
+        // Scans moves in verticals and increments count if move.player != board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : verticals) {
             for (ArrayList<TTT3DMove> col : level) {
                 int count = 0;
@@ -448,7 +444,7 @@ public class TTT3DMover {
 
             }
         }
-        // Scans moves in diagonals and increments  count if  move.player != board.getWhoseTurn
+        // Scans moves in diagonals and increments count if move.player != board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : diagonals) {
             for (ArrayList<TTT3DMove> diagonal : level) {
                 int count = 0;
@@ -493,7 +489,7 @@ public class TTT3DMover {
                 }
             }
         }
-        // Scans moves in dverticals and increments  count if  move.player != board.getWhoseTurn
+        // Scans moves in dverticals and increments count if move.player != board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> level : dVerticals) {
             for (ArrayList<TTT3DMove> col : level) {
                 int count = 0;
@@ -539,7 +535,7 @@ public class TTT3DMover {
 
             }
         }
-        // Scans moves in dhorizontals and increments  count if  move.player != board.getWhoseTurn
+        // Scans moves in dhorizontals and increments count if move.player != board.getWhoseTurn
         for (ArrayList<ArrayList<TTT3DMove>> row : dHorizontals) {
             for (ArrayList<TTT3DMove> diagonal : row) {
                 int count = 0;
@@ -590,7 +586,7 @@ public class TTT3DMover {
                 dDiagonals.get(3).add(new TTT3DMove(3-i, 3-i, i, board.valueInSquare(3-i, 3-i, i)));
             }
         }
-        // Scans moves in dDiagonals and increments  count if  move.player == board.getWhoseTurn
+        // Scans moves in dDiagonals and increments count if move.player == board.getWhoseTurn
         for (ArrayList<TTT3DMove> diagonal : dDiagonals) {
             int count = 0;
             boolean bool = true;

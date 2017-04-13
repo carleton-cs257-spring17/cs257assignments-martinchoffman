@@ -4,26 +4,22 @@
 import spotipy
 import sys
 
+
 def main():
     spotify = spotipy.Spotify()
-    function = sys.argv[1]
+    fnct = sys.argv[1]
 
-    #results = spotify.search(q='album: Graduation', type='album')
-    #print(results)
-    #uri = results['artists']['items'][0]['uri']
-    #print(uri)
-
-    if function == 'getAlbums':
+    if fnct == 'getAlbums':
         artist = sys.argv[2]
-        getArtistURI(spotify, artist)
-    elif function == 'getTracks':
+        get_artist_uri(spotify, artist)
+    elif fnct == 'getTracks':
         album = sys.argv[2]
-        #getAlbumURI(spotify, album)
+        get_album_uri(spotify, album)
     else:
         print('Usage: getAlbums ARTIST_NAME or getTracks ALBUM_NAME')
 
 
-def getArtistURI(spotify, artist):
+def get_artist_uri(spotify, artist): # artist isn't used because the first line accesses it directly via sys.argv[2:]
     artist = ' '.join(sys.argv[2:])
     results = spotify.search(q='artist:' + artist, type='artist')
     uri = results['artists']['items'][0]['uri']
@@ -37,20 +33,22 @@ def getArtistURI(spotify, artist):
     for album in albums:
         print(album['name'])
 
-'''def getAlbumURI(spotify, album):
-    album = ' ' + album
 
+def get_album_uri(spotify, album):
+    album = ' '.join(sys.argv[2:])
     results = spotify.search(q='album:' + album, type='album')
-    uri = results['artists']['items'][0]['uri']
+    uri = results['albums']['items'][0]['uri']
+    print(uri)
 
-    results = spotify.artist_albums(uri, album_type='album')
+    results = spotify.album_tracks(uri)
     albums = results['items']
     while results['next']:
         results = spotify.next(results)
         albums.extend(results['items'])
 
     for album in albums:
-        print(album['name'])'''
+        print(album['name'])
+
 
 if __name__ == '__main__':
     main()

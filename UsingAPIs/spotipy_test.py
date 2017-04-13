@@ -8,13 +8,12 @@ def main():
     spotify = spotipy.Spotify()
     function = sys.argv[1]
 
-    results = spotify.search(q='album: Graduation', type='album')
-    print(results)
+    #results = spotify.search(q='album: Graduation', type='album')
+    #print(results)
     #uri = results['artists']['items'][0]['uri']
     #print(uri)
 
     if function == 'getAlbums':
-        print('argv[2] ' + sys.argv[2])
         artist = sys.argv[2]
         getArtistURI(spotify, artist)
     elif function == 'getTracks':
@@ -23,10 +22,11 @@ def main():
     else:
         print('Usage: getAlbums ARTIST_NAME or getTracks ALBUM_NAME')
 
+
 def getArtistURI(spotify, artist):
-    results = spotify.search(q='artist: ' + artist, type='artist')
-    print(results)
-    uri = results['artists']['items']['external_urls']['uri']
+    artist = ' '.join(sys.argv[2:])
+    results = spotify.search(q='artist:' + artist, type='artist')
+    uri = results['artists']['items'][0]['uri']
 
     results = spotify.artist_albums(uri, album_type='album')
     albums = results['items']

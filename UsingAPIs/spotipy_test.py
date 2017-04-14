@@ -12,8 +12,15 @@
 
 '''
 
-import spotipy
 import sys
+
+try:
+    import spotipy
+except ImportError:
+    import pip
+    pip.main(['install', 'spotipy'])
+    exit('Spotipy dependency installed!\nPlease rerun command...')
+
 import webbrowser
 
 
@@ -87,8 +94,3 @@ def playTrack(spotify, track):
 
 if __name__ == '__main__':
     main()
-
-
-
-
-

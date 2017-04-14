@@ -1,5 +1,16 @@
-# Client ID:        771fca1e6b1649e48b00189968912e6a
-# Client Secret:    4343723038b44a27aba4372d48e8fa7d
+
+'''
+    spotipy_test.py
+    Chris Tordi and Martin Hoffman 
+
+    Python Program that uses spotipy to retrieve data from an HTTP-based Spotify API.
+    Parses results and returns information based on function call
+
+    USAGE STATEMENT: 1) arg1: getAlbums, arg2: name of artist
+                     2) arg1: getTracks, arg2: name of album
+                     3) arg1: playTrack, arg2: name of track
+
+'''
 
 import spotipy
 import sys
@@ -22,7 +33,11 @@ def main():
     else:
         print('Usage: getAlbums ARTIST_NAME or getTracks ALBUM_NAME')
 
-
+'''
+    Param: spotify object, string "artist" of artist you want to find albums for
+    Returns: All albums done by "artist"
+    
+'''
 def get_artist_uri(spotify, artist): # artist isn't used because the first line accesses it directly via sys.argv[2:]
     artist = ' '.join(sys.argv[2:])
     results = spotify.search(q='artist:' + artist, type='artist')
@@ -37,7 +52,12 @@ def get_artist_uri(spotify, artist): # artist isn't used because the first line 
     for album in albums:
         print(album['name'])
 
+'''
+    Param: spotify object, string "album" - name of album you would like tracks for
+    Return: Tracks in album
 
+    Program takes album string and prints tracks from that album
+'''
 def get_album_uri(spotify, album):
     album = ' '.join(sys.argv[2:])
     results = spotify.search(q='album:' + album, type='album')
@@ -51,7 +71,10 @@ def get_album_uri(spotify, album):
 
     for album in albums:
         print(album['name'])
-
+'''
+    Param: spotify object, string "track" - name of track you would like to play
+    Returns: opens web browser and plays 30 sec preview of track
+'''
 def playTrack(spotify, track):
     track = ' '.join(sys.argv[2:])
     results = spotify.search(q='track:' + track, type='track')

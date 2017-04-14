@@ -3,6 +3,7 @@
 
 import spotipy
 import sys
+import webbrowser
 
 
 def main():
@@ -15,6 +16,9 @@ def main():
     elif fnct == 'getTracks':
         album = sys.argv[2]
         get_album_uri(spotify, album)
+    elif fnct == 'playTrack':
+        track = sys.argv[2]
+        playTrack(spotify, track)
     else:
         print('Usage: getAlbums ARTIST_NAME or getTracks ALBUM_NAME')
 
@@ -38,7 +42,6 @@ def get_album_uri(spotify, album):
     album = ' '.join(sys.argv[2:])
     results = spotify.search(q='album:' + album, type='album')
     uri = results['albums']['items'][0]['uri']
-    print(uri)
 
     results = spotify.album_tracks(uri)
     albums = results['items']
@@ -49,6 +52,20 @@ def get_album_uri(spotify, album):
     for album in albums:
         print(album['name'])
 
+def playTrack(spotify, track):
+    track = ' '.join(sys.argv[2:])
+    results = spotify.search(q='track:' + track, type='track')
+    audio_preview = results['tracks']['items'][0]['preview_url']
+    audio = results['tracks']['items'][0]['external_urls']
+    audio = audio['spotify']
+    webbrowser.open(audio_preview)
+    #webbrowser.open(audio)
+
 
 if __name__ == '__main__':
     main()
+
+
+
+
+

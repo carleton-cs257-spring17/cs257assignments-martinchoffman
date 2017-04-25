@@ -20,7 +20,11 @@ class QueryTester(unittest.TestCase):
 		queryValues: returned empty list for invalid state
 	'''
 	def testEmpty(self):
-		queryValues = []
+		url = 'http://localhost:5000/stations/average/stn_id'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		expectedDataValue = 72.5
 		self.assertIn(expectedDataValue,queryValues)
 
@@ -30,9 +34,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testStation(self): 
 		url = 'http://localhost:5000/stations/<state>/stn_id'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = ["1234567", "1245643", "7654321"]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		knownStationId = '1234567'
 		self.assertIn(knownStationId, queryValues)
 
@@ -42,9 +47,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testMax(self):
 		url = 'http://localhost:5000/weather/max/<stn_ids>'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = [5,16.9,19.8,20.8,26.2,30.7,31.8,32.5,38.5,38.7,39.7,42.3,42.3,44.8,52.9,72.5]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		maxInTestData = 72.5
 		self.assertIn(maxInTestData,queryValues)
 
@@ -54,9 +60,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testMin(self):
 		url = 'http://localhost:5000/weather/min/<stn_ids>'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = [5,16.9,19.8,20.8,26.2,30.7,31.8,32.5,38.5,38.7,39.7,42.3,42.3,44.8,52.9,72.5]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		minInTestData = 5
 		self.assertIn(minInTestData,queryValues)
 
@@ -66,9 +73,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testMean(self):
 		url = 'http://localhost:5000/weather/average/<stn_ids>'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = [5,16.9,19.8,20.8,26.2,30.7,31.8,32.5,38.5,38.7,39.7,42.3,42.3,44.8,52.9,72.5]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		meanInTestData = 34.7
 		self.assertEquals(meanInTestData,34.7)
 
@@ -78,9 +86,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testRainy(self):
 		url = 'http://localhost:5000/weather/rain_drizzle/<stn_ids>'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = [[2, 3], [7, 26], [5, 29]]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		rainyDays = 3
 		self.assertEquals(queryValues.length, rainyDays)
 
@@ -90,9 +99,10 @@ class QueryTester(unittest.TestCase):
 	'''
 	def testSnowy(self):
 		url = 'http://localhost:5000/weather/snow_ice_pellets/<stn_ids>'
-		json_string = url.request.open(url).read()
-		result = json.loads(json_string)
-		queryValues = [[2, 3], [7, 26], [5, 29]]
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = results.get(<state>)
 		snowyDays = 3
 		self.assertEquals(queryValues.length, snowyDays)
 

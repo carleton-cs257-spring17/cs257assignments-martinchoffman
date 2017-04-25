@@ -23,62 +23,62 @@ QUERY (GET): /stations/<state>/stn_id
 
 RESPONSE: List of station ids in the state of Florida
 
-EXAMPLE: http://martinchoffman.com/stations/Florida/stn_id
+EXAMPLE: http://localhost:5000/stations/Florida/stn_id
 
 		[1230833,1234567,7654321, ...]
 
 
 SYNOPSIS: Get the highest temperature in a state in 2015.
 
-QUERY (GET): /weather/max/<stn_ids>
+QUERY (GET): /stations/<state>/max
 
 RESPONSE: the highest temperature recorded in that state in 2015.
 
-EXAMPLE: http://martinchoffman.com/weather/[1234567, 7654321, ...]/max
+EXAMPLE: http://localhost:5000/stations/Florida/max
 
 		115
 
 
 SYNOPSIS: Get the lowest temperature in a state in 2015.
 
-QUERY (GET): /weather/min/<stn_ids>
+QUERY (GET): /stations/<state>/min
 
 RESPONSE: the lowest temperature recorded in that state in 2015.
 
-EXAMPLE: http://martinchoffman.com/weather/[1234567, 7654321, ...]/min
+EXAMPLE: http://localhost:5000/stations/Florida/min
 
 		27
 
 
 SYNOPSIS: Get the mean temperatures in a state in 2015.
 
-QUERY (GET): /weather/average/<stn_ids>
+QUERY (GET): /stations/<state>/average
 
 RESPONSE: the mean temperatures recorded in that state in 2015.
 
-EXAMPLE: http://martinchoffman.com/weather/[1234567, 7654321, ...]/average
+EXAMPLE: http://localhost:5000/stations/Florida/average
 
 		[82, 64, 53, 79, ...]
 
 
 SYNOPSIS: Get the rainy days in a state in 2015.
 
-QUERY (GET): /weather/rain_drizzle/<stn_ids>
+QUERY (GET): /stations/<state>/rain_drizzle
 
 RESPONSE: a list of lists which contains the month and date of each rainy day in that state in 2015
 
-EXAMPLE:  http://martinchoffman.com/weather/[1234567, 7654321, ...]/rain_drizzle
+EXAMPLE:  http://localhost:5000/stations/Florida/rain_drizzle
 
 		[[05, 29], [09, 08], [06, 13], ...]
 
 
 SYNOPSIS: Get the snowy days in a state in 2015.
 
-QUERY (GET): /weather/snow_ice_pellets/<stn_ids>
+QUERY (GET): /stations/<state>/snow_ice_pellets
 
 RESPONSE: a list of lists which contains the month and date of each snowy day in that state in 2015
 
-EXAMPLE:  http://martinchoffman.com/weather/[1234567, 7654321, ...]/snow_ice_pellets
+EXAMPLE:  http://localhost:5000/stations/Florida/snow_ice_pellets
 
 		[[05, 29], [09, 08], [06, 13], ...]
 

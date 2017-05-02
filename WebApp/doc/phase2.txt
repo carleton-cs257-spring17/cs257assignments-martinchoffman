@@ -17,70 +17,54 @@ CREATE TABLE stations (
 	state STRING
 )
 
-SYNOPSIS: Get station ids for Florida
+SYNOPSIS: Get max,min, mean temp, rainy index, snow index for state
 
-QUERY (GET): /stations/<state>/stn_id
+QUERY (GET): /<state_name>
 
-RESPONSE: List of station ids in the state of Florida
+RESPONSE: List of dictionaries 
 
-EXAMPLE: http://localhost:5000/stations/Florida/stn_id
+EXAMPLE: http://localhost:5000/FL
 
-		[1230833,1234567,7654321, ...]
-
-
-SYNOPSIS: Get the highest temperature in a state in 2015.
-
-QUERY (GET): /stations/<state>/max
-
-RESPONSE: the highest temperature recorded in that state in 2015.
-
-EXAMPLE: http://localhost:5000/stations/Florida/max
-
-		115
+		[{‘max’:120},{‘min’: 2}…..]
 
 
-SYNOPSIS: Get the lowest temperature in a state in 2015.
+SYNOPSIS: Get max,min, mean temp, rainy index, snow index for city
 
-QUERY (GET): /stations/<state>/min
+QUERY (GET): /<state_name>/<city_name>
 
-RESPONSE: the lowest temperature recorded in that state in 2015.
+RESPONSE: List of dictionaries 
 
-EXAMPLE: http://localhost:5000/stations/Florida/min
+EXAMPLE: http://localhost:5000/FL/MIAMI
 
-		27
-
-
-SYNOPSIS: Get the mean temperatures in a state in 2015.
-
-QUERY (GET): /stations/<state>/average
-
-RESPONSE: the mean temperatures recorded in that state in 2015.
-
-EXAMPLE: http://localhost:5000/stations/Florida/average
-
-		[82, 64, 53, 79, ...]
+		[{‘max’:97},{‘min’: 42}…..]
 
 
-SYNOPSIS: Get the rainy days in a state in 2015.
+SYNOPSIS: Get max,min, mean temp, rainy index, snow index for 2 states
 
-QUERY (GET): /stations/<state>/rain_drizzle
+QUERY (GET): /compare/<state_name1>/<state_name2>
 
-RESPONSE: a list of lists which contains the month and date of each rainy day in that state in 2015
+RESPONSE: List of dictionaries 
 
-EXAMPLE:  http://localhost:5000/stations/Florida/rain_drizzle
+EXAMPLE: http://localhost:5000/FL/MA
 
-		[[05, 29], [09, 08], [06, 13], ...]
+		[{‘max FL’:120},{‘max MA’: 99}, {‘min FL: 2}, {‘min MA’: -13}, …]
 
 
-SYNOPSIS: Get the snowy days in a state in 2015.
+SYNOPSIS: Get max,min, mean temp, rainy index, snow index for 2 cities
 
-QUERY (GET): /stations/<state>/snow_ice_pellets
+QUERY (GET): /compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>
 
-RESPONSE: a list of lists which contains the month and date of each snowy day in that state in 2015
+RESPONSE: List of dictionaries 
 
-EXAMPLE:  http://localhost:5000/stations/Florida/snow_ice_pellets
+EXAMPLE: http://localhost:5000/FL/MIAMI/CA SAN FRANCISCO
 
-		[[05, 29], [09, 08], [06, 13], ...]
+		[{‘max MIAMI’:97},{‘max SAN FRANCISCO’: 98}, {‘min MIAMI: 42}, {‘min SAN FRANCISCO’: 4}, …]
+
+
+
+
+
+
 
 
  

@@ -25,7 +25,7 @@ def _fetch_all_rows_for_query(query):
     an empty list is returned.
     '''
     try:
-        connection = psycopg2.connect(database='NOAA_Data', user='tordic', password='fork297moon')
+        connection = psycopg2.connect(database='NOAA_Data', user='alextordi', password='')
     except Exception as e:
         print('Connection error:', e, file=sys.stderr)
         return []
@@ -365,4 +365,4 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
 
 if __name__ == '__main__':
 
-    app.run(host='thacker.mathcs.carleton.edu', port=5136, debug=True)
+    app.run(host='thacker.mathcs.carleton.edu', port=5236, debug=True)

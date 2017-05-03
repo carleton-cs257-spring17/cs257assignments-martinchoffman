@@ -24,27 +24,27 @@ class QueryTester(unittest.TestCase):
 			Expected QueryValue: mean temp for state
 			queryValues: returned empty list for invalid state
 		'''
-		url = urlStub + 'FL'
+		url = urlStub + 'XZ'
 		json_string = urllib.request.urlopen(url).read()
 		data = json_string.decode('utf-8')
 		result = json.loads(data)
-		queryValues = result.get('FL')
-		expectedDataValue = 72.5
-		self.assertIn(expectedDataValue, queryValues)
+		queryValues = result[0]
+		expectedDataValue = None
+		self.assertEqual(expectedDataValue, queryValues)
 
 
-	def testStation(self): 
+	def testStations(self): 
 		''' Tests query for station ids in South Dakota in 2015
 			queryValues: list of station ids we would find in state
 			knwonStationId: known station id
 		'''
-		url = urlStub + 'FL'
+		url = urlStub + 'stations/FL'
 		json_string = urllib.request.urlopen(url).read()
 		data = json_string.decode('utf-8')
 		result = json.loads(data)
-		queryValues = result[].get('FL')
-		knownStationId = '1234567'
-		self.assertIn(knownStationId, queryValues)
+		
+		knownStationNum = 270
+		self.assertEqual(knownStationNum, result)
 
 
 	def testMax(self):
@@ -58,7 +58,7 @@ class QueryTester(unittest.TestCase):
 		result = json.loads(data)
 		queryValues = result[0].get('max FL temp')
 		maxInTestData = 124.0
-		self.assertEquals(maxInTestData, queryValues)
+		self.assertEqual(maxInTestData, queryValues)
 
 
 	def testMin(self):
@@ -72,7 +72,7 @@ class QueryTester(unittest.TestCase):
 		result = json.loads(data)
 		queryValues = result[1].get('min MA Temp')
 		minInTestData = -18.9
-		self.assertEquals(minInTestData, queryValues)
+		self.assertEqual(minInTestData, queryValues)
 
 
 	def testMean(self):
@@ -86,7 +86,7 @@ class QueryTester(unittest.TestCase):
 		result = json.loads(data)
 		queryValues = result[2].get('mean MN temp')
 		meanInTestData = 45.9
-		self.assertEquals(meanInTestData, queryValues)
+		self.assertEqual(meanInTestData, queryValues)
 
 
 	def testRainy(self):
@@ -100,21 +100,21 @@ class QueryTester(unittest.TestCase):
 		result = json.loads(data)
 		queryValues = result[3].get('Rain Index in CA')
 		rainIndex = 17.0
-		self.assertEquals(queryValues, rainIndex)
+		self.assertEqual(queryValues, rainIndex)
 
 
 	def testSnowy(self):
-		''' Tests query for the number of snowy days in South Dakota in 2015
-			queryValues: example return list of lists for days with snow
-			rainyDays: Known number of snowy days for South Dakota in 2015
+		''' Tests query for the snow index in MN in 2016
+			queryValues: query return
+			SnowIndex: Known index for MN in 2016
 		'''
-		url = urlStub + 'weather/snow_ice_pellets/<stn_ids>'
+		url = urlStub + 'MN'
 		json_string = urllib.request.urlopen(url).read()
 		data = json_string.decode('utf-8')
 		result = json.loads(data)
-		queryValues = result.get('FL')
-		snowyDays = 3
-		self.assertEquals(queryValues.length, snowyDays)
+		queryValues = result[4].get('Snow Index in MN')
+		snowIndex = 33.0
+		self.assertEqual(queryValues, snowIndex)
 
 		
 if __name__ == '__main__':

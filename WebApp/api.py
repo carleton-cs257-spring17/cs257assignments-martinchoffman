@@ -14,7 +14,9 @@ import json
 import psycopg2
 import urllib
 
+
 app = flask.Flask(__name__, static_folder='static', template_folder='templates')
+
 
 def _fetch_all_rows_for_query(query):
     '''
@@ -39,6 +41,7 @@ def _fetch_all_rows_for_query(query):
     connection.close()
     return rows
 
+
 def get_stations_by_state(state_name):
     '''
         get all stn_ids for a state
@@ -46,6 +49,7 @@ def get_stations_by_state(state_name):
     query = '''SELECT * FROM stations WHERE stations.state = '{0}' '''.format(state_name)
     
     return len(_fetch_all_rows_for_query(query))
+
 
 def get_stations_by_city(state_name, city_name):
     '''
@@ -55,10 +59,11 @@ def get_stations_by_city(state_name, city_name):
     
     return len(_fetch_all_rows_for_query(query))
 
-'''
-    get max temp of state
-'''
+
 def get_max(state_name):
+    '''
+        get max temp of state
+    '''
     query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name)
     max_list = []
 
@@ -67,17 +72,13 @@ def get_max(state_name):
         max = {'max {} temp'.format(state_name):row[0]}
         max_list.append(max)
 
-    
-
     return max
 
 
-'''
-    get min temp of state
-'''
 def get_min(state_name):
-    
-
+    '''
+        get min temp of state
+    '''
     query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name)
 
     min_list = []
@@ -87,9 +88,8 @@ def get_min(state_name):
         min = {'min {} Temp'.format(state_name):row[0]}
         min_list.append(min)
 
-    
-
     return min
+
 
 def get_mean(state_name):
     query = '''SELECT a.temp FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
@@ -104,6 +104,7 @@ def get_mean(state_name):
     mean_dict = {'mean {} temp'.format(state_name):mean}
 
     return mean_dict
+
 
 def get_rainy_days(state_name):
     query = '''SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
@@ -135,11 +136,11 @@ def get_snowy_days(state_name):
 
     return snow_dict
 
-'''
-    returns max temp for city
-'''
 
 def get_max_city(state_name, city_name):
+    '''
+        returns max temp for city
+    '''
     query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name,city_name)
 
     max_list = []
@@ -149,9 +150,8 @@ def get_max_city(state_name, city_name):
         max = {'max {} Temp'.format(city_name):row[0]}
         max_list.append(max)
 
-    
-
     return max
+
 
 def get_min_city(state_name, city_name):
     query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name,city_name)
@@ -166,10 +166,10 @@ def get_min_city(state_name, city_name):
     return min
 
 
-'''
-    gets mean temp for city
-'''
 def get_mean_city(state_name, city_name):
+    '''
+        gets mean temp for city
+    '''
     query = '''SELECT a.temp FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
     mean_list = []
 
@@ -182,10 +182,11 @@ def get_mean_city(state_name, city_name):
 
     return mean_city_dict
 
-'''
-    gets total rainy days in city
-'''
+
 def get_rainy_days_city(state_name, city_name):
+    '''
+        gets total rainy days in city
+    '''
     query = '''SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
 
     rain_list = []
@@ -202,10 +203,10 @@ def get_rainy_days_city(state_name, city_name):
     return rain_city_dict
 
 
-'''
-    gets total snowy days in city
-'''
 def get_snowy_days_city(state_name, city_name):
+    '''
+        gets total snowy days in city
+    '''
     query = '''SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
 
     snow_list = []
@@ -225,7 +226,6 @@ def get_snowy_days_city(state_name, city_name):
 '''
     State main
 '''
-
 @app.route('/<state_name>')
 def get_all_state(state_name):
     main_list = []
@@ -281,12 +281,8 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
     city_compare.append(get_snowy_days_city(state_name1, city_name1))
     city_compare.append(get_snowy_days_city(state_name2, city_name2))
     
-
-
-
     return json.dumps(city_compare)
 
 
 if __name__ == '__main__':
-
     app.run(host='localhost', port=5000)

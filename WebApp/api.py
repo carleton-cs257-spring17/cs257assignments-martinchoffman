@@ -364,4 +364,5 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
 
 
 if __name__ == '__main__':
-    app.run(host='thacker.mathcs.carleton.edu', port=5236, debug=True)
+
+    app.run(host='thacker.mathcs.carleton.edu', port=5136, debug=True)

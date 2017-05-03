@@ -67,7 +67,7 @@ def get_max(state_name):
         max = {'max {} temp'.format(state_name):row[0]}
         max_list.append(max)
 
-    print(max_list)
+    
 
     return max
 
@@ -87,7 +87,7 @@ def get_min(state_name):
         min = {'min {} Temp'.format(state_name):row[0]}
         min_list.append(min)
 
-    print(min_list)
+    
 
     return min
 
@@ -114,9 +114,9 @@ def get_rainy_days(state_name):
         if row[0] != '0':
             rain_list.append(row[0])
 
-    print(rain_list)
+    
     rainy_days = round(len(rain_list)/get_stations_by_state(state_name), 0)
-    rain_dict = {'Total Rainy Days': rainy_days}
+    rain_dict = {'Rain Index in {}'.format(state_name): rainy_days}
 
     return rain_dict
 
@@ -131,7 +131,7 @@ def get_snowy_days(state_name):
             snow_list.append(row[0])
 
     snowy_days = round(len(snow_list)/get_stations_by_state(state_name), 0)
-    snow_dict = {'Total Snow Days': snowy_days}
+    snow_dict = {'Snow Index in {}'.format(state_name): snowy_days}
 
     return snow_dict
 
@@ -197,7 +197,7 @@ def get_rainy_days_city(state_name, city_name):
             rain_list.append(row[0])
 
     rainy_days = round(len(rain_list)/get_stations_by_city(state_name,city_name), 0)
-    rain_city_dict = {'Total Rainy Days in {}'.format(city_name): rainy_days}
+    rain_city_dict = {'Rain Index in {}'.format(city_name): rainy_days}
 
     return rain_city_dict
 
@@ -217,7 +217,7 @@ def get_snowy_days_city(state_name, city_name):
             snow_list.append(row[0])
 
     snowy_days = round(len(snow_list)/get_stations_by_city(state_name,city_name), 0)
-    snow_city_dict = {'Total Snowy Days in {}'.format(city_name): snowy_days}
+    snow_city_dict = {'Snow Index in {}'.format(city_name): snowy_days}
 
     return snow_city_dict
 
@@ -289,4 +289,4 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
 
 if __name__ == '__main__':
 
-    app.run(host='thacker.mathcs.carleton.edu', port=5136)
+    app.run(host='localhost', port=5000)

@@ -47,6 +47,8 @@ def get_stations_by_state(state_name):
     Parameter: state
     Returns number of stations in a state
     '''
+    state_name = state_name.upper()
+
     query = '''SELECT * FROM stations WHERE stations.state = '{0}' '''.format(state_name)
     
     return len(_fetch_all_rows_for_query(query))
@@ -57,6 +59,9 @@ def get_stations_by_city(state_name, city_name):
         Parameters: state, city
         Return: returns number of stations in city
     '''
+    state_name = state_name.upper()
+    city_name = city_name.upper()
+
     query = '''SELECT * FROM stations WHERE stations.name LIKE '%' || '{1}' || '%' AND stations.state = '{0}' '''.format(state_name, city_name)
     
     return len(_fetch_all_rows_for_query(query))
@@ -66,7 +71,9 @@ def get_max(state_name):
     '''
         Returns a dictionary containing with information about the max temperature in a state for 2016
     '''
-    query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name)
+    state_name = state_name.upper()
+
+    query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name.upper)
 
     max_list = []
     if len((_fetch_all_rows_for_query(query))) == 0:
@@ -84,6 +91,8 @@ def get_min(state_name):
         Paramter: state
         Returns a dictionary containing with information about the min temperature in a state for 2016
     '''
+    state_name = state_name.upper()
+    
     query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name)
 
     min_list = []
@@ -102,6 +111,8 @@ def get_mean(state_name):
         Parameter: state
         Return: dictionary of average mean temperatures for year in state
     '''
+    state_name = state_name.upper()
+    
     query = '''SELECT a.temp FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
 
     mean_list = []
@@ -119,6 +130,7 @@ def get_mean(state_name):
 def get_rainy_days(state_name):
     '''
     '''
+    state_name = state_name.upper()
 
     query = '''SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
     rain_list = []
@@ -139,6 +151,8 @@ def get_rainy_days(state_name):
 
 
 def get_snowy_days(state_name):
+    state_name = state_name.upper()
+    
     query = '''SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
 
     if query == None:
@@ -164,6 +178,9 @@ def get_max_city(state_name, city_name):
     '''
         returns max temp for city
     '''
+    state_name = state_name.upper()
+    city_name = city_name.upper()
+    
     query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name,city_name)
 
     max_list = []
@@ -179,8 +196,10 @@ def get_max_city(state_name, city_name):
 
 
 def get_min_city(state_name, city_name):
-    query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name,city_name)
+    state_name = state_name.upper()
+    city_name = city_name.upper()
 
+    query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name,city_name)
 
     min_list = []
     if len((_fetch_all_rows_for_query(query))) == 0:
@@ -198,8 +217,10 @@ def get_mean_city(state_name, city_name):
     '''
         gets mean temp for city
     '''
+    state_name = state_name.upper()
+    city_name = city_name.upper()
+
     query = '''SELECT a.temp FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
-    
 
     mean_list = []
     if len((_fetch_all_rows_for_query(query))) == 0:
@@ -219,6 +240,9 @@ def get_rainy_days_city(state_name, city_name):
     '''
         gets total rainy days in city
     '''
+    state_name = state_name.upper()
+    city_name = city_name.upper()
+
     query = '''SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
 
 
@@ -242,9 +266,10 @@ def get_snowy_days_city(state_name, city_name):
     '''
         gets total snowy days in city
     '''
+    state_name = state_name.upper()
+    city_name = city_name.upper()
+
     query = '''SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.name LIKE '%' || '{1}' || '%' AND b.state = '{0}')'''.format(state_name,city_name)
-
-
 
     snow_list = []
     if len((_fetch_all_rows_for_query(query))) == 0:

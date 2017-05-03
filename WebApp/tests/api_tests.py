@@ -60,6 +60,19 @@ class QueryTester(unittest.TestCase):
 		maxInTestData = 124.0
 		self.assertEqual(maxInTestData, queryValues)
 
+	def testMaxCity(self):
+		''' Tests query for max temperature in Miami in 2016
+			queryValues: example return list that we might expect from eventual query
+			maxInTestData: Known max temp for miami in 2016
+		'''
+		url = urlStub + 'FL/MIAMI'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValues = result[0].get('max MIAMI Temp')
+		maxInTestData = 97.0
+		self.assertEqual(maxInTestData, queryValues)
+
 
 	def testMin(self):
 		''' Tests query for min temperature in South Dakota in 2015
@@ -115,6 +128,66 @@ class QueryTester(unittest.TestCase):
 		queryValues = result[4].get('Snow Index in MN')
 		snowIndex = 33.0
 		self.assertEqual(queryValues, snowIndex)
+
+	def testStateComparisonMean(self):
+		'''
+		'''
+		url = urlStub + 'compare/FL/MN'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValuesMean_MN = result[5].get('mean MN temp')
+		queryValuesMean_FL = result[4].get('mean FL temp')
+		meanTemp_FL = 72.8
+		meanTemp_MN = 45.9
+		self.assertEqual(queryValuesMean_MN, meanTemp_MN)
+		self.assertEqual(queryValuesMean_FL, meanTemp_FL)
+
+
+	def testStateComparisonSnow(self):
+		'''
+		'''
+		url = urlStub + 'compare/FL/MN'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValuesSnow_MN = result[9].get('Snow Index in MN')
+		queryValuesSnow_FL = result[8].get('Snow Index in FL')
+		snowIndex_FL = 0.0
+		snowIndex_MN = 33.0
+		self.assertEqual(queryValuesSnow_MN, snowIndex_MN)
+		self.assertEqual(queryValuesSnow_FL, snowIndex_FL)
+
+
+	def testCityComparisonMax(self):
+		'''
+		'''
+		url = urlStub + 'compare/FL/MIAMI/MA/BOSTON'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValuesMax_BOSTON = result[1].get('max BOSTON Temp')
+		queryValuesMax_MIAMI = result[0].get('max MIAMI Temp')
+		maxTemp_MIAMI = 97.0
+		maxTemp_BOSTON = 96.1
+		self.assertEqual(queryValuesMax_BOSTON, maxTemp_BOSTON)
+		self.assertEqual(queryValuesMax_MIAMI, maxTemp_MIAMI)
+
+	def testCityComparisonMin(self):
+		'''
+		'''
+		url = urlStub + 'compare/FL/MIAMI/MA/BOSTON'
+		json_string = urllib.request.urlopen(url).read()
+		data = json_string.decode('utf-8')
+		result = json.loads(data)
+		queryValuesMin_BOSTON = result[3].get('min BOSTON Temp')
+		queryValuesMin_MIAMI = result[2].get('min MIAMI Temp')
+		minTemp_MIAMI = 42.1
+		minTemp_BOSTON = -7.2
+		self.assertEqual(queryValuesMin_BOSTON, minTemp_BOSTON)
+		self.assertEqual(queryValuesMin_MIAMI, minTemp_MIAMI)
+
+
 
 		
 if __name__ == '__main__':

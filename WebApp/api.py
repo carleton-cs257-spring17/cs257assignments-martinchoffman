@@ -44,7 +44,8 @@ def _fetch_all_rows_for_query(query):
 
 def get_stations_by_state(state_name):
     '''
-        get all stn_ids for a state
+    Parameter: state
+    Returns number of stations in a state
     '''
     query = '''SELECT * FROM stations WHERE stations.state = '{0}' '''.format(state_name)
     
@@ -53,7 +54,8 @@ def get_stations_by_state(state_name):
 
 def get_stations_by_city(state_name, city_name):
     '''
-        get all stn_ids for a state
+        Parameters: state, city
+        Return: returns number of stations in city
     '''
     query = '''SELECT * FROM stations WHERE stations.name LIKE '%' || '{1}' || '%' AND stations.state = '{0}' '''.format(state_name, city_name)
     
@@ -62,7 +64,7 @@ def get_stations_by_city(state_name, city_name):
 
 def get_max(state_name):
     '''
-        get max temp of state
+        Returns a dictionary containing with information about the max temperature in a state for 2016
     '''
     query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name)
 
@@ -79,7 +81,8 @@ def get_max(state_name):
 
 def get_min(state_name):
     '''
-        get min temp of state
+        Paramter: state
+        Returns a dictionary containing with information about the min temperature in a state for 2016
     '''
     query = '''SELECT a.min FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY min ASC LIMIT 1'''.format(state_name)
 
@@ -88,7 +91,6 @@ def get_min(state_name):
         return None
 
     for row in _fetch_all_rows_for_query(query):
-    #url = flask.url_for('get_author_by_id', author_id=row[0], _external=True)
         min = {'min {} Temp'.format(state_name):row[0]}
         min_list.append(min)
 
@@ -96,6 +98,10 @@ def get_min(state_name):
 
 
 def get_mean(state_name):
+    '''
+        Parameter: state
+        Return: dictionary of average mean temperatures for year in state
+    '''
     query = '''SELECT a.temp FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
 
     mean_list = []
@@ -111,9 +117,10 @@ def get_mean(state_name):
 
 
 def get_rainy_days(state_name):
+    '''
+    '''
+
     query = '''SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
-
-
     rain_list = []
     if len((_fetch_all_rows_for_query(query))) == 0:
         return None
@@ -265,6 +272,8 @@ def get_num_stations(state_name):
 '''
 @app.route('/<state_name>')
 def get_all_state(state_name):
+    '''
+    '''
     main_list = []
 
     main_list.append(get_max(state_name))
@@ -278,9 +287,11 @@ def get_all_state(state_name):
 
 @app.route('/<state_name>/<city_name>')
 def get_all_city(state_name, city_name):
+    '''
+    '''
     city_list = []
-    city_list.append(get_min_city(state_name,city_name))
     city_list.append(get_max_city(state_name,city_name))
+    city_list.append(get_min_city(state_name,city_name))
     city_list.append(get_mean_city(state_name,city_name))
     city_list.append(get_rainy_days_city(state_name,city_name))
     city_list.append(get_snowy_days_city(state_name,city_name))
@@ -290,6 +301,8 @@ def get_all_city(state_name, city_name):
 
 @app.route('/compare/<state_name1>/<state_name2>')
 def compare_states(state_name1, state_name2):
+    '''
+    '''
     
     compare = []
     compare.append(get_max(state_name1))
@@ -299,6 +312,8 @@ def compare_states(state_name1, state_name2):
     compare.append(get_mean(state_name1))
     compare.append(get_mean(state_name2))
     compare.append(get_rainy_days(state_name1))
+    compare.append(get_rainy_days(state_name2))
+    compare.append(get_snowy_days(state_name1))
     compare.append(get_snowy_days(state_name2))
 
     return json.dumps(compare)
@@ -306,6 +321,8 @@ def compare_states(state_name1, state_name2):
 
 @app.route('/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>')
 def compare_cities(state_name1, city_name1, state_name2, city_name2):
+    '''
+    '''
     city_compare = []
     city_compare.append(get_max_city(state_name1, city_name1))
     city_compare.append(get_max_city(state_name2, city_name2))

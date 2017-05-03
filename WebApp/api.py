@@ -25,7 +25,7 @@ def _fetch_all_rows_for_query(query):
     an empty list is returned.
     '''
     try:
-        connection = psycopg2.connect(database='tordic', user='tordic', password='fork297moon')
+        connection = psycopg2.connect(database='NOAA_Data', user='alextordi', password='')
     except Exception as e:
         print('Connection error:', e, file=sys.stderr)
         return []
@@ -73,9 +73,10 @@ def get_max(state_name):
     '''
     state_name = state_name.upper()
 
-    query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name.upper)
+    query = '''SELECT a.max FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}') ORDER BY max DESC LIMIT 1'''.format(state_name)
 
     max_list = []
+    
     if len((_fetch_all_rows_for_query(query))) == 0:
         return None
 
@@ -365,4 +366,10 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
 
 if __name__ == '__main__':
 
-    app.run(host='thacker.mathcs.carleton.edu', port=5136, debug=True)
+    app.run(host='localhost', port=5001)
+
+
+
+
+
+

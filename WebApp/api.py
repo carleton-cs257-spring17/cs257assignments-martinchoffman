@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 '''
-    books_api.py
-    Jeff Ondich, 25 April 2016
+    api.py
+    Chris Tordi and Martin Hoffman
 
-    Simple Flask API used in the sample web app for
-    CS 257, Spring 2016-2017. This is the Flask app for the
-    "books and authors" API only. There's a separate Flask app
-    for the books/authors website.
+    Simple Flask API used in the weather web app for
+    CS 257, Spring 2016-2017. 
 '''
 import sys
 import flask

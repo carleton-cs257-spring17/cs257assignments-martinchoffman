@@ -130,6 +130,8 @@ def get_mean(state_name):
 
 def get_rainy_days(state_name):
     '''
+    Param: state
+    Return: rain index for state in form of dictionary
     '''
     state_name = state_name.upper()
 
@@ -152,6 +154,10 @@ def get_rainy_days(state_name):
 
 
 def get_snowy_days(state_name):
+    '''
+    Param: state
+    Return: snow index for state in form of dictionary
+    '''
     state_name = state_name.upper()
     
     query = '''SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN (select b.stn_id from stations b where b.state = '{0}')'''.format(state_name)
@@ -197,6 +203,9 @@ def get_max_city(state_name, city_name):
 
 
 def get_min_city(state_name, city_name):
+    ''' 
+        returns min temp in city for 2016
+    '''
     state_name = state_name.upper()
     city_name = city_name.upper()
 
@@ -216,7 +225,7 @@ def get_min_city(state_name, city_name):
 
 def get_mean_city(state_name, city_name):
     '''
-        gets mean temp for city
+        gets mean temp for city in 2016
     '''
     state_name = state_name.upper()
     city_name = city_name.upper()
@@ -239,7 +248,7 @@ def get_mean_city(state_name, city_name):
 
 def get_rainy_days_city(state_name, city_name):
     '''
-        gets total rainy days in city
+        gets rain index in city
     '''
     state_name = state_name.upper()
     city_name = city_name.upper()
@@ -265,7 +274,7 @@ def get_rainy_days_city(state_name, city_name):
 
 def get_snowy_days_city(state_name, city_name):
     '''
-        gets total snowy days in city
+        gets snow index in city
     '''
     state_name = state_name.upper()
     city_name = city_name.upper()
@@ -290,15 +299,17 @@ def get_snowy_days_city(state_name, city_name):
 
 @app.route('/stations/<state_name>')
 def get_num_stations(state_name):
+    '''
+        returns json dump with number of stations in state
+    '''
     return json.dumps(get_stations_by_state(state_name))
 
 
-'''
-    State main
-'''
+
 @app.route('/<state_name>')
 def get_all_state(state_name):
     '''
+        returns json dump with max,min,mean,rain index, and snow index for state
     '''
     main_list = []
 
@@ -314,6 +325,7 @@ def get_all_state(state_name):
 @app.route('/<state_name>/<city_name>')
 def get_all_city(state_name, city_name):
     '''
+        returns json dump with max,min,mean,rain index, and snow index for state
     '''
     city_list = []
     city_list.append(get_max_city(state_name,city_name))
@@ -328,6 +340,7 @@ def get_all_city(state_name, city_name):
 @app.route('/compare/<state_name1>/<state_name2>')
 def compare_states(state_name1, state_name2):
     '''
+        returns json dump with information for both states in query
     '''
     
     compare = []
@@ -348,6 +361,7 @@ def compare_states(state_name1, state_name2):
 @app.route('/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>')
 def compare_cities(state_name1, city_name1, state_name2, city_name2):
     '''
+        returns json dump with information for both cities in query
     '''
     city_compare = []
     city_compare.append(get_max_city(state_name1, city_name1))

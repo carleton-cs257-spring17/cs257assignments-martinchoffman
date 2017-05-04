@@ -21,8 +21,8 @@ class QueryTester(unittest.TestCase):
 
 	def testEmpty(self):
 		''' Tests query for empty query return
-			Expected QueryValue: mean temp for state
-			queryValues: returned empty list for invalid state
+			Expected QueryValue: null
+			queryValues: json return from api query
 		'''
 		url = urlStub + 'XZ'
 		json_string = urllib.request.urlopen(url).read()
@@ -34,9 +34,9 @@ class QueryTester(unittest.TestCase):
 
 
 	def testStations(self): 
-		''' Tests query for station ids in South Dakota in 2015
-			queryValues: list of station ids we would find in state
-			knwonStationId: known station id
+		''' Tests query for station ids in FL in 2016
+			queryValues: json return from api  query
+			knwonStationId: known number of stations in state 
 		'''
 		url = urlStub + 'stations/FL'
 		json_string = urllib.request.urlopen(url).read()
@@ -48,9 +48,9 @@ class QueryTester(unittest.TestCase):
 
 
 	def testMax(self):
-		''' Tests query for max temperature in South Dakota in 2015
-			queryValues: example return list that we might expect from eventual query
-			maxInTestData: Known max temp for south dakota in 2015
+		''' Tests query for max temperature in FL in 2016
+			queryValues: json return from api query
+			maxInTestData: Known max temp for FL in 2016
 		'''
 		url = urlStub + 'FL'
 		json_string = urllib.request.urlopen(url).read()
@@ -75,9 +75,9 @@ class QueryTester(unittest.TestCase):
 
 
 	def testMin(self):
-		''' Tests query for min temperature in South Dakota in 2015
-			queryValues: example return list that we might expect from eventual query
-			maxInTestData: Known min temp for south dakota in 2015
+		''' Tests query for min temperature in mn in 2016
+			queryValues: json return from query
+			maxInTestData: Known min temp for mn in 2016
 		'''
 		url = urlStub + 'MA'
 		json_string = urllib.request.urlopen(url).read()
@@ -89,9 +89,9 @@ class QueryTester(unittest.TestCase):
 
 
 	def testMean(self):
-		''' Tests query for mean temperature in South Dakota in 2015
-			queryValues: example return list that we might expect from eventual query
-			maxInTestData: Known mean temp for south dakota in 2015
+		''' Tests query for mean temperature in MN in 2016
+			queryValues: json return from query
+			maxInTestData: Known mean temp for mn  in 2016
 		'''
 		url = urlStub + 'MN'
 		json_string = urllib.request.urlopen(url).read()
@@ -103,9 +103,9 @@ class QueryTester(unittest.TestCase):
 
 
 	def testRainy(self):
-		''' Tests query for the number of rainy days in South Dakota in 2015
-			queryValues: example return list of lists for days with rain
-			rainyDays: Known number of rainy days for South Dakota in 2015
+		''' Tests query for the rain index in Mn in CA
+			queryValues: query return, json
+			rainyIndex: known rain index for CA in 2016
 		'''
 		url = urlStub + 'CA'
 		json_string = urllib.request.urlopen(url).read()
@@ -131,6 +131,9 @@ class QueryTester(unittest.TestCase):
 
 	def testStateComparisonMean(self):
 		'''
+			Tests query for the  comparison of mean temo in MN  and FL in 2016
+			queryValues: query return
+			SnowIndex: Known mean temp for MN and FL
 		'''
 		url = urlStub + 'compare/FL/MN'
 		json_string = urllib.request.urlopen(url).read()
@@ -146,6 +149,9 @@ class QueryTester(unittest.TestCase):
 
 	def testStateComparisonSnow(self):
 		'''
+			Tests query for the  comparison of snow index in MN  and FL in 2016
+			queryValues: query return
+			SnowIndex: Known index for MN and FL
 		'''
 		url = urlStub + 'compare/FL/MN'
 		json_string = urllib.request.urlopen(url).read()
@@ -161,6 +167,9 @@ class QueryTester(unittest.TestCase):
 
 	def testCityComparisonMax(self):
 		'''
+			Tests query for the  comparison of max temp in miami  and boston in 2016
+			queryValues: query return
+			maxTemp: Known max temp for MN and FL
 		'''
 		url = urlStub + 'compare/FL/MIAMI/MA/BOSTON'
 		json_string = urllib.request.urlopen(url).read()
@@ -175,8 +184,11 @@ class QueryTester(unittest.TestCase):
 
 	def testCityComparisonMin(self):
 		'''
+			Tests query for the  comparison of max temp in miami  and boston in 2016
+			queryValues: query return
+			SnowIndex: Known index for MN and FL
 		'''
-		url = urlStub + 'compare/FL/MIAMI/MA/BOSTON'
+		url = urlStub + 'compare/FL/MIAMI/MN/BOSTON'
 		json_string = urllib.request.urlopen(url).read()
 		data = json_string.decode('utf-8')
 		result = json.loads(data)

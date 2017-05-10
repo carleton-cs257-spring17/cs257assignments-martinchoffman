@@ -2,15 +2,17 @@
 <html>
 	<head>
 		<title>Sexy Website for Jeffe</title>
-
-		<link rel="stylesheet" type="text/css" href="">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='books.css') }}" />
 		<script type="text/javascript" src="../Static/Website.js"></script>
 		<link rel="icon" type="image/jpg" href="jeff_square_head.jpg">
 	</head>
 	<body>
 		<h1>NOAA Weather Data n' Shit</h1>
-		<button type="button" onclick="onGetStateButton()">Get State</button>
+		<button id="authors_button" onclick="onGetStateButton()">Get State</button>
+		<div id="assignment_content">
+			<p><table id="results_table"></table></p>
+		</div>
 
-		<p><table id = "get_results"></table></p>
 	</body>
 </html>

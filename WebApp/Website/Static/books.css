@@ -1,0 +1,19 @@
+/*
+    books.css
+    Jeff Ondich, 27 April 2016
+
+    Styles for the "books and authors" webapp sample
+    for CS 257, Spring 2016. 
+*/
+
+@import url('jeff-course-styles.css');
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+}
+

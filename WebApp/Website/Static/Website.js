@@ -88,8 +88,8 @@ function onAboutNav() {
 						'	<li style="float: right"><a class="active" id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
-	page.innerHTML = '<h1>Chris\'s Gay Porn n\' Shit</h1>\n' +
-					 '<button id="authors_button" onclick="jeffe()">Get Homosexual</button>\n' + 
+	page.innerHTML = '<h1>Info about collection,features, etc\n' +
+					 '<button id="authors_button" onclick="jeffe()">Get Picture</button>\n' + 
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +
 					 '</div>';

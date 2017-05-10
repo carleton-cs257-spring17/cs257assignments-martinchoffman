@@ -24,7 +24,7 @@ def _fetch_all_rows_for_query(query):
     an empty list is returned.
     '''
     try:
-        connection = psycopg2.connect(database='NOAA_Data', user='alextordi', password='')
+        connection = psycopg2.connect(database='tordic', user='tordic', password='fork297moon')
     except Exception as e:
         print('Connection error:', e, file=sys.stderr)
         return []
@@ -456,4 +456,4 @@ def set_headers(response):
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='thacker.mathcs.carleton.edu', port=5136, debug=True)

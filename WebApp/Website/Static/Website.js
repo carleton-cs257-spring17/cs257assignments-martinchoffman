@@ -5,7 +5,7 @@
  *  A little bit of Javascript
  */
 
-var api_base_url = 'http://localhost:5000/';
+var api_base_url = 'thacker.mathcs.carleton.edu:5136/';
 
 function onGetStateButton() {
 	var url = api_base_url + 'CA';

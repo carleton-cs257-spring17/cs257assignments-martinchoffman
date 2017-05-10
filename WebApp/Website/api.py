@@ -502,6 +502,7 @@ def find_cities(temp1, temp2, numCities):
 
 	return json.dumps(get_cities(temp1,temp2)[:numCities])
 
+
 @app.route('/range/city/days/<temp1>/<temp2>/<numCities>')
 def get_days(temp1, temp2, numCities):
 	'''
@@ -510,6 +511,7 @@ def get_days(temp1, temp2, numCities):
 	''' 
 	numCities = int(numCities)
 	return json.dumps(get_cities_days(temp1,temp2)[:numCities])
+
 
 @app.after_request
 def set_headers(response):

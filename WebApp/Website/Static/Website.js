@@ -8,7 +8,8 @@
 var api_base_url = 'http://thacker.mathcs.carleton.edu:5136/';
 
 function onGetStateButton(key) {
-	var url = api_base_url + 'CA';
+	var state = document.getElementById("mySearch").value;
+	var url = api_base_url + state;
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.open('get', url);
 
@@ -25,14 +26,21 @@ function getStateCallback(responseText, key) {
 	var statesList = JSON.parse(responseText);
 	var tableBody = '';
     tableBody += '<tr>';
-    tableBody += '<td>';
-    if (key == 'Max Temp') { // Dictionary structure in the API is dumb
-    	tableBody += statesList[0][key];    	
-    } else if (key == 'Min Temp') {
-    	tableBody += statesList[1][key];    	
-    }
-    tableBody += '</td>';
+    tableBody += '<td>' + 'Max Temp' + '</td>';
+    tableBody += '<td>' + 'Min Temp' + '</td>';
+    tableBody += '<td>' + 'Mean Temp' + '</td>';
+    tableBody += '<td>' + 'Rain Index' + '</td>';
+    tableBody += '<td>' + 'Snow Index' + '</td>';
     tableBody += '</tr>';
+
+    tableBody += '<tr>';
+    tableBody += '<td>' + statesList[0]['Max Temp'] + '</td>';
+    tableBody += '<td>' + statesList[1]['Min Temp'] + '</td>';
+    tableBody += '<td>' + statesList[2]['Mean Temp'] + '</td>';
+    tableBody += '<td>' + statesList[3]['Rain Index'] + '</td>';
+    tableBody += '<td>' + statesList[4]['Snow Index'] + '</td>';
+    tableBody += '</tr>';
+
 
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
@@ -46,7 +54,7 @@ function onHomeNav() {
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
-	page.innerHTML = '<h1>NOAA Weather Data n\' Shit</h1>\n' +
+	page.innerHTML = '<h1>Weather Weather Weather</h1>\n' +
 					 '<img src="Static/jeff_square_head.jpg">'
 }
 
@@ -59,6 +67,7 @@ function onMaxNav() {
 
 	var page = document.getElementById('page');
 	page.innerHTML = '<h1>Max Temps n\' Shit</h1>\n' +
+					 '<input type="search" id="mySearch" placeholder="Search for a state..">\n' +
 					 '<button id="authors_button" onclick="onGetStateButton(\'Max Temp\')">Get State</button>\n' + 
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +

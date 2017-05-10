@@ -7,22 +7,40 @@
 
 var api_base_url = 'http://thacker.mathcs.carleton.edu:5136/';
 
-function onGetStateButton(key) {
-	var state = document.getElementById("mySearch").value;
-	var url = api_base_url + state;
+function onGetCityButton() {
+	var state = document.getElementById("stateS").value;
+	var city  = document.getElementById("cityS").value;
+	var url = api_base_url + state + '/' + city;
+
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.open('get', url);
 
     xmlHttpRequest.onreadystatechange = function() {
         if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
-            getStateCallback(xmlHttpRequest.responseText, key);
+            getStateCityCallback(xmlHttpRequest.responseText);
         } 
 	};
 
 	xmlHttpRequest.send(null);
 }
 
-function getStateCallback(responseText, key) {
+
+function onGetStateButton() {
+	var state = document.getElementById("stateSearch").value;
+	var url = api_base_url + state;
+	xmlHttpRequest = new XMLHttpRequest();
+	xmlHttpRequest.open('get', url);
+
+    xmlHttpRequest.onreadystatechange = function() {
+        if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
+            getStateCityCallback(xmlHttpRequest.responseText);
+        } 
+	};
+
+	xmlHttpRequest.send(null);
+}
+
+function getStateCityCallback(responseText) {
 	var statesList = JSON.parse(responseText);
 	var tableBody = '';
     tableBody += '<tr>';
@@ -41,7 +59,6 @@ function getStateCallback(responseText, key) {
     tableBody += '<td>' + statesList[4]['Snow Index'] + '</td>';
     tableBody += '</tr>';
 
-
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
 }
@@ -49,8 +66,9 @@ function getStateCallback(responseText, key) {
 function onHomeNav() {
 	var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()">Home</a></li>\n' +
-						'	<li><a id="max" onclick="onMaxNav()">Max Temp</a></li>\n' +
-						'	<li><a id="min" onclick="onMinNav()">Min Temp</a></li>\n' +
+						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
+						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
@@ -58,43 +76,60 @@ function onHomeNav() {
 					 '<img src="Static/jeff_square_head.jpg">'
 }
 
-function onMaxNav() {
+function onStateNav() {
 	var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
-						'	<li><a class="active" id="max" onclick="onMaxNav()">Max Temp</a></li>\n' +
-						'	<li><a id="min" onclick="onMinNav()">Min Temp</a></li>\n' +
+						'	<li><a class="active" id="state" onclick="onStateNav()">State</a></li>\n' +
+						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
-	page.innerHTML = '<h1>Max Temps n\' Shit</h1>\n' +
-					 '<input type="search" id="mySearch" placeholder="Search for a state..">\n' +
+	page.innerHTML = '<h1>State Search</h1>\n' +
+					 '<input type="search" id="stateSearch" placeholder="Search for a state..">\n' +
 					 '<button id="authors_button" onclick="onGetStateButton(\'Max Temp\')">Get State</button>\n' + 
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +
 					 '</div>';
 }
 
-function onMinNav() {
+function onCityNav() {
 	var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
-						'	<li><a id="max" onclick="onMaxNav()">Max Temp</a></li>\n' +
-						'	<li><a class="active" id="min" onclick="onMinNav()">Min Temp</a></li>\n' +
+						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
+						'	<li><a class="active" id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
-	page.innerHTML = '<h1>Min Temps n\' Shit</h1>\n' +
-					 '<button id="authors_button" onclick="onGetStateButton(\'Min Temp\')">Get State</button>\n' + 
+	page.innerHTML = '<h1>City Search</h1>\n' +
+					 '<input type="search" id="stateS" placeholder="Enter a state..">\n' +
+					 '<input type="search" id="cityS" placeholder="Enter a city..">\n' +
+					 '<button id="authors_button" onclick="onGetCityButton(\'Min Temp\')">Get City</button>\n' + 
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +
 					 '</div>';
 }
 
+function onCompareNav() {
+	var homeNavButton = document.getElementById('nav_bar');
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
+						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a class="active" id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+
+	var page = document.getElementById('page');
+	page.innerHTML = '<h1>Compare</h1>\n';
+}
+
 function onAboutNav() {
 	var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
-						'	<li><a id="max" onclick="onMaxNav()">Max Temp</a></li>\n' +
-						'	<li><a id="min" onclick="onMinNav()">Min Temp</a></li>\n' +
-						'	<li style="float: right"><a class="active" id="about" onclick="onAboutNav()">About</a></li>\n';
+						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
+						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'	<li style="float: right"><a class ="active" id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
 	page.innerHTML = '<h1>Info about collection,features, etc\n' +

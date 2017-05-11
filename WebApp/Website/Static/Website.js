@@ -148,37 +148,32 @@ function getStateCityCallback(responseText) {
 }
 
 function onFindButton() {
-
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
 	var num_results = document.getElementById("num_results").value;
 	var url = api_base_url;
 
-	if (document.getElementById("cities").checked = true) {
+	if (document.getElementById("cities").checked == true) {
 		url +=  'range/city/' + min + '/' + max + '/' + num_results;
 
-		if (document.getElementById("days").checked = true) {
+		if (document.getElementById("days").checked == true) {
 			url = api_base_url + 'range/city/days/' + min + '/' + max + '/' + num_results;
-
 		}
 	} else {
 		url += 'range/' + min + '/' + max;
 
 	}
 
-
-
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.open('get', url);
 
     xmlHttpRequest.onreadystatechange = function() {
         if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
-            getCompareCallback(xmlHttpRequest.responseText);
+            getCityCallback(xmlHttpRequest.responseText);
         } 
 	};
 
 	xmlHttpRequest.send(null);
-
 }
 
 function getCityCallback(responseText) {
@@ -186,7 +181,7 @@ function getCityCallback(responseText) {
 	var tableBody = '';
 	tableBody += '<tr>'; 
 	tableBody += '<td>' + 'State' + '</td>';
-	if (finderList[0]['City']) != null {
+	if (finderList[0]['City'] != null) {
 		tableBody += '<td>' + 'City' + '</td>';
 
 		if (finderList[0]['Days'] != null) {
@@ -203,7 +198,7 @@ function getCityCallback(responseText) {
 
 	for (var dict of finderList) {
 		tableBody += '<tr>';
-		for (var key of dict) {
+		for (var key in dict) {
 			tableBody += '<td>';
 			tableBody += dict[key];
 			tableBody += '</td>';
@@ -212,7 +207,8 @@ function getCityCallback(responseText) {
 	}
 
 
-
+	var resultsTableElement = document.getElementById('results_table');
+	resultsTableElement.innerHTML = tableBody;
 
 }	
 
@@ -291,10 +287,13 @@ function onCompareNav() {
 
 function setDaysCheck() {
     var citiesRadio = document.getElementById("cities");
-    if(citiesRadio.checked)
-      document.getElementById("days").disabled = false;
-    else
-     document.getElementById("days").disabled = true;    
+    if(citiesRadio.checked) {
+    	document.getElementById("days").disabled = false;
+    }
+    else{
+    	document.getElementById("days").checked = false;
+    	document.getElementById("days").disabled = true;
+    }
 }
 
 function onFindCityNav() {
@@ -316,7 +315,7 @@ function onFindCityNav() {
 					 '<input id = "states" onchange="setDaysCheck()" type="radio" name="query" value="stuff2"> States<br>\n' +
 					 '<input id = "days" type="checkbox" name="days" value="stuff"> Days\n' +
 					 '</form>\n' + 
-					 '<button id="authors_button" onclick="onFindButton(\'Min Temp\')">Find</button>\n' + 
+					 '<button id="authors_button" onclick="onFindButton()">Find</button>\n' + 
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +
 					 '</div>';

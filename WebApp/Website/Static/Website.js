@@ -24,7 +24,6 @@ function onGetCityButton() {
 	xmlHttpRequest.send(null);
 }
 
-
 function onGetStateButton() {
 
 	var state = document.getElementById("stateSearch").value;
@@ -63,8 +62,6 @@ function onGetCompareButton() {
 	};
 
 	xmlHttpRequest.send(null);
-	
-
 }
 
 function getCompareCallback(responseText) {
@@ -72,7 +69,10 @@ function getCompareCallback(responseText) {
 	var tableBody = '';
 	tableBody += '<tr>';
     tableBody += '<td>' + 'State' + '</td>';
-    tableBody += '<td>' + 'City' + '</td>';
+    if (compareList[0]['City'] != null && compareList[0]['City'] != null ){
+    	tableBody += '<td>' + 'City' + '</td>';
+    }
+    
     tableBody += '<td>' + 'Max Temp' + '</td>';
     tableBody += '<td>' + 'Min Temp' + '</td>';
     tableBody += '<td>' + 'Mean Temp' + '</td>';
@@ -82,7 +82,10 @@ function getCompareCallback(responseText) {
 
     tableBody += '<tr>';
     tableBody += '<td>' + compareList[0]['State'] + '</td>';
-    tableBody += '<td>' + compareList[0]['City'] + '</td>';
+    if (compareList[0]['City'] != null) {
+    	tableBody += '<td>' + compareList[0]['City'] + '</td>';
+    }
+    
     tableBody += '<td>' + compareList[0]['Max Temp'] + '</td>';
     tableBody += '<td>' + compareList[2]['Min Temp'] + '</td>';
     tableBody += '<td>' + compareList[4]['Mean Temp'] + '</td>';
@@ -92,7 +95,10 @@ function getCompareCallback(responseText) {
 
     tableBody += '<tr>';
     tableBody += '<td>' + compareList[1]['State'] + '</td>';
-    tableBody += '<td>' + compareList[1]['City'] + '</td>';
+    if (compareList[1]['City'] != null) {
+    	tableBody += '<td>' + compareList[1]['City'] + '</td>';
+    }
+ 
     tableBody += '<td>' + compareList[1]['Max Temp'] + '</td>';
     tableBody += '<td>' + compareList[3]['Min Temp'] + '</td>';
     tableBody += '<td>' + compareList[5]['Mean Temp'] + '</td>';
@@ -103,10 +109,6 @@ function getCompareCallback(responseText) {
 
     var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
-
-
-
-
 }
 
 function getStateCityCallback(responseText) {
@@ -114,7 +116,12 @@ function getStateCityCallback(responseText) {
 	var tableBody = '';
     tableBody += '<tr>';
     tableBody += '<td>' + 'State' + '</td>';
-    tableBody += '<td>' + 'City' + '</td>';
+
+    if (statesList[0]['City'] != null) {
+    	tableBody += '<td>' + 'City' + '</td>';
+    	
+    }
+
     tableBody += '<td>' + 'Max Temp' + '</td>';
     tableBody += '<td>' + 'Min Temp' + '</td>';
     tableBody += '<td>' + 'Mean Temp' + '</td>';
@@ -124,7 +131,11 @@ function getStateCityCallback(responseText) {
 
     tableBody += '<tr>';
     tableBody += '<td>' + statesList[0]['State'] + '</td>';
-    tableBody += '<td>' + statesList[0]['City'] + '</td>';
+
+    if (statesList[0]['City'] != null) {
+    	tableBody += '<td>' + statesList[0]['City'] + '</td>';
+    }
+
     tableBody += '<td>' + statesList[0]['Max Temp'] + '</td>';
     tableBody += '<td>' + statesList[1]['Min Temp'] + '</td>';
     tableBody += '<td>' + statesList[2]['Mean Temp'] + '</td>';
@@ -136,17 +147,87 @@ function getStateCityCallback(responseText) {
 	resultsTableElement.innerHTML = tableBody;
 }
 
+function onFindButton() {
+
+	var min = document.getElementById("min_temp").value;
+	var max = document.getElementById("max_temp").value;
+	var num_results = document.getElementById("num_results").value;
+	var url = api_base_url;
+
+	if (document.getElementById("cities").checked = true) {
+		url +=  'range/city/' + min + '/' + max + '/' + num_results;
+
+		if (document.getElementById("days").checked = true) {
+			url = api_base_url + 'range/city/days/' + min + '/' + max + '/' + num_results;
+
+		}
+	} else {
+		url += 'range/' + min + '/' + max;
+
+	}
+
+
+
+	xmlHttpRequest = new XMLHttpRequest();
+	xmlHttpRequest.open('get', url);
+
+    xmlHttpRequest.onreadystatechange = function() {
+        if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
+            getCompareCallback(xmlHttpRequest.responseText);
+        } 
+	};
+
+	xmlHttpRequest.send(null);
+
+}
+
+function getCityCallback(responseText) {
+	var finderList = JSON.parse(responseText);
+	var tableBody = '';
+	tableBody += '<tr>'; 
+	tableBody += '<td>' + 'State' + '</td>';
+	if (finderList[0]['City']) != null {
+		tableBody += '<td>' + 'City' + '</td>';
+
+		if (finderList[0]['Days'] != null) {
+			tableBody += '<td>' + 'Days' + '</td>';
+		} else {
+			tableBody += '<td>' + 'Mean Temp' + '</td>';
+		}
+	} else {
+		tableBody += '<td>' + 'Mean Temp' + '</td>';
+	}
+
+	tableBody += '</tr>'
+	
+
+	for (var dict of finderList) {
+		tableBody += '<tr>';
+		for (var key of dict) {
+			tableBody += '<td>';
+			tableBody += dict[key];
+			tableBody += '</td>';
+		}
+		tableBody += '</tr>';
+	}
+
+
+
+
+}	
+
 function onHomeNav() {
 	var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
 	page.innerHTML = '<h1>Weather Weather Weather</h1>\n' +
-					 '<img src="Static/jeff_square_head.jpg">'
+					 '<img src="Static/jeff_square_head.jpg">';
 }
 
 function onStateNav() {
@@ -155,6 +236,7 @@ function onStateNav() {
 						'	<li><a class="active" id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
@@ -172,6 +254,7 @@ function onCityNav() {
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a class="active" id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
@@ -190,6 +273,7 @@ function onCompareNav() {
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a class="active" id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
@@ -203,7 +287,39 @@ function onCompareNav() {
 					 '<div id="assignment_content">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' +
 					 '</div>';
+}
 
+function setDaysCheck() {
+    var citiesRadio = document.getElementById("cities");
+    if(citiesRadio.checked)
+      document.getElementById("days").disabled = false;
+    else
+     document.getElementById("days").disabled = true;    
+}
+
+function onFindCityNav() {
+	var homeNavButton = document.getElementById('nav_bar');
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
+						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
+						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a class="active" id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+
+	var page = document.getElementById('page');
+	page.innerHTML = '<h1>Find a Happy Home</h1>\n' +
+					 '<form>\n' +
+					 '<input id = "min_temp" style="width: 5em" type="search" name="min_temp" placeholder="Low (F)...">\n' +
+					 '<input id = "max_temp" style="width: 5em" type="search" name="max_temp" placeholder="High (F)...">\n' +
+					 '<input id = "num_results" style="width: 5em" type="search" name="num_results" placeholder="Results..."><br>\n' +
+					 '<input id = "cities" onchange="setDaysCheck()" type="radio" name="query" value="stuff" checked> Cities\n' +
+					 '<input id = "states" onchange="setDaysCheck()" type="radio" name="query" value="stuff2"> States<br>\n' +
+					 '<input id = "days" type="checkbox" name="days" value="stuff"> Days\n' +
+					 '</form>\n' + 
+					 '<button id="authors_button" onclick="onFindButton(\'Min Temp\')">Find</button>\n' + 
+					 '<div id="assignment_content">\n' +
+					 '	<p><table id="results_table"> </table></p>\n' +
+					 '</div>';
 }
 
 function onAboutNav() {

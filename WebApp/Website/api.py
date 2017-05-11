@@ -484,7 +484,7 @@ def find_states(temp1, temp2):
 	for state in state_mean_temp_list:
 		for key in state:
 			if state[key] >= temp1 and state[key] <= temp2:
-				temp_range.append({'{}'.format(key): state[key]})
+				temp_range.append({'State': key,  'Mean Temp':state[key]})
 
 	return json.dumps(temp_range)
 

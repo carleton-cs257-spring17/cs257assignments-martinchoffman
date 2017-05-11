@@ -192,19 +192,26 @@ function getCityCallback(responseText) {
 	} else {
 		tableBody += '<td>' + 'Mean Temp' + '</td>';
 	}
-
 	tableBody += '</tr>'
 	
 
 	for (var dict of finderList) {
-		tableBody += '<tr>';
-		for (var key in dict) {
-			tableBody += '<td>';
-			tableBody += dict[key];
-			tableBody += '</td>';
+		tableBody += '<tr>'; 
+		tableBody += '<td>' + dict['State'] + '</td>'
+		if (dict['City'] != null) {
+			tableBody += '<td>' + dict['City'] + '</td>';
+
+			if (dict['Days'] != null) {
+				tableBody += '<td>' + dict['Days'] + '</td>';
+			} else {
+				tableBody += '<td>' + dict['Mean Temp'] + '</td>';
+			}
+		} else {
+			tableBody += '<td>' + dict['Mean Temp'] + '</td>';
 		}
-		tableBody += '</tr>';
+		tableBody += '</tr>'
 	}
+
 
 
 	var resultsTableElement = document.getElementById('results_table');

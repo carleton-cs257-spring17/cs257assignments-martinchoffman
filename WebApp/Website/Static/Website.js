@@ -201,7 +201,7 @@ function getCityCallback(responseText) {
 		tableBody += '<td>' + dict['State'] + '</td>'
 		if (dict['City'] != null) {
 			var city = dict['City'];
-			tableBody += '<td>'+ '<button' + ' onclick="initialize();codeAddress(\'' + dict['City'] + '\')">' + dict['City'] + '</button>' + '</td>'
+			tableBody += '<td>'+ '<button' + ' onclick="initialize();codeAddress(\'' + dict['City'] + ',' + dict['State'] + '\')">' + dict['City'] + '</button>' + '</td>'
 			console.log('<td>'+ '<button' + ' onclick="initialize();codeAddress(' + dict['City'] + ')">' + dict['City'] + '</button>' + '</td>');
 			//buttonChanger(city, count);
 
@@ -230,11 +230,6 @@ function getCityCallback(responseText) {
 	 alert(document.getElementById(city).value)
 	 document.getElementById(city).setAttribute("onclick", printer(this.id));
 }*/
-
-function printer(id) {
-	alert(id);
-
-}
 
 
 

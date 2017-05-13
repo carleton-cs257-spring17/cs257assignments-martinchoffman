@@ -435,8 +435,7 @@ def get_num_stations(state_name):
     return json.dumps(len(get_stations_by_state(state_name)))
 
 
-@app.route('/compare/state/?$state_name1=<state_name1>'
-           '$state_name2=<state_name2>')  # Changed from '/compare/<state_name1>/<state_name2>'
+@app.route('/compare/<state_name1>/<state_name2>')  # Changed from '/compare/state/?$state_name1=<state_name1>$state_name2=<state_name2>'
 def compare_states(state_name1, state_name2):
     """
     returns json dump with information for both states in query
@@ -450,8 +449,7 @@ def compare_states(state_name1, state_name2):
     return json.dumps(compare)
 
 
-@app.route('/compare/city/?$state_name1=<state_name1>$city_name1=<city_name1>'
-           '$state_name2=<state_name2>$city_name2=<city_name2>')  # Changed from '/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>'
+@app.route('/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>')  # Changed from '/compare/city/?$state_name1=<state_name1>$city_name1=<city_name1>$state_name2=<state_name2>$city_name2=<city_name2>'
 def compare_cities(state_name1, city_name1, state_name2, city_name2):
     """
     returns json dump with information for both cities in query
@@ -470,7 +468,7 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
     return json.dumps(city_compare)
 
 
-@app.route('/range/state/?$low=<low>$high=<high>&limit=<num_states>')  # CHANGED from /range/<temp1>/<temp2>
+@app.route('/range/<temp1>/<temp2>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
 def find_states(low, high, num_states=0):
     """
     returns json dump with information on mean temperature of states that 
@@ -508,7 +506,7 @@ def find_states(low, high, num_states=0):
         return json.dumps(temp_range[:num_states])
 
 
-@app.route('/range/city/?$low=<low>$high=<high>&limit=<num_cities>')  # Changed from '/range/city/<temp1>/<temp2>/<num_cities>'
+@app.route('/range/city/<temp1>/<temp2>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>'
 def find_cities(low, high, num_cities=5):
     """
     returns json dump with cities whose mean temperature for 2016 fits 
@@ -521,7 +519,7 @@ def find_cities(low, high, num_cities=5):
     return json.dumps(get_cities(low, high)[:num_cities])
 
 
-@app.route('/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days')  # Changed from '/range/city/days/<temp1>/<temp2>/<num_cities>'
+@app.route('/range/city/days/<temp1>/<temp2>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days'
 def get_days(temp1, temp2, num_cities):
     """
     returns json dump with number of days where mean temp meets temp range.

@@ -18,6 +18,12 @@ th, td {
     padding: 15px;
 }
 
+#table-scroll {
+  height:350px;
+  overflow:auto;  
+  margin-top:20px;
+}
+
 /*Our Shit*/
 body {margin:0;}
 

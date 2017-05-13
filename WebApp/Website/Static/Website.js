@@ -11,6 +11,11 @@ var api_base_url = 'http://thacker.mathcs.carleton.edu:5136/';
 function onGetCityButton() {
 	var state = document.getElementById("stateS").value;
 	var city  = document.getElementById("cityS").value;
+
+	if (state.length > 2) {
+		alert("Please use state abbreviations");
+		return;
+	}
 	var url = api_base_url + state + '/' + city;
 
 	xmlHttpRequest = new XMLHttpRequest();
@@ -28,6 +33,10 @@ function onGetCityButton() {
 function onGetStateButton() {
 
 	var state = document.getElementById("stateSearch").value;
+	if (state.length > 2) {
+		alert("Please use state abbreviations");
+		return;
+	}
 	var url = api_base_url + state;
 	xmlHttpRequest = new XMLHttpRequest();
 	xmlHttpRequest.open('get', url);
@@ -46,6 +55,11 @@ function onGetCompareButton() {
 	var city1  = document.getElementById("cityC1").value;
 	var state2 = document.getElementById("stateC2").value;
 	var city2  = document.getElementById("cityC2").value;
+
+	if(state1.length > 2 || state2.length > 2) {
+		alert("Please use state abbreviations");
+		return;
+	}
 
 	if (city1 == '' && city2 == '') {
 		var url = api_base_url + 'compare/' + state1 + '/' + state2;
@@ -151,6 +165,11 @@ function getStateCityCallback(responseText) {
 function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
+	if (min >= max) {
+		alert("Please make sure max is at least 1 degree higher than min");
+		return;
+	}
+
 	var num_results = document.getElementById("num_results").value;
 
 	var url = api_base_url;
@@ -159,7 +178,7 @@ function onFindButton() {
 		if (num_results < 1) {
 			num_results = 5;
 		}
-		alert("num results: " + num_results);
+		
 		url +=  'range/city/' + min + '/' + max + '/' + num_results;
 
 		if (document.getElementById("days").checked == true) {
@@ -402,8 +421,7 @@ function onFindCityNav() {
 					 '</div>\n' +
 					 '<style> #map {width: 60%;height: 400px;float: right;}</style>\n' + 
 					 '<div id="assignment_content" style="width=30%; float:left">\n' +
-					 
-					 '	<p><table id="results_table"> </table></p>\n' +
+					 '	<p><table id="results_table"> </table></p>\n' + 
 					 '</div>\n' +
 					 '<div id="map" ></div>';
 

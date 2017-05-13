@@ -152,12 +152,20 @@ function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
 	var num_results = document.getElementById("num_results").value;
+
 	var url = api_base_url;
 
 	if (document.getElementById("cities").checked == true) {
+		if (num_results < 1) {
+			num_results = 5;
+		}
+		alert("num results: " + num_results);
 		url +=  'range/city/' + min + '/' + max + '/' + num_results;
 
 		if (document.getElementById("days").checked == true) {
+			if (num_results < 1) {
+				num_results = 5;
+		}
 			url = api_base_url + 'range/city/days/' + min + '/' + max + '/' + num_results;
 		}
 	} else {

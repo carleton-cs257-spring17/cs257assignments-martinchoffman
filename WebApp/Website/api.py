@@ -22,8 +22,8 @@ def _fetch_all_rows_for_query(query):
     an empty list is returned.
     """
     try:
-        connection = psycopg2.connect(database='tordic', user='tordic',
-                                      password='fork297moon')
+        connection = psycopg2.connect(database='hoffmanm2', user='hoffmanm2',
+                                      password='snail749sunshine')
     except Exception as e:
         print('Connection error:', e, file=sys.stderr)
         return []
@@ -48,64 +48,73 @@ def get_stations_by_state(state_name):
     state_name = state_name.upper()
     query = '''SELECT * FROM stations WHERE stations.state = '{0}' '''.format(
         state_name)
-
-    return len(_fetch_all_rows_for_query(query))
+    stations = _fetch_all_rows_for_query(query)
+    return stations
 
 
 def get_stations_by_city(state_name, city_name):
     """
-        Parameters: state, city
-        Return: returns number of stations in city
+    Parameters: state, city
+    Return: returns number of stations in city
     """
     state_name = state_name.upper()
     city_name = city_name.upper()
     query = ("SELECT * FROM stations WHERE stations.name LIKE '%{1}%' "
              "AND stations.state = '{0}'").format(state_name, city_name)
-
-    return len(_fetch_all_rows_for_query(query))
+    stations = _fetch_all_rows_for_query(query)
+    return stations
 
 
 def get_max(state_name):
     """
-        Returns a dictionary containing with information about the max 
-        temperature in a state for 2016
+    Parameter: state
+    Returns a dictionary containing with information about the max 
+    temperature in a state for 2016
     """
-    state_name = state_name.upper()
-    query = ("SELECT a.max FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.state = '{0}') "
-             "ORDER BY max DESC LIMIT 1").format(state_name)
-
-    if len((_fetch_all_rows_for_query(query))) == 0:
-        return None
-
-    row = _fetch_all_rows_for_query(query)
-    max = {'State': state_name, 'Max Temp': row[0]}
-    return max
+    return get_max_min(state_name, 'max')
 
 
 def get_min(state_name):
     """
-        Parameter: state
-        Returns a dictionary containing with information about the min 
-        temperature in a state for 2016
+    Parameter: state
+    Returns a dictionary containing with information about the min 
+    temperature in a state for 2016
+    """
+    return get_max_min(state_name, 'min')
+
+
+def get_max_min(state_name, max_min):
+    """
+    Helper function for get_max and get_min
+    :param state_name: 
+    :param max_min: string, 'min' or 'max'
+    :return: 
     """
     state_name = state_name.upper()
-    query = ("SELECT a.min FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.state = '{}') "
-             "ORDER BY min ASC LIMIT 1").format(state_name)
 
-    if len((_fetch_all_rows_for_query(query))) == 0:
-        return None
+    query_order = ''
+    if max_min == 'max':
+        query_order = 'DESC'
+    elif max_min == 'min':
+        query_order = 'ASC'
+
+    query = ("SELECT a.{1} FROM weather a WHERE a.stn_id IN "
+             "(SELECT b.stn_id FROM stations b WHERE b.state = '{0}') "
+             "ORDER BY {1} {2} LIMIT 1").format(state_name, max_min, query_order)
 
     row = _fetch_all_rows_for_query(query)
-    min = {'State': state_name, 'Min Temp': row[0]}
-    return min
+    if len(row) == 0:
+        return None
+
+    assert len(row) == 1
+    temp = {'State': state_name, max_min.capitalize() + ' Temp': row[0]}
+    return temp
 
 
 def get_mean(state_name):
     """
-        Parameter: state
-        Return: dictionary of average mean temperatures for year in state
+    Parameter: state
+    Return: dictionary of average mean temperatures for year in state
     """
     state_name = state_name.upper()
     query = ("SELECT a.temp FROM weather a WHERE a.stn_id IN "
@@ -128,24 +137,7 @@ def get_rainy_days(state_name):
     Param: state
     Return: rain index for state in form of dictionary
     """
-    state_name = state_name.upper()
-    query = ("SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.state = '{}')").format(
-        state_name)
-
-    rain_list = []
-    if len((_fetch_all_rows_for_query(query))) == 0:
-        return None
-
-    for row in _fetch_all_rows_for_query(query):
-        if len(row) == 0:
-            return None
-        if row[0] != '0':
-            rain_list.append(row[0])
-
-    rainy_days = round(len(rain_list) / get_stations_by_state(state_name), 0)
-    rain_dict = {'State': state_name, 'Rain Index': rainy_days}
-    return rain_dict
+    return get_rainy_snowy_days(state_name, 'rain')
 
 
 def get_snowy_days(state_name):
@@ -153,150 +145,180 @@ def get_snowy_days(state_name):
     Param: state
     Return: snow index for state in form of dictionary
     """
-    state_name = state_name.upper()
-    query = ("SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.state = '{}')").format(
-        state_name)
+    return get_rainy_snowy_days(state_name, 'snow')
 
-    snow_list = []
-    if len((_fetch_all_rows_for_query(query))) == 0:
+
+def get_rainy_snowy_days(state_name, rain_snow):
+    """
+    Helper function for get_snowy_days and get_rainy_days
+    :param state_name: 
+    :param rain_snow: string, 'rain' or 'snow'
+    :return: 
+    """
+    state_name = state_name.upper()
+
+    column = ''
+    if rain_snow == 'snow':
+        column = 'snow_ice_pellets'
+    elif rain_snow == 'rain':
+        column = 'rain_drizzle'
+
+    query = ("SELECT a.{1} FROM weather a WHERE a.stn_id IN "
+             "(SELECT b.stn_id FROM stations b WHERE b.state = '{0}')").format(
+        state_name, column)
+    rows = _fetch_all_rows_for_query(query)
+
+    if len(rows) == 0:
         return None
 
-    for row in _fetch_all_rows_for_query(query):
+    prcp_list = []
+    for row in rows:
         if len(row) == 0:
             return None
-        if row[0] != '0':
-            snow_list.append(row[0])
+        elif row[0] != '0':
+            prcp_list.append(row[0])
 
-    snowy_days = round(len(snow_list) / get_stations_by_state(state_name), 0)
-    snow_dict = {'State': state_name, 'Snow Index': snowy_days}
-    return snow_dict
+    prcp_days = round(
+        len(prcp_list) / len(get_stations_by_state(state_name)), 0)
+    prcp_dict = {'State': state_name,
+                 rain_snow.capitalize() + ' Index': prcp_days}
+    return prcp_dict
 
 
 def get_max_city(state_name, city_name):
     """
-        returns max temp for city
+    returns max temp for city
     """
-    state_name = state_name.upper()
-    city_name = city_name.upper()
-    query = ("SELECT a.max FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
-             "AND b.state = '{0}') ORDER BY max DESC LIMIT 1").format(state_name,
-                                                                      city_name)
-
-    if len((_fetch_all_rows_for_query(query))) == 0:
-        return None
-
-    row = _fetch_all_rows_for_query(query)
-    max = {'State': state_name, 'City': city_name,
-           'Max Temp': row[0]}
-    return max
+    return get_min_max_city(state_name, city_name, 'max')
 
 
 def get_min_city(state_name, city_name):
     """ 
-        returns min temp in city for 2016
+    returns min temp in city for 2016
+    """
+    return get_min_max_city(state_name, city_name, 'min')
+
+
+def get_min_max_city(state_name, city_name, max_min):
+    """
+    Helper function for get_max_city and get_min_city
+    :param state_name: 
+    :param city_name: 
+    :param max_min: string, 'max' or 'min'
+    :return: 
     """
     state_name = state_name.upper()
     city_name = city_name.upper()
-    query = ("SELECT a.min FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%(1}%' "
-             "AND b.state = '{0}') ORDER BY min ASC LIMIT 1").format(state_name,
-                                                                     city_name)
 
-    if len((_fetch_all_rows_for_query(query))) == 0:
+    query_order = ''
+    if max_min == 'max':
+        query_order = 'DESC'
+    elif max_min == 'min':
+        query_order = 'ASC'
+
+    query = ("SELECT a.{2} FROM weather a WHERE a.stn_id IN "
+             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
+             "AND b.state = '{0}') ORDER BY {2} {3} LIMIT 1").format(state_name,
+                                                                     city_name,
+                                                                     max_min,
+                                                                     query_order)
+    row = _fetch_all_rows_for_query(query)
+
+    if len(row) == 0:
         return None
 
-    row = _fetch_all_rows_for_query(query)
-    min = {'State': state_name, 'City': city_name, 'Min Temp': row[0]}
-    return min
+    assert len(row) == 1
+    min_temp = {'State': state_name, 'City': city_name,
+                max_min.capitalize() + ' Temp': row[0]}
+    return min_temp
 
 
 def get_mean_city(state_name, city_name):
     """
-        gets mean temp for city in 2016
+    gets mean temp for city in 2016
     """
     state_name = state_name.upper()
     city_name = city_name.upper()
     query = ("SELECT a.temp FROM weather a WHERE a.stn_id IN "
              "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
              "AND b.state = '{0}')").format(state_name, city_name)
+    rows = _fetch_all_rows_for_query(query)
 
-    mean_list = []
-    if len((_fetch_all_rows_for_query(query))) == 0:
+    if len(rows) == 0:
         return None
 
-    for row in _fetch_all_rows_for_query(query):
+    mean_list = []
+    for row in rows:
         mean_list.append(row[0])
 
-    mean = round((sum(mean_list) / len(mean_list)), 1)
+    mean = round(sum(mean_list) / len(mean_list), 1)
     mean_city_dict = {'State': state_name, 'City': city_name, 'Mean Temp': mean}
     return mean_city_dict
 
 
 def get_rainy_days_city(state_name, city_name):
     """
-        gets rain index in city
+    gets rain index in city
     """
-    state_name = state_name.upper()
-    city_name = city_name.upper()
-    query = ("SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
-             "AND b.state = '{0}')").format(state_name, city_name)
-
-    rain_list = []
-    if len((_fetch_all_rows_for_query(query))) == 0:
-        return None
-
-    for row in _fetch_all_rows_for_query(query):
-        if row[0] != '0':
-            rain_list.append(row[0])
-
-    rainy_days = round(
-        len(rain_list) / get_stations_by_city(state_name, city_name), 0)
-    rain_city_dict = {'State': state_name,
-                      'City': city_name,
-                      'Rain Index': rainy_days}
-
-    return rain_city_dict
+    return get_rainy_snowy_days_city(state_name, city_name, 'rain')
 
 
 def get_snowy_days_city(state_name, city_name):
     """
-        gets snow index in city
+    gets snow index in city
+    """
+    return get_rainy_snowy_days_city(state_name, city_name, 'snow')
+
+
+def get_rainy_snowy_days_city(state_name, city_name, rain_snow):  # Combine with state version?
+    """
+    Helper function for get_snowy_days and get_rainy_days
+    :param city_name: 
+    :param state_name: 
+    :param rain_snow: string, 'rain' or 'snow'
+    :return: 
     """
     state_name = state_name.upper()
     city_name = city_name.upper()
-    query = ("SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
-             "AND b.state = '{0}')").format(state_name, city_name)
 
-    snow_list = []
-    if len((_fetch_all_rows_for_query(query))) == 0:
+    column = ''
+    if rain_snow == 'snow':
+        column = 'snow_ice_pellets'
+    elif rain_snow == 'rain':
+        column = 'rain_drizzle'
+
+    query = ("SELECT a.{2} FROM weather a WHERE a.stn_id IN "
+             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
+             "AND b.state = '{0}')").format(state_name, city_name, column)
+    rows = _fetch_all_rows_for_query(query)
+
+    if len(rows) == 0:
         return None
 
-    for row in _fetch_all_rows_for_query(query):
-        if row[0] != '0':
-            snow_list.append(row[0])
+    prcp_list = []
+    for row in rows:
+        if len(row) == 0:
+            return None
+        elif row[0] != '0':
+            prcp_list.append(row[0])
 
-    snowy_days = round(
-        len(snow_list) / get_stations_by_city(state_name, city_name), 0)
-    snow_city_dict = {'State': state_name,
-                      'City': city_name,
-                      'Snow Index': snowy_days}
-    return snow_city_dict
+    prcp_days = round(
+        len(prcp_list) / len(get_stations_by_city(state_name, city_name)), 0)
+    prcp_dict = {'State': state_name, 'City': city_name,
+                 rain_snow.capitalize() + ' Index': prcp_days}
+    return prcp_dict
 
 
 def get_cities(temp1, temp2):
     """
-        returns list of cities whose mean yearly temperature fits the range 
-        input by user
+    returns list of cities whose mean yearly temperature fits the range 
+    input by user
     """
     temp1 = float(temp1)
     temp2 = float(temp2)
 
-    final_city_list = []
     city_list = get_city_info()
+    final_city_list = []
     for dictionary in city_list:
         city = dictionary.get('City')
         query = ("SELECT a.temp FROM weather a WHERE a.stn_id "
@@ -321,8 +343,8 @@ def get_cities(temp1, temp2):
 
 def get_cities_days(temp1, temp2):
     """
-        returns list of dictionaries whose values contain number of days where 
-        mean temp fits user range
+    returns list of dictionaries whose values contain number of days where 
+    mean temp fits user range
     """
     temp1 = float(temp1)
     temp2 = float(temp2)
@@ -341,9 +363,9 @@ def get_cities_days(temp1, temp2):
             if temp1 <= row[0] <= temp2:
                 mean_list.append(row[0])
 
-        if (len(mean_list) != 0) and (get_stations_by_city(state, city) != 0):
-            days = int(len(mean_list) / get_stations_by_city(state, city))
-
+        if (len(mean_list) != 0) and (
+            len(get_stations_by_city(state, city)) != 0):
+            days = int(len(mean_list) / len(get_stations_by_city(state, city)))
             city_dict = {'State': state, 'City': city, 'Days': days}
             final_city_list.append(city_dict)
 
@@ -351,10 +373,10 @@ def get_cities_days(temp1, temp2):
     return final_city_list
 
 
-def sort_by_dictionary(list_of_dictionaries):
+def sort_by_dictionary(list_of_dictionaries):  # Only used once, do we need separate function?
     """
-        Parameter: list of dictionaries
-        Returns: sorted list based on dictionary value
+    Parameter: list of dictionaries
+    Returns: sorted list based on dictionary value
     """
     sorted_list = sorted(list_of_dictionaries,
                          key=itemgetter('Days'),
@@ -364,8 +386,8 @@ def sort_by_dictionary(list_of_dictionaries):
 
 def get_city_info():
     """
-        queries cities table and returns list of dictionaries with keys: 
-        city and state
+    queries cities table and returns list of dictionaries with keys: 
+    city and state
     """
     query = '''SELECT city, state FROM cities'''
     city_list = []
@@ -376,18 +398,10 @@ def get_city_info():
     return city_list
 
 
-@app.route('/stations/<state_name>')
-def get_num_stations(state_name):
-    """
-        returns json dump with number of stations in state
-    """
-    return json.dumps(get_stations_by_state(state_name))
-
-
 @app.route('/<state_name>')
 def get_all_state(state_name):
     """
-        returns json dump with max,min,mean,rain index, and snow index for state
+    returns json dump with max,min,mean,rain index, and snow index for state
     """
 
     main_list = [get_max(state_name),
@@ -402,7 +416,7 @@ def get_all_state(state_name):
 @app.route('/<state_name>/<city_name>')
 def get_all_city(state_name, city_name):
     """
-        returns json dump with max,min,mean,rain index, and snow index for state
+    returns json dump with max,min,mean,rain index, and snow index for state
     """
     city_list = [get_max_city(state_name, city_name),
                  get_min_city(state_name, city_name),
@@ -413,12 +427,19 @@ def get_all_city(state_name, city_name):
     return json.dumps(city_list)
 
 
-@app.route('/compare/<state_name1>/<state_name2>')
+@app.route('/stations/<state_name>')  # We never use this?
+def get_num_stations(state_name):
+    """
+    returns json dump with number of stations in state
+    """
+    return json.dumps(len(get_stations_by_state(state_name)))
+
+
+@app.route('/compare/<state_name1>/<state_name2>')  # Changed from '/compare/state/?$state_name1=<state_name1>$state_name2=<state_name2>'
 def compare_states(state_name1, state_name2):
     """
-        returns json dump with information for both states in query
+    returns json dump with information for both states in query
     """
-
     compare = [get_max(state_name1), get_max(state_name2),
                get_min(state_name1), get_min(state_name2),
                get_mean(state_name1), get_mean(state_name2),
@@ -428,10 +449,10 @@ def compare_states(state_name1, state_name2):
     return json.dumps(compare)
 
 
-@app.route('/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>')
+@app.route('/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>')  # Changed from '/compare/city/?$state_name1=<state_name1>$city_name1=<city_name1>$state_name2=<state_name2>$city_name2=<city_name2>'
 def compare_cities(state_name1, city_name1, state_name2, city_name2):
     """
-        returns json dump with information for both cities in query
+    returns json dump with information for both cities in query
     """
     city_compare = [get_max_city(state_name1, city_name1),
                     get_max_city(state_name2, city_name2),
@@ -447,13 +468,14 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
     return json.dumps(city_compare)
 
 
-@app.route('/range/<temp1>/<temp2>')
-def find_states(temp1, temp2):
+@app.route('/range/state/<low>/<high>/<num_states>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
+def find_states(low, high, num_states=0):
     """
-        returns json dump with information on mean temperature of states that fit user input range
+    returns json dump with information on mean temperature of states that 
+    fit user input range
     """
-    temp1 = float(temp1)
-    temp2 = float(temp2)
+    low = float(low)
+    high = float(high)
     state_mean_temp_list = [{"AL": 66.6}, {"AK": 37.8}, {"AZ": 66.5},
                             {"AR": 62.7}, {"CA": 61.7}, {"CO": 47.5},
                             {"CT": 53.2}, {"DC": 59.7}, {"DE": 57.5},
@@ -474,34 +496,37 @@ def find_states(temp1, temp2):
     temp_range = []
     for state in state_mean_temp_list:
         for key in state:
-            if temp1 <= state[key] <= temp2:
+            if low <= state[key] <= high:
                 temp_range.append({'State': key, 'Mean Temp': state[key]})
 
-    return json.dumps(temp_range)
+    num_states = int(num_states)
+    if num_states == 0:
+        return json.dumps(temp_range)
+    else:
+        return json.dumps(temp_range[:num_states])
 
 
-@app.route('/range/city/<temp1>/<temp2>/<numCities>')
-def find_cities(temp1, temp2, num_cities):
+@app.route('/range/city/<low>/<high>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>'
+def find_cities(low, high, num_cities=5):
     """
-        returns json dump with cities whose mean temperature for 2016 fits 
-        range set by user
+    returns json dump with cities whose mean temperature for 2016 fits 
+    range set by user
     """
-    temp1 = float(temp1)
-    temp2 = float(temp2)
+    low = float(low)
+    high = float(high)
 
     num_cities = int(num_cities)
+    return json.dumps(get_cities(low, high)[:num_cities])
 
-    return json.dumps(get_cities(temp1, temp2)[:num_cities])
 
-
-@app.route('/range/city/days/<temp1>/<temp2>/<numCities>')
-def get_days(temp1, temp2, num_cities):
+@app.route('/range/city/days/<low>/<high>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days'
+def get_days(low, high, num_cities=5):
     """
-        returns json dump with number of days where mean temp meets temp range.
-        List is in descending order and capped at 10 cities
+    returns json dump with number of days where mean temp meets temp range.
+    List is in descending order and capped at 10 cities
     """
     num_cities = int(num_cities)
-    return json.dumps(get_cities_days(temp1, temp2)[:num_cities])
+    return json.dumps(get_cities_days(low, high)[:num_cities])
 
 
 @app.after_request
@@ -511,4 +536,4 @@ def set_headers(response):
 
 
 if __name__ == '__main__':
-    app.run(host='thacker.mathcs.carleton.edu', port=5136, debug=True)
+    app.run(host='thacker.mathcs.carleton.edu', port=5117, debug=True)

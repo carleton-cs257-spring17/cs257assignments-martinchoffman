@@ -17,9 +17,9 @@ app = flask.Flask(__name__, static_folder='Static', template_folder='Templates')
 
 def _fetch_all_rows_for_query(query):
     """
-    Returns a list of rows obtained from the books database
-    by the specified SQL query. If the query fails for any reason,
-    an empty list is returned.
+        Returns a list of rows obtained from the books database
+        by the specified SQL query. If the query fails for any reason,
+        an empty list is returned.
     """
     try:
         connection = psycopg2.connect(database='tordic', user='tordic',
@@ -42,14 +42,14 @@ def _fetch_all_rows_for_query(query):
 
 def get_stations_by_state(state_name):
     """
-    Parameter: state
-    Returns number of stations in a state
+        Parameter: state
+        Returns number of stations in a state
     """
     state_name = state_name.upper()
     query = '''SELECT * FROM stations WHERE stations.state = '{0}' '''.format(
         state_name)
-
-    return len(_fetch_all_rows_for_query(query))
+    stations = _fetch_all_rows_for_query(query)
+    return stations
 
 
 def get_stations_by_city(state_name, city_name):
@@ -61,8 +61,8 @@ def get_stations_by_city(state_name, city_name):
     city_name = city_name.upper()
     query = ("SELECT * FROM stations WHERE stations.name LIKE '%{1}%' "
              "AND stations.state = '{0}'").format(state_name, city_name)
-
-    return len(_fetch_all_rows_for_query(query))
+    stations = _fetch_all_rows_for_query(query)
+    return stations
 
 
 def get_max(state_name):
@@ -125,8 +125,8 @@ def get_mean(state_name):
 
 def get_rainy_days(state_name):
     """
-    Param: state
-    Return: rain index for state in form of dictionary
+        Param: state
+        Return: rain index for state in form of dictionary
     """
     state_name = state_name.upper()
     query = ("SELECT a.rain_drizzle FROM weather a WHERE a.stn_id IN "
@@ -143,15 +143,15 @@ def get_rainy_days(state_name):
         if row[0] != '0':
             rain_list.append(row[0])
 
-    rainy_days = round(len(rain_list) / get_stations_by_state(state_name), 0)
+    rainy_days = round(len(rain_list) / len(get_stations_by_state(state_name)), 0)
     rain_dict = {'State': state_name, 'Rain Index': rainy_days}
     return rain_dict
 
 
 def get_snowy_days(state_name):
     """
-    Param: state
-    Return: snow index for state in form of dictionary
+        Param: state
+        Return: snow index for state in form of dictionary
     """
     state_name = state_name.upper()
     query = ("SELECT a.snow_ice_pellets FROM weather a WHERE a.stn_id IN "
@@ -168,7 +168,7 @@ def get_snowy_days(state_name):
         if row[0] != '0':
             snow_list.append(row[0])
 
-    snowy_days = round(len(snow_list) / get_stations_by_state(state_name), 0)
+    snowy_days = round(len(snow_list) / len(get_stations_by_state(state_name)), 0)
     snow_dict = {'State': state_name, 'Snow Index': snowy_days}
     return snow_dict
 
@@ -253,7 +253,7 @@ def get_rainy_days_city(state_name, city_name):
             rain_list.append(row[0])
 
     rainy_days = round(
-        len(rain_list) / get_stations_by_city(state_name, city_name), 0)
+        len(rain_list) / len(get_stations_by_city(state_name, city_name)), 0)
     rain_city_dict = {'State': state_name,
                       'City': city_name,
                       'Rain Index': rainy_days}
@@ -280,7 +280,7 @@ def get_snowy_days_city(state_name, city_name):
             snow_list.append(row[0])
 
     snowy_days = round(
-        len(snow_list) / get_stations_by_city(state_name, city_name), 0)
+        len(snow_list) / len(get_stations_by_city(state_name, city_name)), 0)
     snow_city_dict = {'State': state_name,
                       'City': city_name,
                       'Snow Index': snowy_days}
@@ -341,8 +341,8 @@ def get_cities_days(temp1, temp2):
             if temp1 <= row[0] <= temp2:
                 mean_list.append(row[0])
 
-        if (len(mean_list) != 0) and (get_stations_by_city(state, city) != 0):
-            days = int(len(mean_list) / get_stations_by_city(state, city))
+        if (len(mean_list) != 0) and (len(get_stations_by_city(state, city)) != 0):
+            days = int(len(mean_list) / len(get_stations_by_city(state, city)))
 
             city_dict = {'State': state, 'City': city, 'Days': days}
             final_city_list.append(city_dict)
@@ -376,14 +376,6 @@ def get_city_info():
     return city_list
 
 
-@app.route('/stations/<state_name>')
-def get_num_stations(state_name):
-    """
-        returns json dump with number of stations in state
-    """
-    return json.dumps(get_stations_by_state(state_name))
-
-
 @app.route('/<state_name>')
 def get_all_state(state_name):
     """
@@ -397,6 +389,14 @@ def get_all_state(state_name):
                  get_snowy_days(state_name)]
 
     return json.dumps(main_list)
+
+
+@app.route('/stations/<state_name>')
+def get_num_stations(state_name):
+    """
+        returns json dump with number of stations in state
+    """
+    return json.dumps(len(get_stations_by_state(state_name)))
 
 
 @app.route('/<state_name>/<city_name>')
@@ -450,7 +450,8 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
 @app.route('/range/<temp1>/<temp2>')
 def find_states(temp1, temp2):
     """
-        returns json dump with information on mean temperature of states that fit user input range
+        returns json dump with information on mean temperature of states that 
+        fit user input range
     """
     temp1 = float(temp1)
     temp2 = float(temp2)

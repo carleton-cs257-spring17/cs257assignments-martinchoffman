@@ -22,8 +22,8 @@ def _fetch_all_rows_for_query(query):
     an empty list is returned.
     """
     try:
-        connection = psycopg2.connect(database='tordic', user='tordic',
-                                      password='fork297moon')
+        connection = psycopg2.connect(database='hoffmanm2', user='hoffmanm2',
+                                      password='snail749sunshine')
     except Exception as e:
         print('Connection error:', e, file=sys.stderr)
         return []

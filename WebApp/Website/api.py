@@ -91,9 +91,16 @@ def get_max_min(state_name, max_min):
     :return: 
     """
     state_name = state_name.upper()
+
+    query_order = ''
+    if max_min == 'max':
+        query_order = 'DESC'
+    elif max_min == 'min':
+        query_order = 'ASC'
+
     query = ("SELECT a.{1} FROM weather a WHERE a.stn_id IN "
              "(SELECT b.stn_id FROM stations b WHERE b.state = '{0}') "
-             "ORDER BY {1} ASC LIMIT 1").format(state_name, max_min)
+             "ORDER BY {1} {2} LIMIT 1").format(state_name, max_min, query_order)
 
     row = _fetch_all_rows_for_query(query)
     if len(row) == 0:

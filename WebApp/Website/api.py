@@ -150,6 +150,7 @@ def get_rainy_snowy_days(state_name, rain_snow):
     """
     state_name = state_name.upper()
 
+    column = ''
     if rain_snow == 'snow':
         column = 'snow_ice_pellets'
     elif rain_snow == 'rain':
@@ -172,7 +173,8 @@ def get_rainy_snowy_days(state_name, rain_snow):
 
     prcp_days = round(
         len(prcp_list) / len(get_stations_by_state(state_name)), 0)
-    prcp_dict = {'State': state_name, rain_snow.capitalize() + ' Index': prcp_days}
+    prcp_dict = {'State': state_name,
+                 rain_snow.capitalize() + ' Index': prcp_days}
     return prcp_dict
 
 
@@ -201,6 +203,7 @@ def get_min_max_city(state_name, city_name, max_min):
     state_name = state_name.upper()
     city_name = city_name.upper()
 
+    query_order = ''
     if max_min == 'max':
         query_order = 'DESC'
     elif max_min == 'min':
@@ -260,9 +263,10 @@ def get_snowy_days_city(state_name, city_name):
     return get_rainy_snowy_days_city(state_name, city_name, 'snow')
 
 
-def get_rainy_snowy_days_city(state_name, city_name, rain_snow): # Combine with state version?
+def get_rainy_snowy_days_city(state_name, city_name, rain_snow):  # Combine with state version?
     """
     Helper function for get_snowy_days and get_rainy_days
+    :param city_name: 
     :param state_name: 
     :param rain_snow: string, 'rain' or 'snow'
     :return: 
@@ -270,6 +274,7 @@ def get_rainy_snowy_days_city(state_name, city_name, rain_snow): # Combine with 
     state_name = state_name.upper()
     city_name = city_name.upper()
 
+    column = ''
     if rain_snow == 'snow':
         column = 'snow_ice_pellets'
     elif rain_snow == 'rain':
@@ -351,7 +356,8 @@ def get_cities_days(temp1, temp2):
             if temp1 <= row[0] <= temp2:
                 mean_list.append(row[0])
 
-        if (len(mean_list) != 0) and (len(get_stations_by_city(state, city)) != 0):
+        if (len(mean_list) != 0) and (
+            len(get_stations_by_city(state, city)) != 0):
             days = int(len(mean_list) / len(get_stations_by_city(state, city)))
             city_dict = {'State': state, 'City': city, 'Days': days}
             final_city_list.append(city_dict)
@@ -423,7 +429,7 @@ def get_num_stations(state_name):
 
 
 @app.route('/compare/state/?$state_name1=<state_name1>'
-                           '$state_name2=<state_name2>')  # Changed from '/compare/<state_name1>/<state_name2>'
+           '$state_name2=<state_name2>')  # Changed from '/compare/<state_name1>/<state_name2>'
 def compare_states(state_name1, state_name2):
     """
     returns json dump with information for both states in query
@@ -438,7 +444,7 @@ def compare_states(state_name1, state_name2):
 
 
 @app.route('/compare/city/?$state_name1=<state_name1>$city_name1=<city_name1>'
-                          '$state_name2=<state_name2>$city_name2=<city_name2>')  # Changed from '/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>'
+           '$state_name2=<state_name2>$city_name2=<city_name2>')  # Changed from '/compare/<state_name1>/<city_name1>/<state_name2>/<city_name2>'
 def compare_cities(state_name1, city_name1, state_name2, city_name2):
     """
     returns json dump with information for both cities in query

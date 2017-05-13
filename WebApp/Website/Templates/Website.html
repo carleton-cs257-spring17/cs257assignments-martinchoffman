@@ -5,6 +5,7 @@
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='books.css') }}" />
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='websiteStyles.css') }}" />
 		<script type="text/javascript" src="../Static/Website.js"></script>
 		<link rel="icon" type="image/jpg" href="{{ url_for('static', filename='jeff_square_head.jpg') }}">
 	</head>
@@ -28,19 +29,19 @@
 			<div class="container">
   				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
  			    <div class="middle">
-    				<button class="text" onclick="onCityNav()"> Click </button>
+    				<button class="text" onclick="onCityNav()"> City </button>
   				</div>
 			</div>
 			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" onclick="onCompareNav()" class="image" style="width:100%">
+  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
  			    <div class="middle">
-    				<button class="text"> Click </button>
+    				<button class="text" onclick="onCompareNav()"> Compare </button>
   				</div>
 			</div>
 			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" onclick="onFindCityNav()" class="image" style="width:100%">
+  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
  			    <div class="middle">
-    				<button class="text"> Click </button>
+    				<button class="text" onclick="onFindCityNav()"> Find </button>
   				</div>
 			</div>
 

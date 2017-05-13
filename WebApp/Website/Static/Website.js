@@ -165,30 +165,31 @@ function getStateCityCallback(responseText) {
 function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
-	if (min >= max) {
+	var check = max - min;
+	alert(max-min);
+
+	if (check < 1) {
 		alert("Please make sure max is at least 1 degree higher than min");
 		return;
 	}
 
 	var num_results = document.getElementById("num_results").value;
+	if (num_results < 1) {
+		num_results = 5;
+	}
 
 	var url = api_base_url;
 
 	if (document.getElementById("cities").checked == true) {
-		if (num_results < 1) {
-			num_results = 5;
-		}
+
 		
 		url +=  'range/city/' + min + '/' + max + '/' + num_results;
 
 		if (document.getElementById("days").checked == true) {
-			if (num_results < 1) {
-				num_results = 5;
-		}
 			url = api_base_url + 'range/city/days/' + min + '/' + max + '/' + num_results;
 		}
 	} else {
-		url += 'range/' + min + '/' + max;
+		url += 'range/state/' + min + '/' + max + '/' + num_results;
 
 	}
 

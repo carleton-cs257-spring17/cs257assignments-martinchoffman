@@ -253,7 +253,30 @@ function onHomeNav() {
 
 	var page = document.getElementById('page');
 	page.innerHTML = '<h1>Weather Weather Weather</h1>\n' +
-					 '<img src="Static/jeff_square_head.jpg">';
+					 '<div class="container">\n' +
+  							'<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">\n' +
+ 			    			'<div class="middle">\n' +
+    							'<button class="text" onclick="onStateNav()"> State </button>\n' +
+  							'</div>\n' +
+					  '</div>\n' +
+					  '<div class="container">\n' +
+  							'<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">\n' +
+ 			    			'<div class="middle">\n' +
+    							'<button class="text" onclick="onCityNav()"> City </button>\n' +
+  							'</div>\n' +
+					  '</div>\n' +
+					  '<div class="container">\n' +
+  							'<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">\n' +
+ 			    			'<div class="middle">\n' +
+    							'<button class="text" onclick="onCompareNav()"> Compare </button>\n' +
+  					  		'</div>\n' +
+					  '</div>\n' +
+					  '<div class="container">\n' +
+  							'<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">\n' +
+ 			    			'<div class="middle">\n' +
+    							'<button class="text" onclick="onFindCityNav()"> Find </button>\n' +
+  							'</div>\n' +
+			   		  '</div>\n';
 }
 
 function onStateNav() {

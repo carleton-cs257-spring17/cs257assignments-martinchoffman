@@ -468,7 +468,7 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
     return json.dumps(city_compare)
 
 
-@app.route('/range/<low>/<high>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
+@app.route('/range/state/<low>/<high>/<num_states>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
 def find_states(low, high, num_states=0):
     """
     returns json dump with information on mean temperature of states that 
@@ -520,7 +520,7 @@ def find_cities(low, high, num_cities=5):
 
 
 @app.route('/range/city/days/<low>/<high>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days'
-def get_days(low, high, num_cities):
+def get_days(low, high, num_cities=5):
     """
     returns json dump with number of days where mean temp meets temp range.
     List is in descending order and capped at 10 cities

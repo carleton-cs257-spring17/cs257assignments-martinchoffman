@@ -506,7 +506,7 @@ def find_states(low, high, num_states=0):
         return json.dumps(temp_range[:num_states])
 
 
-@app.route('/range/city/<temp1>/<temp2>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>'
+@app.route('/range/city/<low>/<high>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>'
 def find_cities(low, high, num_cities=5):
     """
     returns json dump with cities whose mean temperature for 2016 fits 

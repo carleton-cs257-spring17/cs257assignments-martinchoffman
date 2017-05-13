@@ -217,7 +217,7 @@ def get_min_max_city(state_name, city_name, max_min):
         query_order = 'ASC'
 
     query = ("SELECT a.{2} FROM weather a WHERE a.stn_id IN "
-             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%(1}%' "
+             "(SELECT b.stn_id FROM stations b WHERE b.name LIKE '%{1}%' "
              "AND b.state = '{0}') ORDER BY {2} {3} LIMIT 1").format(state_name,
                                                                      city_name,
                                                                      max_min,
@@ -468,7 +468,7 @@ def compare_cities(state_name1, city_name1, state_name2, city_name2):
     return json.dumps(city_compare)
 
 
-@app.route('/range/<temp1>/<temp2>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
+@app.route('/range/<low>/<high>')  # CHANGED from '/range/state/?$low=<low>$high=<high>&limit=<num_states>'
 def find_states(low, high, num_states=0):
     """
     returns json dump with information on mean temperature of states that 
@@ -519,14 +519,14 @@ def find_cities(low, high, num_cities=5):
     return json.dumps(get_cities(low, high)[:num_cities])
 
 
-@app.route('/range/city/days/<temp1>/<temp2>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days'
-def get_days(temp1, temp2, num_cities):
+@app.route('/range/city/days/<low>/<high>/<num_cities>')  # Changed from '/range/city/?$low=<low>$high=<high>&limit=<num_cities>&type=days'
+def get_days(low, high, num_cities):
     """
     returns json dump with number of days where mean temp meets temp range.
     List is in descending order and capped at 10 cities
     """
     num_cities = int(num_cities)
-    return json.dumps(get_cities_days(temp1, temp2)[:num_cities])
+    return json.dumps(get_cities_days(low, high)[:num_cities])
 
 
 @app.after_request

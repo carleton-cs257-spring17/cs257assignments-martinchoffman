@@ -18,10 +18,9 @@ th, td {
     padding: 15px;
 }
 
-#table-scroll {
-  height:350px;
-  overflow:auto;  
-  margin-top:20px;
+#results_table {
+    height:300px;  
+    overflow: auto;
 }
 
 /*Our Shit*/

@@ -402,6 +402,7 @@ function onFindCityNav() {
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+
 						'   <li><a class="active" id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
 
@@ -436,6 +437,7 @@ function onAboutNav() {
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a class ="active" id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');

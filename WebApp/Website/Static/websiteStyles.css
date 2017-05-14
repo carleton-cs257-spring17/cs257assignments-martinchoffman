@@ -11,8 +11,8 @@
 .image {
   opacity: 1;
   display: block;
-  width: 100%;
-  height: auto;
+  width: 20%;
+  height: 215px;
   transition: .5s ease;
   backface-visibility: hidden;
 }
@@ -40,4 +40,14 @@
   color: white;
   font-size: 16px;
   padding: 16px 32px;
+}
+
+.title {
+  text-align: center;
+}
+
+.aboutSubTitle {
+  text-align: left;
+  margin-left: .75cm;
+
 }

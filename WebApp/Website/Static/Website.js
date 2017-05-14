@@ -166,7 +166,6 @@ function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
 	var check = max - min;
-	alert(max-min);
 
 	if (check < 1) {
 		alert("Please make sure max is at least 1 degree higher than min");
@@ -229,9 +228,7 @@ function getCityCallback(responseText) {
 		tableBody += '<td>' + dict['State'] + '</td>'
 		if (dict['City'] != null) {
 			var city = dict['City'];
-			tableBody += '<td>'+ '<button' + ' onclick="initialize();codeAddress(\'' + dict['City'] + ',' + dict['State'] + '\')">' + dict['City'] + '</button>' + '</td>'
-			console.log('<td>'+ '<button' + ' onclick="initialize();codeAddress(' + dict['City'] + ')">' + dict['City'] + '</button>' + '</td>');
-			//buttonChanger(city, count);
+			tableBody += '<td>'+ '<button' + ' onclick="initialize();codeAddress(\'' + dict['City'] + ',' + dict['State'] + '\')">' + dict['City'] + '</button>' + '</td>';
 
 			if (dict['Days'] != null) {
 				tableBody += '<td>' + dict['Days'] + '</td>';
@@ -245,21 +242,10 @@ function getCityCallback(responseText) {
 		count ++;
 	}
 
-
-
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
 
 }	
-
-/*function buttonChanger(city, count) {
-	 document.getElementsByTagName("BUTTON")[0].setAttribute("id", city);
-	 document.getElementById(city).setAttribute("value", city);
-	 alert(document.getElementById(city).value)
-	 document.getElementById(city).setAttribute("onclick", printer(this.id));
-}*/
-
-
 
 
 function onHomeNav() {
@@ -276,25 +262,25 @@ function onHomeNav() {
 					 '<div class="container">\n' +
   							'<img src="Static/happyhome.jpg" class="image" style="width:100%">\n' +
  			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onFindCityNav()"> State </button>\n' +
+    							'<button class="text" onclick="onFindCityNav()"> Find </button>\n' +
   							'</div>\n' +
 					  '</div>\n' +
 					  '<div class="container">\n' +
   							'<img src="Static/compare.png" class="image" style="width:100%">\n' +
  			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onCompareNav()"> Find </button>\n' +
+    							'<button class="text" onclick="onCompareNav()"> Compare </button>\n' +
   							'</div>\n' +
 					  '</div>\n' +
 					  '<div class="container">\n' +
   							'<img src="Static/city.jpg" class="image" style="width:100%">\n' +
  			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onCityNav()"> Compare </button>\n' +
+    							'<button class="text" onclick="onCityNav()"> City </button>\n' +
   					  		'</div>\n' +
 					  '</div>\n' +
 					  '<div class="container">\n' +
   							'<img src="Static/state.png" class="image" style="width:100%">\n' +
  			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onStateNav()"> Find </button>\n' +
+    							'<button class="text" onclick="onStateNav()"> State </button>\n' +
   							'</div>\n' +
 			   		  '</div>\n';
 }
@@ -441,12 +427,35 @@ function onAboutNav() {
 						'	<li style="float: right"><a class ="active" id="about" onclick="onAboutNav()">About</a></li>\n';
 
 	var page = document.getElementById('page');
-	page.innerHTML = '<h1>Info about collection,features, etc\n' +
-					 '<button id="authors_button" onclick="jeffe()">Get Picture</button>\n' + 
-					 '<div id="assignment_content">\n' +
-					 '	<p><table id="results_table"> </table></p>\n' +
-					 '</div>';
-}
+	page.innerHTML =    '<div class="title">\n' + 
+							'<h1>Features</h1>\n' +
+						'</div>\n' + 
+							'<div class="aboutSubTitle">\n' +
+							'<h3> State </h3>\n' +
+							'<p> This search requires a state abbreviation. It returns the maximum, minimum temperature recorded for the year of 2016 in the state searched. Mean Temp is the average temperature state wide for 2016. Rain and Snow Index are numbers that describe how the amount of rain and snow in a state. A higher index means more rain or snow. </p>\n'+
+							'</div>\n' + 
+							'<div class="aboutSubTitle">\n' +
+							'<h3> City </h3>\n' +
+							'<p> This search requires a state abbreviation and the full name of city. It returns the maximum, minimum temperature recorded for the year of 2016 in the city searched. Mean Temp is the average temperature of that city in  2016. Rain and Snow Index are numbers that describe how the amount of rain and snow in a city. A higher index means more rain or snow. </p>\n'+
+							'</div>\n' + 
+							'<div class="aboutSubTitle">\n' +
+							'<h3> Compare </h3>\n' +
+							'<p> This search has two options. Option 1: If you enter two state abbreviations and leave the city search blank it will compare the two searched states. It returns the maximum, minimum, and mean temperature as well as a rain and snow index for each state, allowing for a easy comparison of two states. Option 2: If the city search bars are both not empty, it will return a comparison of the two cities entered. </p>\n'+
+
+							'</div>\n' + 
+							'<div class="aboutSubTitle">\n' +
+							'<h3> Find </h3>\n' +
+							'</div>\n' + 
+
+						'<div class="title">\n' + 
+							'<h1>Data</h1>\n' +
+						'</div>\n' + 
+						'<p> </p>\n';
+
+
+						
+					}
+
 
 function jeffe() {
 	var resultsTableElement = document.getElementById('results_table');

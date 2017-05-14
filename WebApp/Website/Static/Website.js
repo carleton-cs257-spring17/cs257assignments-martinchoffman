@@ -445,12 +445,17 @@ function onAboutNav() {
 							'</div>\n' + 
 							'<div class="aboutSubTitle">\n' +
 							'<h3> Find </h3>\n' +
+							'<p> Option 1: State Finder: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The State button, then click the find button. This will return the states whose mean temperature for the year of 2016 is within the temperature range entered. </p>\n' +
+							'<p> Option 2: City Finder: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The City button, then click the find button. This will return the cities whose mean temperature for the year of 2016 is within the temperature range entered. </p>\n' +
+							'<p> Option 3: City Finder with Days selected: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The City button and select the days option, then click the find button. The returned table will be ordered by days. Each day represents a day where the mean temperature for that day was within the searched temperature range.</p>\n' +
 							'</div>\n' + 
 
 						'<div class="title">\n' + 
 							'<h1>Data</h1>\n' +
-						'</div>\n' + 
-						'<p> </p>\n';
+							'<div class="aboutSubTitle">\n' +
+							'<p> The data that this website is based on comes from NOAA. It represents data selected by NOAAs 7000+ weather stations around the U.S for the year 2016. </p>\n' +
+							'</div>\n' +
+						'</div>\n';					
 
 
 						

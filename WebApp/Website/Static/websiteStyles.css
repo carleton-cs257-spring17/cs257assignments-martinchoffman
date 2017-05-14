@@ -11,7 +11,7 @@
 .image {
   opacity: 1;
   display: block;
-  width: 20%;
+  width: 98%;
   height: 215px;
   transition: .5s ease;
   backface-visibility: hidden;

@@ -7,7 +7,10 @@
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='books.css') }}" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='websiteStyles.css') }}" />
 		<script type="text/javascript" src="../Static/Website.js"></script>
-		<link rel="icon" type="image/jpg" href="{{ url_for('static', filename='jeff_square_head.jpg') }}">
+		<link type="image/png" href="{{ url_for('static', filename='compare.png') }}">
+		<link type="image/png" href="{{ url_for('static', filename='state.png') }}">
+		<link type="image/jpg" href="{{ url_for('static', filename='city.jpg') }}">
+		<link type="image/jpg" href="{{ url_for('static', filename='happyhome.jpg') }}">
 	</head>
 	<body>
 		<ul id="nav_bar">
@@ -21,27 +24,27 @@
 		<div id="page">
 			<h1>Weather Weather Weather</h1>
 			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
+  				<img src="Static/happyhome.jpg" class="image" style="width:100%">
  			    <div class="middle">
-    				<button class="text" onclick="onStateNav()"> State </button>
+    				<button class="text" onclick="onFindCityNav()"> Find </button>
   				</div>
 			</div>
 			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
- 			    <div class="middle">
-    				<button class="text" onclick="onCityNav()"> City </button>
-  				</div>
-			</div>
-			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
+  				<img src="Static/compare.png" class="image" style="width:100%">
  			    <div class="middle">
     				<button class="text" onclick="onCompareNav()"> Compare </button>
   				</div>
 			</div>
 			<div class="container">
-  				<img src="Static/jeff_square_head.jpg" class="image" style="width:100%">
+  				<img src="Static/city.jpg" class="image" style="width:100%">
  			    <div class="middle">
-    				<button class="text" onclick="onFindCityNav()"> Find </button>
+    				<button class="text" onclick="onCityNav()"> City </button>
+  				</div>
+			</div>
+			<div class="container">
+  				<img src="Static/state.png" class="image" style="width:100%">
+ 			    <div class="middle">
+    				<button class="text" onclick="onStateNav()"> State </button>
   				</div>
 			</div>
 

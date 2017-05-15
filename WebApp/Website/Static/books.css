@@ -19,7 +19,12 @@ th, td {
 }
 
 #results_table {
-    height:300px;  
+    height:150px;  
+    overflow: auto;
+}
+
+#found_results_table {
+    height: 300px;
     overflow: auto;
 }
 

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Weather</title>
+		<title>Weather3x</title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 		
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='books.css') }}" />
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='websiteStyles.css') }}" />
 		<link rel="icon" type="image/jpg" href="{{ url_for('static', filename='jeff_square_head.jpg') }}">
 		<link type="image/png" href="{{ url_for('static', filename='compare.png') }}">
@@ -16,21 +15,7 @@
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>
 		<script type="text/javascript" src="../Static/Website.js"></script>
 
-		<style>
-		.buttonload {
-		    background-color: #4CAF50; /* Green background */
-		    border: none; /* Remove borders */
-		    color: white; /* White text */
-		    padding: 12px 24px; /* Some padding */
-		    font-size: 16px; /* Set a font-size */
-		}
 
-		/* Add a right margin to each icon */
-		.fa {
-		    margin-left: -12px;
-		    margin-right: 8px;
-		}
-		</style>
 	</head>
 	<body>
 		<ul id="nav_bar">
@@ -42,30 +27,38 @@
 		  <li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>
 		</ul>
 		<div id="page">
-			<h1>Weather Weather Weather</h1>
+			<h1 class="title">Weather3x</h1>
 			<div class="container">
+				<h2 class="title"> Find </h3>
   				<img src="Static/happyhome.jpg" class="image">
  			    <div class="middle">
     				<button class="text" onclick="onFindCityNav()"> Find </button>
   				</div>
+  				<p style="text-align: center;"> Discover the perfect place to call home. </p>
 			</div>
 			<div class="container">
+				<h2 class="title"> Compare </h3>
   				<img src="Static/compare.png" class="image">
  			    <div class="middle">
     				<button class="text" onclick="onCompareNav()"> Compare </button>
   				</div>
+  				<p style="text-align: center;"> Compare weather data between states and cities. </p>
 			</div>
 			<div class="container">
+				<h2 class="title"> Search a City</h3>
   				<img src="Static/city.jpg" class="image">
  			    <div class="middle">
     				<button class="text" onclick="onCityNav()"> City </button>
   				</div>
+  				<p style="text-align: center;"> Find weather data on the city of your choosing. </p>
 			</div>
 			<div class="container">
+				<h2 class="title"> Search a State </h3>
   				<img src="Static/state.png" class="image">
  			    <div class="middle">
     				<button class="text" onclick="onStateNav()"> State </button>
   				</div>
+  				<p style="text-align: center;"> Find weather data on the state of your choosing. </p>
 			</div>
 
 			

@@ -1,11 +1,122 @@
 
+@import url('http://fonts.googleapis.com/css?family=Georgia|Cabin|Playfair Display');
 
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+footer {
+  margin: 0;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  width: 100%;
+}
+
+li {
+  margin: 0ex, 0ex, 0ex, 0ex;
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+
+body {
+  background-color: #FAFAFA;
+  color: #230000;
+  line-height: 135%;
+  font-family: 'Cabin', serif;
+  font-size: 90%;
+  margin: 0;
+}
+
+h1 {
+  font-family: Cabin, serif;
+  font-weight: normal;
+  margin: 0px;
+  padding: 0px;
+  font-size: 160%;
+  line-height: 1em;
+}
+
+h2 {
+  font-family: 'Cabin', serif;
+  font-weight: normal;
+  margin: 0px;
+  padding: 5px 0px 0px 0px;
+  font-size: 140%;
+  line-height: 1em;
+}
+
+h3 {
+  font-family: 'Cabin', serif;
+  font-weight: bold;
+  margin: 0px;
+  padding: 15px 0px 0px 0px;
+  font-size: 120%;
+  line-height: 1em;
+}
+#results_table {
+    height:150px;  
+    overflow: auto;
+}
+
+#found_results_table {
+    height: 300px;
+    overflow: auto;
+}
+
+
+.active {
+    background-color: #4CAF50;
+}
+
+
+#page {
+  margin-top: 60px;
+}
+
+
+
+#assignment_content {
+  width: 40%;
+  margin: 0px;
+  padding: 0em 0em 2em 0em;
+}
 /*hover images */
 
 .container {
     position: relative;
     width: 25%;
     float: right;
+    margin-top: 3cm;
 }
 
 .image {
@@ -40,6 +151,20 @@
   color: white;
   font-size: 16px;
   padding: 16px 32px;
+}
+
+.buttonload {
+  background-color: #4CAF50; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 24px; /* Some padding */
+  font-size: 16px; /* Set a font-size */
+}
+
+    /* Add a right margin to each icon */
+.fa {
+  margin-left: -12px;
+  margin-right: 8px;
 }
 
 .title {

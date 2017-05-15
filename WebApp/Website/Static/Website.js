@@ -165,7 +165,10 @@ function getStateCityCallback(responseText) {
 function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
+	var button = document.getElementById("authors_button");
 	var check = max - min;
+
+	button.innerHTML = '<i class="fa fa-refresh fa-spin"></i> Find';
 
 	if (check < 1) {
 		alert("Please make sure max is at least 1 degree higher than min");
@@ -189,7 +192,6 @@ function onFindButton() {
 		}
 	} else {
 		url += 'range/state/' + min + '/' + max + '/' + num_results;
-
 	}
 
 	xmlHttpRequest = new XMLHttpRequest();
@@ -245,6 +247,8 @@ function getCityCallback(responseText) {
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
 
+	var button = document.getElementById("authors_button");
+	button.innerHTML = 'Find';
 }	
 
 
@@ -407,8 +411,8 @@ function onFindCityNav() {
 
 					 '<button style="width: 10%" id="authors_button" onclick="onFindButton()">Find</button>\n' + 
 					 '</div>\n' +
-					 '<style> #map {width: 60%;height: 400px;float: right;}</style>\n' + 
-					 '<div id="assignment_content" style="width=30%; float:left">\n' +
+					 '<style> #map {width: 60%;height: 400px;float: right; z-index: -1}</style>\n' + 
+					 '<div id="assignment_content" style="height: 75vh; width: 30%; float: left; overflow: auto">\n' +
 					 '	<p><table id="results_table"> </table></p>\n' + 
 					 '</div>\n' +
 					 '<div id="map" ></div>';

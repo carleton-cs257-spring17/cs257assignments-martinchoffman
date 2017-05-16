@@ -228,7 +228,9 @@ function getStateCityCallback(responseText) {
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
 }
-
+/* Takes values from search bars and buttons on find search page, forms correct api query
+ * Calls getCityCallback and passes JSON response to query
+ */
 function onFindButton() {
 	var min = document.getElementById("min_temp").value;
 	var max = document.getElementById("max_temp").value;
@@ -277,6 +279,11 @@ function onFindButton() {
 	xmlHttpRequest.send(null);
 }
 
+/* Param: JSON query response to onFindButton
+ * uses query response to create html table of results from query
+ * Displays table on city or state page depending on what function calls it
+ * Table displays mean temperature or days depending on query
+*/
 function getCityCallback(responseText) {
 	var finderList = JSON.parse(responseText);
 	var tableBody = '';
@@ -322,7 +329,9 @@ function getCityCallback(responseText) {
 	button.innerHTML = 'Find';
 }
 
-
+/* Disables days button if state button is selected on find search page
+* Restricts user from selecting both city and state button
+*/
 function setDaysCheck() {
 	var citiesRadio = document.getElementById("cities");
 	if(citiesRadio.checked) {
@@ -336,6 +345,8 @@ function setDaysCheck() {
 
 var geocoder;
 var map;
+/* Initializes google map
+*/
 function initialize() {
 	geocoder = new google.maps.Geocoder();
 	var latlng = new google.maps.LatLng(100, 40);
@@ -345,7 +356,9 @@ function initialize() {
 	}
 	map = new google.maps.Map(document.getElementById('map'), mapOptions);
 }
-
+/* Param: city and state from finder query
+ * creates longitude and latitude coordinates and plots marker at city location on google maps
+*/
 function codeAddress(city) {
 	var address = city;
 	geocoder.geocode( { 'address': address}, function(results, status) {
@@ -363,77 +376,36 @@ function codeAddress(city) {
 
 
 function onHomeNav() {
-	onChrisRupturedAnus('home');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()" href="http://localhost:8080/state">State</a></li>\n' +
-						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
+	onNav('home');
 }
 
 function onStateNav() {
-	onChrisRupturedAnus('state');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a class="active" id="state" onclick="onStateNav()">State</a></li>\n' +
-						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
+	onNav('state');
 }
 
 function onCityNav() {
-	onChrisRupturedAnus('city');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
-						'	<li><a class="active" id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n'; */
+	onNav('city');
 }
 
 function onCompareNav() {
-	onChrisRupturedAnus('compare');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
-						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a class="active" id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
+	onNav('compare');
 }
 
-
-
 function onFindCityNav() {
-	onChrisRupturedAnus('find');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
-						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a class="active" id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
+	onNav('find_city');
 
 	 var head = document.head;
 	 head.innerHTML += '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>\n'
 }
 
 function onAboutNav() {
-	onChrisRupturedAnus('about');
-	/*var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
-						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
-						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a class="active" id="about" onclick="onAboutNav()">About</a></li>\n';*/				
+	onNav('about');				
 }
 
-function onChrisRupturedAnus(id) {
+/* Param: the id of the nav bar button to "activate"
+ * Changes the activation status of the nav bar buttons as necessary
+*/
+function onNav(id) {
 	var home, state, city, compare, find_city, about;
 	switch (id) {
 	    case 'home':
@@ -464,10 +436,4 @@ function onChrisRupturedAnus(id) {
 			  '<li><a {3} id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 			  '<li><a {4} id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 			  '<li style="float: right"><a {5} id="about" onclick="onAboutNav()">About</a></li>\n'.format(home, state, city, compare, find_city, about);
-}
-
-function jeffe() {
-	var resultsTableElement = document.getElementById('results_table');
-	resultsTableElement.innerHTML = '<img src="Static/jeff_square_head.jpg">\n' +
-									'<img style="float: right" src="Static/jeff_square_head.jpg">'; 
 }

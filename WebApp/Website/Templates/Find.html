@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Weather3x</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='websiteStyles.css') }}" />
+		<link rel="icon" type="image/jpg" href="{{ url_for('static', filename='jeff_square_head.jpg') }}">
+		<link type="image/png" href="{{ url_for('static', filename='compare.png') }}">
+		<link type="image/png" href="{{ url_for('static', filename='state.png') }}">
+		<link type="image/jpg" href="{{ url_for('static', filename='city.jpg') }}">
+		<link type="image/jpg" href="{{ url_for('static', filename='happyhome.jpg') }}">
+		
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>
+		<script type="text/javascript" src="../Static/Website.js"></script>
+	</head>
+	<body>
+		<ul id="nav_bar">
+		  <li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>
+		  <li><a id="state" onclick="onStateNav()" href="http://localhost:8080/state">State</a></li>
+		  <li><a id="city" onclick="onCityNav()" href="http://localhost:8080/city">City</a></li>
+		  <li><a id="compare" onclick="onCompareNav()" href="http://localhost:8080/compare">Compare</a></li>
+		  <li><a class="active" id="find_city" onclick="onFindCityNav()" href="http://localhost:8080/find">Find City</a></li>
+		  <li style="float: right"><a id="about" onclick="onAboutNav()" href="http://localhost:8080/about">About</a></li>
+		</ul>
+		<div id="page">
+			<h1>Find a Happy Home</h1>
+			<div>
+			<form>
+				<input id = "min_temp" style="width: 5em" type="search" name="min_temp" placeholder="Low (F)...">
+				<input id = "max_temp" style="width: 5em" type="search" name="max_temp" placeholder="High (F)...">
+				<input id = "num_results" style="width: 5em" type="search" name="num_results" placeholder="Results..."><br>
+				<input id = "cities" onchange="setDaysCheck()" type="radio" name="query" value="stuff" checked> Cities
+				<input id = "states" onchange="setDaysCheck()" type="radio" name="query" value="stuff2"> States<br>
+				<input id = "days" type="checkbox" name="days" value="stuff"> Days
+			</form> 
+			<button style="width: 10%" id="find_button" onclick="onFindButton()">Find</button> 
+			</div>
+			<style> #map {width: 60%;height: 400px;float: right; z-index: -1}</style> 
+			<div id="assignment_content" style="height: 75vh; width: 30%; float: left; overflow: auto">
+				<p><table id="found_results_table"> </table></p> 
+			</div>
+			<div id="map" ></div>
+		</div>
+	</body>
+</html>

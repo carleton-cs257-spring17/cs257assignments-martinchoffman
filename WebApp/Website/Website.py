@@ -21,6 +21,32 @@ def get_main_page():
     ''' This is the only route intended for human users '''
     return flask.render_template('Website.html')
 
+@app.route('/state/')
+def get_state_page():
+
+    return flask.render_template('State.html')
+
+@app.route('/city/')
+def get_city_page():
+
+    return flask.render_template('City.html')
+
+@app.route('/compare/')
+def get_compare_page():
+
+    return flask.render_template('Compare.html')
+
+@app.route('/find/')
+def get_find_page():
+
+    return flask.render_template('Find.html')
+
+@app.route('/about/')
+def get_about_page():
+
+    return flask.render_template('About.html')
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 3:
         print('Usage: {0} host port'.format(sys.argv[0]), file=sys.stderr)

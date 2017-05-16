@@ -2,12 +2,14 @@
  *  Website.js
  *  Martin Hoffman and Chris Tordi, 8 May 2016
  *
- *  A little bit of Javascript
+ *  Javascript program with AJAX that runs front-end functions
  */
 
 var api_base_url = 'http://thacker.mathcs.carleton.edu:5136/';
 
-
+/* Takes values from search bars in city search page, forms correct api query
+ * Calls getStateCityCallback and passes JSON response to query
+ */
 function onGetCityButton() {
 	var state = document.getElementById("stateS").value;
 	var city  = document.getElementById("cityS").value;
@@ -16,6 +18,17 @@ function onGetCityButton() {
 		alert("Please use state abbreviations");
 		return;
 	}
+
+	if (city.length == 0 || state.length == 0) {
+		alert("Please do not leave any forms empty");
+		return;
+	}
+
+	if (city.length < 4) {
+		alert("The city'" + city + "' was not found");
+		return;
+	}
+
 	var url = api_base_url + state + '/' + city;
 
 	xmlHttpRequest = new XMLHttpRequest();
@@ -23,18 +36,30 @@ function onGetCityButton() {
 
 	xmlHttpRequest.onreadystatechange = function() {
 		if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
-			getStateCityCallback(xmlHttpRequest.responseText);
+			var responseText = JSON.parse(xmlHttpRequest.responseText);
+			if (responseText == ',,,,') {
+				alert("The city '" + city + "' was not found.");
+				return;
+			}
+			getStateCityCallback(responseText);
 		} 
 	};
 
 	xmlHttpRequest.send(null);
 }
 
+/* Takes values from search bars in state search page, forms correct api query
+ * Calls getStateCityCallback and passes JSON response to query
+ */
 function onGetStateButton() {
-
 	var state = document.getElementById("stateSearch").value;
-	if (state.length > 2) {
+	if (state.length != 2) {
 		alert("Please use state abbreviations");
+		return;
+	}
+
+	if (state.length == 0) {
+		alert("Please do not leave any forms empty");
 		return;
 	}
 	var url = api_base_url + state;
@@ -43,20 +68,28 @@ function onGetStateButton() {
 
 	xmlHttpRequest.onreadystatechange = function() {
 		if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
-			getStateCityCallback(xmlHttpRequest.responseText);
+			var responseText = JSON.parse(xmlHttpRequest.responseText);
+			if (responseText == ',,,,') {
+				alert("The state '" + state + "' was not found.");
+				return;
+			}
+			getStateCityCallback(responseText);
 		} 
 	};
 
 	xmlHttpRequest.send(null);
 }
 
+/* Takes values from search bars in comparison search page, forms correct api query
+ * Calls getCompareCallback and passes JSON response to query
+ */
 function onGetCompareButton() {
 	var state1 = document.getElementById("stateC1").value;
 	var city1  = document.getElementById("cityC1").value;
 	var state2 = document.getElementById("stateC2").value;
 	var city2  = document.getElementById("cityC2").value;
 
-	if(state1.length > 2 || state2.length > 2) {
+	if(state1.length != 2 || state2.length != 2) {
 		alert("Please use state abbreviations");
 		return;
 	}
@@ -72,13 +105,43 @@ function onGetCompareButton() {
 
 	xmlHttpRequest.onreadystatechange = function() {
 		if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
+			var responseText = JSON.parse(xmlHttpRequest.responseText);
+	
+			if (responseText == ",,,,,,,,,") {
+				alert("The cities '" + city1 + "', '" + city2 + "' were not found.");
+				return;
+			}
+
+			if (responseText[3] == null) {
+				alert("The city '" + city2 + "' was not found.");
+				return;
+			}
+
+			if (responseText[2] == null) {
+				alert("The city '" + city1 + "' was not found.");
+				return;
+			}
+
+			if (responseText[1] == null) {
+				alert("The state '" + state2 + "' was not found.");
+				return;
+			}
+
+			if (responseText[0] == null) {
+				alert("The state '" + state1 + "' was not found.");
+				return;
+			}
+
 			getCompareCallback(xmlHttpRequest.responseText);
 		} 
 	};
 
 	xmlHttpRequest.send(null);
 }
-
+/* Param: JSON response to query from getcCompareButton
+ * Creates html comparison table with response text
+ * Displays table on compare page
+*/
 function getCompareCallback(responseText) {
 	var compareList = JSON.parse(responseText);
 	var tableBody = '';
@@ -125,13 +188,13 @@ function getCompareCallback(responseText) {
 	var resultsTableElement = document.getElementById('results_table');
 	resultsTableElement.innerHTML = tableBody;
 }
-
+/* Param: JSON query response to getCitybutton  and getStatebutton
+ * uses query response to create html table of results from query
+ * Displays table on city or state page depending on what function calls it
+*/
 function getStateCityCallback(responseText) {
-	var statesList = JSON.parse(responseText);
-	alert("This is return: " + statesList);
-	if (statesList == null) {
-		alert("hello");
-	}
+	var statesList = responseText;
+
 	var tableBody = '';
 	tableBody += '<tr>';
 	tableBody += '<td>' + 'State' + '</td>';
@@ -176,6 +239,7 @@ function onFindButton() {
 
 	if (check < 1) {
 		alert("Please make sure max is at least 1 degree higher than min");
+		button.innerHTML = 'Find';
 		return;
 	}
 
@@ -297,143 +361,54 @@ function codeAddress(city) {
 
 function onHomeNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()">Home</a></li>\n' +
-						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
+						'	<li><a id="state" onclick="onStateNav()" href="http://localhost:8080/state">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
-
-	var page = document.getElementById('page');
-	page.innerHTML = '<h1 class="title">Weather3x</h1>\n' +
-					 '<div class="container">\n' +
-					 		'<h2 class="title"> Find</h2>\n' +
-  							'<img src="Static/happyhome.jpg" class="image" style="width:100%">\n' +
- 			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onFindCityNav()"> Find </button>\n' +
-  							'</div>\n' +
-  							'<p style="text-align: center;"> Discover the perfect place to call home. </p>\n' +
-					  '</div>\n' +
-					  '<div class="container">\n' +
-					  		'<h2 class="title"> Compare</h2>\n' +
-  							'<img src="Static/compare.png" class="image" style="width:100%">\n' +
- 			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onCompareNav()"> Compare </button>\n' +
-  							'</div>\n' +
-  							'<p style="text-align: center;"> Compare weather data between states and cities. </p>\n' +
-					  '</div>\n' +
-					  '<div class="container">\n' +
-					  		'<h2 class="title"> Search a City</h2>\n' +
-  							'<img src="Static/city.jpg" class="image" style="width:100%">\n' +
- 			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onCityNav()"> City </button>\n' +
-  					  		'</div>\n' +
-  					  		'<p style="text-align: center;"> Find weather data on the city of your choosing. </p>\n' +
-					  '</div>\n' +
-					  '<div class="container">\n' +
-					  		'<h2 class="title"> Search a State</h2>\n' +
-  							'<img src="Static/state.png" class="image" style="width:100%">\n' +
- 			    			'<div class="middle">\n' +
-    							'<button class="text" onclick="onStateNav()"> State </button>\n' +
-  							'</div>\n' +
-  							'<p style="text-align: center;"> Find weather data on the state of your choosing. </p>\n' +
-			   		  '</div>\n';
 }
 
 function onStateNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a class="active" id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
-
-	var page = document.getElementById('page');
-	page.innerHTML = '<h1>State Search</h1>\n' +
-					 '<input type="search" id="stateSearch" placeholder="Search for a state..">\n' +
-					 '<button id="state_button" onclick="onGetStateButton(\'Max Temp\')">Get State</button>\n' + 
-					 '<div id="assignment_content">\n' +
-					 '	<p><table id="results_table"> </table></p>\n' +
-					 '</div>';
 }
 
 function onCityNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a class="active" id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
-						
-
-	var page = document.getElementById('page');
-	page.innerHTML = '<h1>City Search</h1>\n' +
-					 '<input type="search" id="stateS" placeholder="Enter a state..">\n' +
-					 '<input type="search" id="cityS" placeholder="Enter a city..">\n' +
-					 '<button id="city>\n' +
-					 '<button" onclick="onGetCityButton(\'Min Temp\')">Get City</button>\n' + 
-					 '<div id="assignment_content">\n' +
-					 '	<p><table id="results_table"> </table></p>\n' +
-					 '</div>\n';
-					 
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n'; 
 }
 
 function onCompareNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a class="active" id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
-
-	var page = document.getElementById('page');
-	page.innerHTML = '      <h1>Compare</h1>\n' +
-					 '<input type="search" id="stateC1" placeholder="Enter a state..">\n' +
-					 '<input type="search" id="cityC1" placeholder="Enter a city..">\n' +
-					 '<p style="display:inline"> vs. </p>\n' + 
-					 '<input type="search" id="stateC2" placeholder="Enter a state..">\n' +
-					 '<input type="search" id="cityC2" placeholder="Enter a city..">\n' +
-					 '<button id="compare_button" onclick="onGetCompareButton(\'Min Temp\')">Compare</button>\n' + 
-					 '<div id="assignment_content">\n' +
-					 '	<p><table id="results_table"> </table></p>\n' +
-					 '</div>';
 }
 
 
 
 function onFindCityNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
-
 						'   <li><a class="active" id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
-
-	var page = document.getElementById('page');
-	page.innerHTML = '<h1>Find a Happy Home</h1>\n' +
-					 '<div>\n' +
-					 '<form>\n' +
-					 '<input id = "min_temp" style="width: 5em" type="search" name="min_temp" placeholder="Low (F)...">\n' +
-					 '<input id = "max_temp" style="width: 5em" type="search" name="max_temp" placeholder="High (F)...">\n' +
-					 '<input id = "num_results" style="width: 5em" type="search" name="num_results" placeholder="Results..."><br>\n' +
-					 '<input id = "cities" onchange="setDaysCheck()" type="radio" name="query" value="stuff" checked> Cities\n' +
-					 '<input id = "states" onchange="setDaysCheck()" type="radio" name="query" value="stuff2"> States<br>\n' +
-					 '<input id = "days" type="checkbox" name="days" value="stuff"> Days\n' +
-					 '</form>\n' + 
-
-
-					 '<button style="width: 10%" id="find_button" onclick="onFindButton()">Find</button>\n' + 
-					 '</div>\n' +
-					 '<style> #map {width: 60%;height: 400px;float: right; z-index: -1}</style>\n' + 
-					 '<div id="assignment_content" style="height: 75vh; width: 30%; float: left; overflow: auto">\n' +
-					 '	<p><table id="found_results_table"> </table></p>\n' + 
-					 '</div>\n' +
-					 '<div id="map" ></div>';
 
 	 var head = document.head;
 	 head.innerHTML += '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>\n'
@@ -441,47 +416,14 @@ function onFindCityNav() {
 
 function onAboutNav() {
 	var homeNavButton = document.getElementById('nav_bar');
-	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()">Home</a></li>\n' +
+	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
 						'	<li style="float: right"><a class ="active" id="about" onclick="onAboutNav()">About</a></li>\n';
-
-	var page = document.getElementById('page');
-	page.innerHTML =    '<div class="title">\n' + 
-							'<h1>Features</h1>\n' +
-						'</div>\n' + 
-							'<div class="aboutSubTitle">\n' +
-							'<h3> State </h3>\n' +
-							'<p> This search requires a state abbreviation. It returns the maximum, minimum temperature recorded for the year of 2016 in the state searched. Mean Temp is the average temperature state wide for 2016. Rain and Snow Index are numbers that describe how the amount of rain and snow in a state. A higher index means more rain or snow. </p>\n'+
-							'</div>\n' + 
-							'<div class="aboutSubTitle">\n' +
-							'<h3> City </h3>\n' +
-							'<p> This search requires a state abbreviation and the full name of city. It returns the maximum, minimum temperature recorded for the year of 2016 in the city searched. Mean Temp is the average temperature of that city in  2016. Rain and Snow Index are numbers that describe how the amount of rain and snow in a city. A higher index means more rain or snow. </p>\n'+
-							'</div>\n' + 
-							'<div class="aboutSubTitle">\n' +
-							'<h3> Compare </h3>\n' +
-							'<p> This search has two options. Option 1: If you enter two state abbreviations and leave the city search blank it will compare the two searched states. It returns the maximum, minimum, and mean temperature as well as a rain and snow index for each state, allowing for a easy comparison of two states. Option 2: If the city search bars are both not empty, it will return a comparison of the two cities entered. </p>\n'+
-
-							'</div>\n' + 
-							'<div class="aboutSubTitle">\n' +
-							'<h3> Find </h3>\n' +
-							'<p> Option 1: State Finder: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The State button, then click the find button. This will return the states whose mean temperature for the year of 2016 is within the temperature range entered. </p>\n' +
-							'<p> Option 2: City Finder: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The City button, then click the find button. This will return the cities whose mean temperature for the year of 2016 is within the temperature range entered.If you do not recognize a city, click on the button to see its location on a map! </p>\n' +
-							'<p> Option 3: City Finder with Days selected: Enter the minimum and maximum temperature values of temperature range and enter the number of results you would like. Next Select The City button and select the days option, then click the find button. The returned table will be ordered by days. Each day represents a day where the mean temperature for that day was within the searched temperature range. If you do not recognize a city, click on the button to see its location on a map!</p>\n' +
-							'</div>\n' + 
-
-						'<div class="title">\n' + 
-							'<h1>Data</h1>\n' +
-							'<div class="aboutSubTitle">\n' +
-							'<p> The data that this website is based on comes from NOAA. It represents data selected by NOAAs 7000+ weather stations around the U.S for the year 2016. </p>\n' +
-							'</div>\n' +
-						'</div>\n';					
-
-
-						
-					}
+					
+}
 
 
 function jeffe() {

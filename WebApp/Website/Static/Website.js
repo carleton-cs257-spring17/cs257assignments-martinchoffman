@@ -251,8 +251,6 @@ function onFindButton() {
 	var url = api_base_url;
 
 	if (document.getElementById("cities").checked == true) {
-
-		
 		url +=  'range/city/' + min + '/' + max + '/' + num_results;
 
 		if (document.getElementById("days").checked == true) {
@@ -267,6 +265,11 @@ function onFindButton() {
 
 	xmlHttpRequest.onreadystatechange = function() {
 		if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) { 
+			if (JSON.parse(xmlHttpRequest.responseText) == '') {
+				button.innerHTML = 'Find';
+				alert("No results found for range '" + min + "-" + max + "'.");
+				return;
+			}
 			getCityCallback(xmlHttpRequest.responseText);
 		} 
 	};

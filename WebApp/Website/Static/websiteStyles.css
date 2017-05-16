@@ -2,24 +2,24 @@
 @import url('http://fonts.googleapis.com/css?family=Georgia|Cabin|Playfair Display');
 
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 th, td {
-    border-bottom: 1px solid #ddd;
-    padding: 15px;
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
 }
 
 
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    position: fixed;
-    top: 0;
-    width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 footer {
   margin: 0;
@@ -31,20 +31,21 @@ footer {
 }
 
 li {
+  list-style-type: none;
   margin: 0ex, 0ex, 0ex, 0ex;
-    float: left;
+  float: left;
 }
 
 li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 li a:hover:not(.active) {
-    background-color: #111;
+  background-color: #111;
 }
 
 
@@ -52,13 +53,13 @@ body {
   background-color: #FAFAFA;
   color: #230000;
   line-height: 135%;
-  font-family: 'Cabin', serif;
+  font-family: 'Cabin', 'Arial', sans-serif;
   font-size: 90%;
   margin: 0;
 }
 
 h1 {
-  font-family: Cabin, serif;
+  font-family: 'Cabin', 'Arial', sans-serif;
   font-weight: normal;
   margin: 0px;
   padding: 0px;
@@ -67,7 +68,7 @@ h1 {
 }
 
 h2 {
-  font-family: 'Cabin', serif;
+  font-family: 'Cabin', 'Arial', sans-serif;
   font-weight: normal;
   margin: 0px;
   padding: 5px 0px 0px 0px;
@@ -76,7 +77,7 @@ h2 {
 }
 
 h3 {
-  font-family: 'Cabin', serif;
+  font-family: 'Cabin', 'Arial', sans-serif;
   font-weight: bold;
   margin: 0px;
   padding: 15px 0px 0px 0px;
@@ -84,18 +85,18 @@ h3 {
   line-height: 1em;
 }
 #results_table {
-    height:150px;  
-    overflow: auto;
+  height:150px;  
+  overflow: auto;
 }
 
 #found_results_table {
-    height: 300px;
-    overflow: auto;
+  height: 300px;
+  overflow: auto;
 }
 
 
 .active {
-    background-color: #4CAF50;
+  background-color: #4CAF50;
 }
 
 

@@ -363,71 +363,108 @@ function codeAddress(city) {
 
 
 function onHomeNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('home');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a class="active" id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()" href="http://localhost:8080/state">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
 }
 
 function onStateNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('state');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a class="active" id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
 }
 
 function onCityNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('city');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a class="active" id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n'; 
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n'; */
 }
 
 function onCompareNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('compare');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a class="active" id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
 }
 
 
 
 function onFindCityNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('find');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +	
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a class="active" id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';
+						'	<li style="float: right"><a id="about" onclick="onAboutNav()">About</a></li>\n';*/
 
 	 var head = document.head;
 	 head.innerHTML += '<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjbWfUeCBmVzvJT4Na9cCPAWnB7XllbNo&callback=initMap"></script>\n'
 }
 
 function onAboutNav() {
-	var homeNavButton = document.getElementById('nav_bar');
+	onChrisRupturedAnus('about');
+	/*var homeNavButton = document.getElementById('nav_bar');
 	nav_bar.innerHTML = '	<li><a id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
 						'	<li><a id="state" onclick="onStateNav()">State</a></li>\n' +
 						'	<li><a id="city" onclick="onCityNav()">City</a></li>\n' +
 						'   <li><a id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
 						'   <li><a id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
-						'	<li style="float: right"><a class ="active" id="about" onclick="onAboutNav()">About</a></li>\n';
-					
+						'	<li style="float: right"><a class="active" id="about" onclick="onAboutNav()">About</a></li>\n';*/				
 }
 
+function onChrisRupturedAnus(id) {
+	var home, state, city, compare, find_city, about;
+	switch (id) {
+	    case 'home':
+	        home = 'class="active"'
+	        break;
+	    case 'state':
+			state = 'class="active"'
+	        break;
+	    case 'city':
+			city = 'class="active"'
+	        break;
+	    case 'compare':
+			compare = 'class="active"'
+	        break;
+	    case 'find_city':
+			find_city = 'class="active"'
+	        break;
+	    case 'about':
+			about = 'class="active"'
+	        break;
+	    default:
+	        alert('Incorret id:' + id);
+	}
+
+	var nav = '<li><a {0} id="home" onclick="onHomeNav()" href="http://localhost:8080/">Home</a></li>\n' +
+			  '<li><a {1} id="state" onclick="onStateNav()">State</a></li>\n' +
+			  '<li><a {2} id="city" onclick="onCityNav()">City</a></li>\n' +
+			  '<li><a {3} id="compare" onclick="onCompareNav()">Compare</a></li>\n' +
+			  '<li><a {4} id="find_city" onclick="onFindCityNav()">Find City</a></li>\n' +
+			  '<li style="float: right"><a {5} id="about" onclick="onAboutNav()">About</a></li>\n'.format(home, state, city, compare, find_city, about);
+}
 
 function jeffe() {
 	var resultsTableElement = document.getElementById('results_table');

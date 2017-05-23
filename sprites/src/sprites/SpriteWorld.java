@@ -44,34 +44,11 @@ public class SpriteWorld extends Application {
 
         this.spriteList = new ArrayList<Sprite>();
 
-        Sprite sprite = new Ball();
-        sprite.setName("Mr. Bouncy");
-        sprite.setSize(60.0, 60.0);
-        sprite.setPosition(300.0, 200.0);
-        sprite.setVelocity(-12, 8);
-        root.getChildren().add(sprite);
-        this.spriteList.add(sprite);
-
-        double mooseX = 100.0;
-        double mooseY = 75.0;
-        double mooseWidth = 50.0;
-        double mooseHeight = 50.0;
-        double mooseVelocityX = 3.0;
-        double mooseVelocityY = 5.0;
-
-        sprite = new SpinningMoose();
-        sprite.setName("Bullwinkle");
-        sprite.setSize(mooseWidth, mooseHeight);
-        sprite.setPosition(mooseX, mooseY);
-        sprite.setVelocity(mooseVelocityX, mooseVelocityY);
-        root.getChildren().add(sprite);
-        this.spriteList.add(sprite);
-
-        sprite = new Box();
-        sprite.setName("Bullwinkle Box");
-        sprite.setSize(mooseWidth, mooseHeight);
-        sprite.setPosition(mooseX, mooseY);
-        sprite.setVelocity(mooseVelocityX, mooseVelocityY);
+        Sprite sprite = new hoffmanm2();
+        sprite.setName("Geralt");
+        sprite.setSize(76, 77);
+        sprite.setPosition(74, 51);
+        sprite.setVelocity(10, 7);
         root.getChildren().add(sprite);
         this.spriteList.add(sprite);
 

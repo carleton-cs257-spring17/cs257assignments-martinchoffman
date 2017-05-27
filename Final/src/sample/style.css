@@ -1,0 +1,5 @@
+#gameBoard {
+    -fx-background-image: url('../../../../res/map.jpg');
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+}

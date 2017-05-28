@@ -16,14 +16,14 @@ public interface Targeting {
 	List<Object> targets = new ArrayList<>();
 
 	// Finds all valid targets by checking the position of all potential targets and adding those
-	// within range to the targets list
+	// within range to the targets list (might need to be put in an abstract class?)
 	List<Object> findTargets(List<Object> allTargets);
 
 	// Returns the best target for the enemy
 	Object getTarget(List<Object> targets);
 
 	// Fires at the target
-	void fire(Tower target);
+	void fire(Object target);
 
 	// Returns the position of the implementor
 	Point2D getPosition();

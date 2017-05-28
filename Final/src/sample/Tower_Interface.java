@@ -7,14 +7,7 @@
 
 package sample;
 
-import java.util.List;
-
 public interface Tower_Interface {
-	/*
-	private final int MAX_HEALTH
-	private final int RATE_OF_FIRE
-	 */
-
 	// Returns the current health of the tower
 	int getHealth();
 

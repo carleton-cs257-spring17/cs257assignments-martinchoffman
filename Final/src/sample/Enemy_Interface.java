@@ -7,13 +7,12 @@
 
 package sample;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 
 public interface Enemy_Interface {
-	// A queue of waypoints to help enemies move
+	// A queue of waypoints to help enemies move (might need to be in teh abstract class?)
 	Deque<Waypoint> waypoints = new ArrayDeque<Waypoint>(10);
 
 	// Retrieves the next waypoint along the path
@@ -21,4 +20,13 @@ public interface Enemy_Interface {
 
 	// Moves enemies toward the next waypoint
 	void move(Waypoint waypoint);
+
+	// Returns the health of the enemy
+	int getHealth();
+
+	// Returns the position of the enemy as a Point2D
+	public Point2D getPosition();
+
+	// Moves the enemy
+	public void step();
 }

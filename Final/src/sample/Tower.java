@@ -7,7 +7,12 @@
 
 package sample;
 
-public class Tower {
-    public Tower() {
+public abstract class Tower implements Tower_Interface, Targeting {
+	private int hp;
+	private int rof;
+
+    public Tower(int health, int fireRate) {
+    	this.hp = health;
+    	this.rof = fireRate;
     }
 }

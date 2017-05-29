@@ -37,7 +37,7 @@ public class Main extends Application {
         primaryStage.setTitle("NAME ME");
 
         Scene scene = new Scene(root, 1280, 720);
-        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }

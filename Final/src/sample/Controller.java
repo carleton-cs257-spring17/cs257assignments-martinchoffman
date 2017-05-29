@@ -28,6 +28,8 @@ public class Controller implements EventHandler<KeyEvent> {
     @FXML private Button pauseButton;
     @FXML private Label scoreLabel;
     @FXML private AnchorPane gameBoard;
+    @FXML private Button menuButton;
+    @FXML private Button waveButton;
 
 
     private int score;
@@ -67,7 +69,7 @@ public class Controller implements EventHandler<KeyEvent> {
 
     }
 	// Pauses game and brings up menu
-    public void onPauseButton(ActionEvent actionEvent) {
+    public void onMenuButton(ActionEvent actionEvent) {
 
     }
     /* Facilitates buying towers feature
@@ -81,7 +83,9 @@ public class Controller implements EventHandler<KeyEvent> {
      * Determines number of enemies in each wave
      * Checks to make sure previous wave is over
      */
-    public void nextWave(ActionEvent actionEvent) {
+    public void onWaveButton(ActionEvent actionEvent) {
 
 	}
+
+
 }

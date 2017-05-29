@@ -2,16 +2,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <AnchorPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
 
-    <Button fx:id="pauseButton" text="Pause" AnchorPane.leftAnchor="30" AnchorPane.topAnchor="15" onAction="#onPauseButton"/>
+        <Button fx:id="menuButton" text="Menu" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="15" onAction="#onMenuButton"/>
+        <Button fx:id="waveButton" text="Next Wave" AnchorPane.rightAnchor="60" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
+
+
 
     <Label fx:id="scoreLabel" AnchorPane.leftAnchor="120" AnchorPane.topAnchor="15" />
 
     <AnchorPane fx:id="gameBoard"
-                AnchorPane.topAnchor="60" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="20">
+                AnchorPane.topAnchor="50" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="20" style="-fx-background-color: #bbb">
+        <children>
+            <ImageView fx:id="imageView" layoutX="0" layoutY="0" fitHeight="650" fitWidth="1500" preserveRatio="true">
+                <image>
+                    <Image url='map.jpg' />
 
-        <Rectangle fx:id="paddle" AnchorPane.bottomAnchor="15" layoutX="100" width="100" height="10" fill="black" />
+                </image>
+            </ImageView>
+        </children>
+
     </AnchorPane>
 
     <Label AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="0" style="-fx-font-size: 100%"

@@ -10,6 +10,10 @@
 
         <Button fx:id="menuButton" text="Menu" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="15" onAction="#onMenuButton"/>
         <Button fx:id="waveButton" text="Next Wave" AnchorPane.rightAnchor="60" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
+        <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="15" onAction="#onWaveButton" style="-fx-background-image: url('trumpTower.jpg'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+        <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="500" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
+        <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="400" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
+
 
 
 

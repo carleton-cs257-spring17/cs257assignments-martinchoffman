@@ -17,4 +17,22 @@ public abstract class Enemy implements Enemy_Interface{
         this.rof = fireRate;
         this.spd = speed;
     }
+
+    public Waypoint getNextPoint() {
+        return new Waypoint();
+    }
+
+    public void move(Waypoint waypoint) {
+
+    }
+
+    public int getHealth() {
+        return this.hp;
+    }
+
+    public void getPosition() {
+
+    }
+
+    public void step() { return; }
 }

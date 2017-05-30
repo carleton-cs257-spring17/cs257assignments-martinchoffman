@@ -7,7 +7,6 @@
 
 package sample;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -25,8 +24,8 @@ public interface Enemy_Interface {
 	int getHealth();
 
 	// Returns the position of the enemy as a Point2D
-	public Point2D getPosition();
+	void getEnemyPosition();
 
 	// Moves the enemy
-	public void step();
+	void step();
 }

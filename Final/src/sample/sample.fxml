@@ -3,16 +3,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.image.ImageView?>
-
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+
+<?import sample.Ball?>
+
+
 <AnchorPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
 
         <Button fx:id="menuButton" text="Menu" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="15" onAction="#onMenuButton"/>
         <Button fx:id="waveButton" text="Next Wave" AnchorPane.rightAnchor="60" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
-        <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="15" onAction="#onWaveButton" style="-fx-background-image: url('trumpTower.jpg'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-        <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="500" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
-        <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="400" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
+        <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="15" onAction="#onWaveButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+        <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="500" AnchorPane.topAnchor="15" onAction="#onWaveButton" maxWidth="30" style="-fx-background-image: url('sdfsdfsdfsdfTower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+        <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="400" AnchorPane.topAnchor="15" onAction="#onWaveButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
 
 
 
@@ -23,11 +26,9 @@
                 AnchorPane.topAnchor="50" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="20" style="-fx-background-color: #bbb">
         <children>
             <ImageView fx:id="imageView" layoutX="0" layoutY="0" fitHeight="650" fitWidth="1500" preserveRatio="true">
-                <image>
-                    <Image url='map.jpg' />
-
-                </image>
+                <image><Image url='map.jpg' /></image>
             </ImageView>
+            <Ball fx:id="ball" layoutX="100" layoutY="20" radius="20" fill="black" velocityX="3" velocityY="0" />
         </children>
 
     </AnchorPane>

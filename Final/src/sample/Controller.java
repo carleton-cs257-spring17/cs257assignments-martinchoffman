@@ -16,13 +16,21 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-
+import java.util.ArrayList;
 import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Controller implements EventHandler<KeyEvent> {
+    private ArrayList<Ball> enemyList = new ArrayList<Ball>();
+    private Boolean started = Boolean.FALSE;
+
+
+
+
     final private double FRAMES_PER_SECOND = 60.0;
 
     @FXML private Button pauseButton;
@@ -31,6 +39,7 @@ public class Controller implements EventHandler<KeyEvent> {
     @FXML private Button menuButton;
     @FXML private Button waveButton;
     @FXML private Ball ball;
+
 
 
     private int score;
@@ -44,6 +53,7 @@ public class Controller implements EventHandler<KeyEvent> {
 
     public void initialize() {
         this.startTimer();
+
     }
 
     private void startTimer() {
@@ -62,42 +72,83 @@ public class Controller implements EventHandler<KeyEvent> {
         this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
     }
 
+
+
+
+
     private void updateAnimation() {
-        double ballCenterX = this.ball.getCenterX() + this.ball.getLayoutX();
-        double ballCenterY = this.ball.getCenterY() + this.ball.getLayoutY();
-        double ballRadius = this.ball.getRadius();
+        if (started == Boolean.FALSE) {
+            enemyList.add(ball);
+            //enemyList.add(ball);
 
 
-        // Bounce off walls
-        double ballVelocityX = this.ball.getVelocityX();
-        double ballVelocityY = this.ball.getVelocityY();
+            started = Boolean.TRUE;
 
-        if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140  && ballVelocityX > 0) {
-            this.ball.setVelocityX(0);
-            this.ball.setVelocityY(3);
-
-
-        } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
-            this.ball.setVelocityX(0);
-            this.ball.setVelocityY(3);
-
-
-        } else if (ballCenterY + ballRadius >= 350 && ballCenterX + ballRadius > 150 && ballVelocityY > 0) {
-            this.ball.setVelocityY(0);
-            this.ball.setVelocityX(-3);
-
-        } else if (ballCenterY - ballRadius >= 600 && ballVelocityY > 0) {
-            this.ball.setVelocityY(0);
-            this.ball.setVelocityX(3);
-
-        } else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballCenterY - ballRadius >= 600) {
-            return;
         }
 
-        // Move the sprite.
-        this.ball.step();
+        for (Ball ball: enemyList) {
+
+
+                double ballCenterX = ball.getCenterX() + ball.getLayoutX();
+                double ballCenterY = ball.getCenterY() + ball.getLayoutY();
+                double ballRadius = ball.getRadius();
+
+
+                // Bounce off walls
+                double ballVelocityX = ball.getVelocityX();
+                double ballVelocityY = ball.getVelocityY();
+
+                if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballVelocityX > 0) {
+                    ball.setVelocityX(0);
+                    ball.setVelocityY(3);
+                    enemyList.add(createNewBall());
+
+
+                } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
+                    ball.setVelocityX(0);
+                    ball.setVelocityY(3);
+                    System.out.println("Y:" + (ballCenterX - ballRadius));
+
+
+                } else if (ballCenterY + ballRadius >= 350 && ballCenterX + ballRadius > 150 && ballVelocityY > 0) {
+                    ball.setVelocityY(0);
+                    ball.setVelocityX(-3);
+
+
+                } else if (ballCenterY - ballRadius >= 600 && ballVelocityY > 0) {
+                    ball.setVelocityY(0);
+                    ball.setVelocityX(3);
+                    System.out.println("Y:" + (ballCenterY - ballRadius));
+
+                }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 200 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
+                    baseHit (ball);
+                    enemyList.remove(ball);
+
+                }
+
+                // Move the sprite.
+                ball.step();
+            }
     }
 
+
+    private Ball createNewBall() {
+        Ball ball = new Ball();
+        ball.setFill(Color.BLUE);
+        ball.setCenterX(50);
+        ball.setCenterY(50);
+        ball.setVelocityX(3);
+        ball.setVelocityY(0);
+        ball.setRadius(15);
+        gameBoard.getChildren().add(ball);
+
+        return ball;
+    }
+
+    private void baseHit(Ball ball) {
+        gameBoard.getChildren().remove(ball);
+
+    }
 
     @Override
     public void handle(KeyEvent keyEvent) {

@@ -4,6 +4,7 @@
  *
  * A sample subclass of Sprite for CS257.
  */
+
 package sample;
 
 import javafx.fxml.FXML;

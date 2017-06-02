@@ -32,6 +32,10 @@ public class Map {
     	this.base = base;
 	}
 
+	public void buildBoard() {
+
+	}
+
     public void addEnemy() { }
 
     public void addTower() { }

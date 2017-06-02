@@ -21,7 +21,7 @@
 
     <AnchorPane fx:id="gameBoard" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="20" style="-fx-background-color: #bbb">
         <children>
-            <ImageView fx:id="imageView" layoutX="0" layoutY="0" fitHeight="650" fitWidth="1500" preserveRatio="true">
+            <ImageView fx:id="imageView" layoutX="0" layoutY="0" fitHeight="650" preserveRatio="true">
                 <image><Image url='map.jpg' /></image>
             </ImageView>
             <Ball fx:id="ball" layoutX="100" layoutY="20" radius="20" fill="black" velocityX="3" velocityY="0" />

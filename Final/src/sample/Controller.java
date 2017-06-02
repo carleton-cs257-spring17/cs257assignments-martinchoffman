@@ -49,7 +49,6 @@ public class Controller implements EventHandler<KeyEvent> {
 
     public void initialize() {
         this.startTimer();
-
     }
 
     private void startTimer() {
@@ -71,7 +70,7 @@ public class Controller implements EventHandler<KeyEvent> {
     private void updateAnimation() {
         if (started == false) {
             enemyList.add(ball);
-
+            tile(gameBoard.getWidth(), gameBoard.getHeight());
             started = true;
         }
 
@@ -110,6 +109,26 @@ public class Controller implements EventHandler<KeyEvent> {
         }
     }
 
+    private void tile(double screen_width, double screen_height) {
+    	for (int i = 0; i < screen_height / 50; i ++) {
+    		for (int j = 0; j < screen_width / 50; j++) {
+				createNewTile(j * 50 + 25, i * 50 + 25);
+			}
+		}
+	}
+
+    private void createNewTile(double x, double y) {
+    	Ball ball = new Ball();
+    	ball.setFill(Color.BLACK);
+    	ball.setCenterX(x);
+    	ball.setCenterY(y);
+    	ball.setRadius(25);
+
+    	ball.setVelocityX(0);
+    	ball.setVelocityY(0);
+
+    	gameBoard.getChildren().add(ball);
+	}
 
     private Ball createNewBall() {
         Ball ball = new Ball();
@@ -132,8 +151,6 @@ public class Controller implements EventHandler<KeyEvent> {
 		} else {
 			base.damage();
 		}
-
-
     }
 
     @Override

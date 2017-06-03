@@ -7,20 +7,24 @@
 
 package sample;
 
+import com.sun.org.apache.xerces.internal.dom.ChildNode;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+
 import java.util.ArrayList;
-import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +33,9 @@ public class Controller implements EventHandler<KeyEvent> {
     private Boolean started = false;
 
     final private double FRAMES_PER_SECOND = 60.0;
+
+    final private double TILE_SIZE = 30.0;
+    final private double TILE_PADDING = 10.0;
 
     @FXML private Button pauseButton;
     @FXML private Label scoreLabel;
@@ -70,8 +77,8 @@ public class Controller implements EventHandler<KeyEvent> {
     private void updateAnimation() {
         if (started == false) {
             enemyList.add(ball);
-            tile(gameBoard.getWidth(), gameBoard.getHeight());
-            started = true;
+			tilePane();
+			started = true;
         }
 
         for (Ball ball: enemyList) {
@@ -109,25 +116,38 @@ public class Controller implements EventHandler<KeyEvent> {
         }
     }
 
-    private void tile(double screen_width, double screen_height) {
-    	for (int i = 0; i < screen_height / 50; i ++) {
-    		for (int j = 0; j < screen_width / 50; j++) {
-				createNewTile(j * 50 + 25, i * 50 + 25);
-			}
-		}
+    private void tilePane() {
+    	GridPane grid1 = createNewTilePane(5, 80, 1045, 280);
+		GridPane grid2 = createNewTilePane(117, 370, 1157, 570);
+
+		gameBoard.getChildren().add(grid1);
+		gameBoard.getChildren().add(grid2);
 	}
 
-    private void createNewTile(double x, double y) {
-    	Ball ball = new Ball();
-    	ball.setFill(Color.BLACK);
-    	ball.setCenterX(x);
-    	ball.setCenterY(y);
-    	ball.setRadius(25);
+    private GridPane createNewTilePane(double left_x, double top_y, double right_x, double bot_y) {
+		GridPane grid = new GridPane();
+		grid.setLayoutX(left_x);
+		grid.setLayoutY(top_y);
 
-    	ball.setVelocityX(0);
-    	ball.setVelocityY(0);
+		grid.setHgap(TILE_PADDING);
+		grid.setVgap(TILE_PADDING);
 
-    	gameBoard.getChildren().add(ball);
+		grid.setId("grid");
+
+		Image img = new Image("file:res/inactiveTower.png");
+		double width = right_x - left_x;
+		double height = bot_y - top_y;
+		for (int i = 0; i < width / (TILE_PADDING + TILE_SIZE); i ++) {
+			for (int j = 0; j < height / (TILE_PADDING + TILE_SIZE); j++) {
+				ImageView imgV = new ImageView();
+				imgV.setImage(img);
+				imgV.setFitHeight(TILE_SIZE);
+				imgV.setFitWidth(TILE_SIZE);
+				imgV.setId("tile");
+				grid.add(imgV, i, j);
+			}
+		}
+		return grid;
 	}
 
     private Ball createNewBall() {

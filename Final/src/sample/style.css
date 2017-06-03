@@ -1,5 +1,15 @@
+#tile {
+    -fx-opacity: 0;
+}
+
+#tile:hover {
+    -fx-opacity: 1;
+}
+
 #gameBoard {
-    -fx-background-image: url('../../../../res/map.jpg');
-    -fx-background-position: center center;
-    -fx-background-repeat: stretch;
+    -fx-background-color: #DDFFA4;
+}
+
+#grid {
+    -fx-grid-lines-visible: true;
 }

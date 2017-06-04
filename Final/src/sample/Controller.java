@@ -38,71 +38,63 @@ public class Controller implements EventHandler<KeyEvent> {
     final private double TILE_SIZE = 30.0;
     final private double TILE_PADDING = 10.0;
 
-    @FXML private Button pauseButton;
-
     @FXML private AnchorPane gameBoard;
-    @FXML private Label waveLabel;
-    @FXML private Label moneyLabel;
-    @FXML private Label baseHealthLabel;
-    @FXML private Button menuButton;
-    @FXML private Button waveButton;
-    @FXML private Ball ball;
-    @FXML private Base base;
+	@FXML private Base base;
+	@FXML private Label waveLabel;
+	@FXML private Label moneyLabel;
+	@FXML private Label baseHealthLabel;
 
-    private int score;
-    private boolean paused;
-    private boolean peacePhase;
-    private Timer timer;
-    private int money;
+	private Timer timer;
+	private boolean paused;
+	private boolean peacePhase;
+	private int score;
+	private int money;
     private int wave;
     private int enemyLimit;
     private int numEnemy;
 
     public Controller() {
         this.paused = false;
-        this.money = 0;
-        this.wave = 0;
-        this.peacePhase = true;
+		this.peacePhase = true;
+
+		this.money = 0;
+		this.wave = 0;
+
         this.enemyLimit = 1;
         this.numEnemy = 0;
     }
 
+	private void startTimer() {
+		this.timer = new java.util.Timer();
+		TimerTask timerTask = new TimerTask() {
+			public void run() {
+				Platform.runLater(new Runnable() {
+					public void run() {
+						updateAnimation();
+					}
+				});
+			}
+		};
+
+		long frameTimeInMilliseconds = (long)(1000.0 / FRAMES_PER_SECOND);
+		this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
+	}
+
     public void initialize() {
-        this.waveLabel.setText(String.format("Wave: %d", this.wave));
-        this.moneyLabel.setText(String.format("Money: %d", this.money));
-        this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
-
-    }
-
-    private void startTimer() {
-        this.timer = new java.util.Timer();
-        TimerTask timerTask = new TimerTask() {
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                        updateAnimation();
-                    }
-                });
-            }
-        };
-
-        long frameTimeInMilliseconds = (long)(1000.0 / FRAMES_PER_SECOND);
-        this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
+		this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
+		this.moneyLabel.setText(String.format("Money: %d", this.money));
+		this.waveLabel.setText(String.format("Wave: %d", this.wave));
     }
 
     private void updateAnimation() {
-
-        this.moneyLabel.setText(String.format("Money: %d", this.money));
-        if (started == false) {
-            //enemyList.add(ball);
+		if (started == false) {
 			tilePane();
 			started = true;
         }
 
+		this.moneyLabel.setText(String.format("Money: %d", this.money));
 
-
-        for (Ball ball: enemyList) {
-
+		for (Ball ball: enemyList) {
             double ballCenterX = ball.getCenterX() + ball.getLayoutX();
             double ballCenterY = ball.getCenterY() + ball.getLayoutY();
             double ballRadius = ball.getRadius();
@@ -122,14 +114,12 @@ public class Controller implements EventHandler<KeyEvent> {
             } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
-                System.out.println("Y:" + (ballCenterX - ballRadius));
             } else if (ballCenterY + ballRadius >= 350 && ballCenterX + ballRadius > 150 && ballVelocityY > 0) {
                 ball.setVelocityY(0);
                 ball.setVelocityX(-3);
             } else if (ballCenterY - ballRadius >= 600 && ballVelocityY > 0) {
                 ball.setVelocityY(0);
                 ball.setVelocityX(3);
-                System.out.println("Y:" + (ballCenterY - ballRadius));
             }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
                 baseHit (ball);
                 enemyList.remove(ball);
@@ -188,7 +178,6 @@ public class Controller implements EventHandler<KeyEvent> {
     }
 
     private void baseHit(Ball ball) {
-    	System.out.println(base.getHealth());
         gameBoard.getChildren().remove(ball);
         if (base.getHealth() <= 0) {
 			gameBoard.getChildren().remove(base);
@@ -201,24 +190,20 @@ public class Controller implements EventHandler<KeyEvent> {
     }
 
     public void roundOverCheck(ArrayList<Ball> enemyList) {
-
         if (enemyList.size() == 1) {
             System.out.println("round over");
             this.timer.cancel();
             this.peacePhase = true;
-        } else {
-
         }
-
     }
 
     @Override
     public void handle(KeyEvent keyEvent) {
 
     }
+
 	// Pauses game and brings up menu
     public void onMenuButton(ActionEvent actionEvent) {
-
         if (this.paused == false) {
             this.timer.cancel();
             this.paused = true;
@@ -228,14 +213,24 @@ public class Controller implements EventHandler<KeyEvent> {
         }
     }
 
-
     /* Facilitates buying towers feature
      * updates money
      * Lets user place tower
      */
-    public void onBuyTowerButton(ActionEvent actionEvent) {
+    private boolean clicked = false;
+    public void onBuyTurretButton(ActionEvent actionEvent) {
+		if (clicked) {
+			Turret turret = new Turret();
+			turret.setPos(CLICKED_TILE);
+			// Get tile index in Grid Pane and change image
+		} else {
+			Turret turret = new Turret();
+			this.money -= turret.getCost();
+			// Make available tiles visible
+		}
+		clicked = !clicked;
+	}
 
-    }
     /* Triggers waves of enemies
      * Determines number of enemies in each wave
      * Checks to make sure previous wave is over

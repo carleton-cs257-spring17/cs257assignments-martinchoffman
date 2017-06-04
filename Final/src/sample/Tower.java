@@ -7,12 +7,9 @@
 
 package sample;
 
-public abstract class Tower implements Tower_Interface, Targeting {
-	private int hp;
-	private int rof;
 
-    public Tower(int health, int fireRate) {
-    	this.hp = health;
-    	this.rof = fireRate;
-    }
+public abstract class Tower implements Tower_Interface {
+	protected int cost;
+	protected int hp;
+	protected int rof;
 }

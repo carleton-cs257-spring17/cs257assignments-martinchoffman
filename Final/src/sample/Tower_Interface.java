@@ -7,10 +7,27 @@
 
 package sample;
 
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
+
 public interface Tower_Interface {
 	// Returns the current health of the tower
 	int getHealth();
 
 	// Returns the rate of fire of teh tower
-	int getROF();
+	double getROF();
+
+	// Finds all valid targets by checking the position of all potential targets and adding those
+	// within range to the targets list (might need to be put in an abstract class?)
+	List<Enemy> findTargets(List<Enemy> allTargets);
+
+	// Returns the best target for the enemy
+	Enemy getTarget(List<Enemy> validTargets);
+
+	// Fires at the target
+	Shot fire(Enemy target);
+
+	// Returns the position of the implementor
+	Point2D getPosition();
 }

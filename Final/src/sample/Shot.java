@@ -7,14 +7,16 @@
 
 package sample;
 
+import javafx.scene.image.Image;
+
 public class Shot {
 	private int dmg;
 	private int spd;
-	private String imgUrl;
+	private Image img;
 
-	public Shot(int damage, int speed, String imgUrl) {
+	public Shot(int damage, int speed, Image img) {
 		this.dmg = damage;
 		this.spd = speed;
-		this.imgUrl = imgUrl;
+		this.img = img;
 	}
 }

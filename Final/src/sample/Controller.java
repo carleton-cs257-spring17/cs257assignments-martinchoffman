@@ -10,13 +10,16 @@ package sample;
 import com.sun.org.apache.xerces.internal.dom.ChildNode;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -29,7 +32,7 @@ import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Controller implements EventHandler<KeyEvent> {
+public class Controller implements EventHandler<MouseEvent>{
     private ArrayList<Ball> enemyList = new ArrayList<Ball>();
     private Boolean started = false;
 
@@ -109,7 +112,6 @@ public class Controller implements EventHandler<KeyEvent> {
                 if (this.numEnemy < this.enemyLimit) {
                     enemyList.add(createNewBall());
                     this.numEnemy++;
-
                 }
             } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
                 ball.setVelocityX(0);
@@ -158,6 +160,7 @@ public class Controller implements EventHandler<KeyEvent> {
 				imgV.setFitHeight(TILE_SIZE);
 				imgV.setFitWidth(TILE_SIZE);
 				imgV.setId("tile");
+
 				grid.add(imgV, i, j);
 			}
 		}
@@ -197,11 +200,6 @@ public class Controller implements EventHandler<KeyEvent> {
         }
     }
 
-    @Override
-    public void handle(KeyEvent keyEvent) {
-
-    }
-
 	// Pauses game and brings up menu
     public void onMenuButton(ActionEvent actionEvent) {
         if (this.paused == false) {
@@ -219,16 +217,17 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     private boolean clicked = false;
     public void onBuyTurretButton(ActionEvent actionEvent) {
-		if (clicked) {
-			Turret turret = new Turret();
-			turret.setPos(CLICKED_TILE);
-			// Get tile index in Grid Pane and change image
-		} else {
+		clicked = !clicked;
+	}
+
+	@Override
+	public void handle(MouseEvent mouseEvent) {
+		if (mouseEvent.getTarget().toString().contains("tile") && clicked == true) {
 			Turret turret = new Turret();
 			this.money -= turret.getCost();
-			// Make available tiles visible
+			System.out.println(mouseEvent.getSource());
+			clicked = !clicked;
 		}
-		clicked = !clicked;
 	}
 
     /* Triggers waves of enemies
@@ -237,7 +236,6 @@ public class Controller implements EventHandler<KeyEvent> {
      */
     public void onWaveButton(ActionEvent actionEvent) {
         if (this.paused == false && peacePhase == true) {
-
             this.wave++;
             this.numEnemy = 0;
             this.enemyLimit = this.enemyLimit * this.wave + 1;

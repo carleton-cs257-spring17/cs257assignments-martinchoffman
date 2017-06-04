@@ -25,6 +25,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import javax.swing.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,8 +39,11 @@ public class Controller implements EventHandler<KeyEvent> {
     final private double TILE_PADDING = 10.0;
 
     @FXML private Button pauseButton;
-    @FXML private Label scoreLabel;
+
     @FXML private AnchorPane gameBoard;
+    @FXML private Label waveLabel;
+    @FXML private Label moneyLabel;
+    @FXML private Label baseHealthLabel;
     @FXML private Button menuButton;
     @FXML private Button waveButton;
     @FXML private Ball ball;
@@ -47,15 +51,27 @@ public class Controller implements EventHandler<KeyEvent> {
 
     private int score;
     private boolean paused;
+    private boolean peacePhase;
     private Timer timer;
+    private int money;
+    private int wave;
+    private int enemyLimit;
+    private int numEnemy;
 
     public Controller() {
         this.paused = false;
-        this.score = 0;
+        this.money = 0;
+        this.wave = 0;
+        this.peacePhase = true;
+        this.enemyLimit = 1;
+        this.numEnemy = 0;
     }
 
     public void initialize() {
-        this.startTimer();
+        this.waveLabel.setText(String.format("Wave: %d", this.wave));
+        this.moneyLabel.setText(String.format("Money: %d", this.money));
+        this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
+
     }
 
     private void startTimer() {
@@ -75,11 +91,15 @@ public class Controller implements EventHandler<KeyEvent> {
     }
 
     private void updateAnimation() {
+
+        this.moneyLabel.setText(String.format("Money: %d", this.money));
         if (started == false) {
-            enemyList.add(ball);
+            //enemyList.add(ball);
 			tilePane();
 			started = true;
         }
+
+
 
         for (Ball ball: enemyList) {
 
@@ -91,10 +111,14 @@ public class Controller implements EventHandler<KeyEvent> {
             double ballVelocityX = ball.getVelocityX();
             double ballVelocityY = ball.getVelocityY();
 
-            if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballVelocityX > 0) {
+            if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballVelocityX > 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
-                enemyList.add(createNewBall());
+                if (this.numEnemy < this.enemyLimit) {
+                    enemyList.add(createNewBall());
+                    this.numEnemy++;
+
+                }
             } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
@@ -106,7 +130,7 @@ public class Controller implements EventHandler<KeyEvent> {
                 ball.setVelocityY(0);
                 ball.setVelocityX(3);
                 System.out.println("Y:" + (ballCenterY - ballRadius));
-            }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 200 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
+            }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
                 baseHit (ball);
                 enemyList.remove(ball);
             }
@@ -171,6 +195,21 @@ public class Controller implements EventHandler<KeyEvent> {
 		} else {
 			base.damage();
 		}
+        this.money = this.money + 15;
+        this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
+        roundOverCheck(enemyList);
+    }
+
+    public void roundOverCheck(ArrayList<Ball> enemyList) {
+
+        if (enemyList.size() == 1) {
+            System.out.println("round over");
+            this.timer.cancel();
+            this.peacePhase = true;
+        } else {
+
+        }
+
     }
 
     @Override
@@ -180,7 +219,16 @@ public class Controller implements EventHandler<KeyEvent> {
 	// Pauses game and brings up menu
     public void onMenuButton(ActionEvent actionEvent) {
 
+        if (this.paused == false) {
+            this.timer.cancel();
+            this.paused = true;
+        } else {
+            this.startTimer();
+            this.paused = false;
+        }
     }
+
+
     /* Facilitates buying towers feature
      * updates money
      * Lets user place tower
@@ -193,6 +241,16 @@ public class Controller implements EventHandler<KeyEvent> {
      * Checks to make sure previous wave is over
      */
     public void onWaveButton(ActionEvent actionEvent) {
+        if (this.paused == false && peacePhase == true) {
+
+            this.wave++;
+            this.numEnemy = 0;
+            this.enemyLimit = this.enemyLimit * this.wave + 1;
+            this.waveLabel.setText(String.format("Wave: %d", this.wave));
+            this.startTimer();
+            peacePhase = false;
+            enemyList.add(createNewBall()); //first ball of wave
+        }
 
 	}
 }

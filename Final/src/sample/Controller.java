@@ -25,7 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
-
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +196,11 @@ public class Controller {
                 ball.setVelocityY(0);
                 ball.setVelocityX(3);
             }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
-                baseHit (ball);
+                try {
+                    baseHit (ball);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 enemyList.remove(ball);
 				roundOverCheck(enemyList);
             }
@@ -288,15 +292,15 @@ public class Controller {
 	 * Removes ball from gameboard view
 	 * @param ball
 	 */
-    private void baseHit(Ball ball) {
+    private void baseHit(Ball ball) throws IOException {
         gameBoard.getChildren().remove(ball);
+        base.damage();
         if (base.getHealth() <= 0) {
+            System.out.println("Hello");
 			gameBoard.getChildren().remove(base);
-		} else {
-			base.damage();
+			windowHandler("homeScreen.fxml", "homeScreen");
 		}
         this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
-
     }
 
 	/**
@@ -325,6 +329,8 @@ public class Controller {
         if (this.paused == false && this.peacePhase == false) {
             this.timer.cancel();
             this.paused = true;
+        } else if (this.paused == false && this.peacePhase == true) {
+
         } else {
             this.startTimer();
             this.paused = false;
@@ -393,20 +399,35 @@ public class Controller {
             this.waveLabel.setText(String.format("Wave: %d", this.wave));
             this.startTimer();
             peacePhase = false;
-            enemyList.add(createNewBall()); //first ball of wave
         }
 	}
 
     /**
-     * Closes current game and creates new game
+     * Launches new tower defense game
      * @param actionEvent
      * @throws IOException
      */
 	public void onNewGame(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        String window = "sample.fxml";
+        String id = "gameBoard";
+        windowHandler(window, id);
+    }
+
+    /**
+     * Closes current game and creates new game
+     * @param text
+     * @throws IOException
+     */
+	public void windowHandler(String text, String id) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(text));
         Parent root = (Parent)loader.load();
-        Controller controller = loader.getController();
-        root.setId("gameBoard");
+        if (text.equals("sample.fxml")) {
+            Controller controller = loader.getController();
+
+        } else {
+            HomeScreen homeScreen = loader.getController();
+        }
+        root.setId(id);
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Tower Defense");
 
@@ -414,8 +435,11 @@ public class Controller {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
-        closeWindow();
 
+        Stage stage = (Stage) gameBoard.getScene().getWindow();
+        stage.close();
+
+        closeWindow();
     }
 
     /**

@@ -10,6 +10,7 @@
 <?sceneBuilder-stylesheet style.css?>
 
 
+<?import javafx.scene.text.Text?>
 <AnchorPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
     <stylesheets> <URL value="@style.css" /> </stylesheets>
 
@@ -18,10 +19,14 @@
 
 
     <Button fx:id="waveButton" text="Next Wave" AnchorPane.rightAnchor="60" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
-    <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-    <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="530" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-    <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="460" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-    <Button fx:id="BuyTower4Button" text="Tower 3" AnchorPane.rightAnchor="390" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Text text="Up" AnchorPane.rightAnchor="605" AnchorPane.topAnchor="5" />
+    <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="20" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Text text="Down" AnchorPane.rightAnchor="528" AnchorPane.topAnchor="5" />
+    <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="530" AnchorPane.topAnchor="20" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Text text="Left" AnchorPane.rightAnchor="462" AnchorPane.topAnchor="5" />
+    <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="460" AnchorPane.topAnchor="20" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Text text="Right" AnchorPane.rightAnchor="388" AnchorPane.topAnchor="5" />
+    <Button fx:id="BuyTower4Button" text="Tower 3" AnchorPane.rightAnchor="390" AnchorPane.topAnchor="20" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
 
 
     <Label fx:id="baseHealthLabel" AnchorPane.rightAnchor="250" AnchorPane.topAnchor="15" />

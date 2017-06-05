@@ -39,6 +39,10 @@ public class HomeScreen {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
+
+        Stage stage = (Stage) homeScreen.getScene().getWindow();
+        stage.close();
+
         closeWindow();
 
 

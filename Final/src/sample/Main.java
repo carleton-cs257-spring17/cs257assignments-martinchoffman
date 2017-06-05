@@ -2,7 +2,7 @@
  * Main.java
  * Chris Tordi & Martin Hoffman, 25 May 2017
  *
- * The main program for something
+ * The main program for setting up a tower defense game.
  */
 
 package sample;
@@ -15,12 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.scene.input.MouseEvent;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-
-import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -36,21 +31,18 @@ public class Main extends Application {
             }
         });
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("homeScreen.fxml"));
         Parent root = (Parent)loader.load();
-        Controller controller = loader.getController();
-
-        // Set up a KeyEvent handler so we can respond to keyboard activity.
-        //root.setOnMouseClicked(controller);
-        root.setId("gameBoard");
-        primaryStage.setTitle("NAME ME");
+        HomeScreen homeScreen = loader.getController();
+        root.setId("homeScreen");
+        primaryStage.setTitle("");
 
 
-        Scene scene = new Scene(root, 1160, 720);
-        //scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        Scene scene = new Scene(root, 1170, 720);
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
+
     }
 
 

@@ -7,9 +7,8 @@
 
 package sample;
 
-import javafx.fxml.FXML;
-import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+
 
 
 public class Base extends Rectangle {

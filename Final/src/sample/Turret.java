@@ -8,7 +8,7 @@ import java.util.List;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
 
 /**
  * Created by Martin on 6/3/2017.
@@ -18,9 +18,12 @@ public class Turret extends ImageView implements Tower_Interface {
 	private final int MAX_HP = 50;
 	private final double ROF = .5;
 
+
 	private final Image IMG = new Image("file:res/shot.png");
 
 	private int hp;
+	private int direction;
+
 	private Point2D pos;
 
 	public Turret() {
@@ -66,7 +69,7 @@ public class Turret extends ImageView implements Tower_Interface {
 	 * @return shot
 	 */
 	public Shot fire() {
-		Shot shot = new Shot(10, 10, null);
+		Shot shot = new Shot(10, direction, null);
 		shot.setFill(Color.YELLOW);
 		shot.setCenterX(getPosition().getX());
 		shot.setCenterY(getPosition().getY());
@@ -103,4 +106,12 @@ public class Turret extends ImageView implements Tower_Interface {
 	public Point2D getPosition() {
 		return pos;
 	}
+
+	public void setDirection(int direction) {
+	    System.out.println("direction " + direction);
+	    this.direction = direction;
+
+    }
+
+
 }

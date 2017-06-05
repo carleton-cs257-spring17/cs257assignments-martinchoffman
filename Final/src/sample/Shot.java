@@ -12,19 +12,33 @@ import javafx.scene.shape.Circle;
 
 public class Shot extends Circle{
 	private int dmg;
-	private int spd;
+	private int direction;
 	private Image img;
 
-	private final double velocityX = 0;
-	private final double velocityY = -10;
+	private int velocityX;
+	private int velocityY;
 
-	public Shot(int damage, int speed, Image img) {
+
+	public Shot(int damage, int direction, Image img) {
 		this.dmg = damage;
-		this.spd = speed;
+		this.direction = direction ;
 		this.img = img;
 	}
 
 	public void step() {
+	    if (direction == 1) {
+	        this.velocityX = 0;
+	        this.velocityY = -10;
+        } else if (direction == 2) {
+            this.velocityX = 0;
+            this.velocityY = 10;
+        } else if (direction == 3) {
+            this.velocityX = -10;
+            this.velocityY = 0;
+        } else if (direction == 4) {
+            this.velocityX = 10;
+            this.velocityY = 0;
+        }
 		this.setCenterX(this.getCenterX() + this.velocityX);
 		this.setCenterY(this.getCenterY() + this.velocityY);
 	}

@@ -1,0 +1,15 @@
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<?sceneBuilder-stylesheet style.css?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane fx:controller="sample.HomeScreen" xmlns:fx="http://javafx.com/fxml">
+
+    <AnchorPane fx:id="homeScreen" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <Text id="welcome-text" text="Tower Defense" AnchorPane.topAnchor="150"  AnchorPane.leftAnchor="350" style="-fx-font-size: 50pt" />
+        <Button fx:id="startGame" text="Start!" AnchorPane.topAnchor="240" AnchorPane.leftAnchor="560" onAction="#onStartGame"/>
+    </AnchorPane>
+
+</AnchorPane>

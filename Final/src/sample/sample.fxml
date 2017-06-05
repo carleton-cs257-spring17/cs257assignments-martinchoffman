@@ -5,8 +5,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import java.net.URL?>
-
-<?import sample.Ball?>
 <?import sample.Base?>
 
 <?sceneBuilder-stylesheet style.css?>
@@ -15,14 +13,20 @@
 <AnchorPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
     <stylesheets> <URL value="@style.css" /> </stylesheets>
 
-    <Button fx:id="menuButton" text="Menu" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="15" onAction="#onMenuButton"/>
+    <Button fx:id="menuButton" text="Pause" AnchorPane.leftAnchor="60" AnchorPane.topAnchor="15" onAction="#onPauseButton"/>
+    <Button fx:id="restartGameButton" text="New Game" AnchorPane.leftAnchor="140" AnchorPane.topAnchor="15" onAction="#onNewGame"/>
+
+
     <Button fx:id="waveButton" text="Next Wave" AnchorPane.rightAnchor="60" AnchorPane.topAnchor="15" onAction="#onWaveButton"/>
     <Button fx:id="BuyTower1Button" text="Tower 1" AnchorPane.rightAnchor="600" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-    <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="500" AnchorPane.topAnchor="15" onAction="#onWaveButton" maxWidth="30" style="-fx-background-image: url('sdfsdfsdfsdfTower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
-    <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="400" AnchorPane.topAnchor="15" onAction="#onWaveButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Button fx:id="BuyTower2Button" text="Tower 2" AnchorPane.rightAnchor="530" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Button fx:id="BuyTower3Button" text="Tower 3" AnchorPane.rightAnchor="460" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+    <Button fx:id="BuyTower4Button" text="Tower 3" AnchorPane.rightAnchor="390" AnchorPane.topAnchor="15" onAction="#onBuyTurretButton" maxWidth="30" style="-fx-background-image: url('Tower.png'); -fx-background-size: 30px; -fx-background-repeat: no-repeat;"/>
+
 
     <Label fx:id="baseHealthLabel" AnchorPane.rightAnchor="250" AnchorPane.topAnchor="15" />
     <Label fx:id="moneyLabel" AnchorPane.rightAnchor="700" AnchorPane.topAnchor="15" />
+    <Label fx:id="enemyLabel" AnchorPane.rightAnchor="800" AnchorPane.topAnchor="15" />
     <Label fx:id="waveLabel" AnchorPane.rightAnchor="150" AnchorPane.topAnchor="15" />
 
     <AnchorPane fx:id="gameBoard" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="20" style="-fx-background-color: #bbb">
@@ -30,10 +34,10 @@
             <ImageView fx:id="imageView" layoutX="0" layoutY="0" fitHeight="650" preserveRatio="true">
                 <image><Image url='map.jpg' /></image>
             </ImageView>
-            <Base fx:id="base" layoutX="1100" layoutY="580" width="60" height="60" fill="crimson"/>
+            <Base fx:id="base" layoutX="1100" layoutY="580" width="60" height="60" fill="crimson" style="-fx-background-image: url('village.jpg')"/>
         </children>
     </AnchorPane>
 
     <Label AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="0" style="-fx-font-size: 100%"
-           text="Left: A or left-arrow; Right: D or right-arrow" />
+           text="Created by Martin Hoffman and Chris Tordi" />
 </AnchorPane>

@@ -2,37 +2,32 @@
  * Controller.java
  * Chris Tordi & Martin Hoffman, 25 May 2017
  *
- * The controller for something
+ * The controller for our tower defense game. This program manages all game data, updates view, and runs game engine.
  */
 
 package sample;
 
-import com.sun.org.apache.xerces.internal.dom.ChildNode;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import org.w3c.dom.css.Rect;
+import javafx.stage.Stage;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
+
+
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,6 +38,7 @@ public class Controller {
 	@FXML private Label waveLabel;
 	@FXML private Label moneyLabel;
 	@FXML private Label baseHealthLabel;
+	@FXML private Label enemyLabel;
 
 	private ArrayList<Ball> enemyList = new ArrayList<Ball>();
 	private List<GridPane> grids = new ArrayList<GridPane>();
@@ -104,6 +100,8 @@ public class Controller {
 		this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
 		this.moneyLabel.setText(String.format("Money: %d", this.money));
 		this.waveLabel.setText(String.format("Wave: %d", this.wave));
+        this.enemyLabel.setText(String.format("Enemy Num: %d", this.numEnemy));
+
     }
 
 	/**
@@ -169,13 +167,10 @@ public class Controller {
         }
 
 		//adds new enemies during round
-
         if (ballSpawner % 100 == 0 && this.numEnemy <= this.enemyLimit) {
-
-			System.out.println("num of enemies: " + this.numEnemy);
-            System.out.println("limit of enemies: " + this.enemyLimit);
 			enemyList.add(createNewBall());
             this.numEnemy++;
+            this.enemyLabel.setText(String.format("Enemy Num: %d", this.numEnemy));
 		}
 
 		//updates position for all enemies in view
@@ -188,7 +183,7 @@ public class Controller {
             double ballVelocityY = ball.getVelocityY();
 
             //allows enemies to navigate path
-            if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballVelocityX > 0) {
+            if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballCenterY - ballRadius < 400 && ballVelocityX > 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
             } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
@@ -200,7 +195,7 @@ public class Controller {
             } else if (ballCenterY - ballRadius >= 600 && ballVelocityY > 0) {
                 ball.setVelocityY(0);
                 ball.setVelocityX(3);
-            }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 140 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
+            }  else if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballCenterY - ballRadius >= 600 && ballVelocityX > 0) {
                 baseHit (ball);
                 enemyList.remove(ball);
 				roundOverCheck(enemyList);
@@ -208,8 +203,9 @@ public class Controller {
 
             // Moves enemies
             ball.step();
-            ballSpawner++;
+
         }
+        ballSpawner++;
     }
 
 	/**
@@ -309,8 +305,7 @@ public class Controller {
 	 * @param enemyList
 	 */
 	public void roundOverCheck(ArrayList<Ball> enemyList) {
-        if (enemyList.size() < 1) {
-            System.out.println("round over");
+        if (enemyList.size() < 1 && this.numEnemy >= this.enemyLimit) {
 			gameBoard.getChildren().removeAll(shots);
 			shots.clear();
 			score += 100 * wave;
@@ -326,8 +321,8 @@ public class Controller {
 	 * Gives user choice to restart game
 	 * @param actionEvent
 	 */
-    public void onMenuButton(ActionEvent actionEvent) {
-        if (this.paused == false) {
+    public void onPauseButton(ActionEvent actionEvent) {
+        if (this.paused == false && this.peacePhase == false) {
             this.timer.cancel();
             this.paused = true;
         } else {
@@ -342,7 +337,18 @@ public class Controller {
      * Lets user place tower
      */
     private boolean clicked = false;
+    private int towerDirection = 0;
     public void onBuyTurretButton(ActionEvent actionEvent) {
+        if (actionEvent.getSource().toString().contains("Tower1")) {
+            towerDirection = 1;
+        } else if (actionEvent.getSource().toString().contains("Tower2")){
+            towerDirection = 2;
+        } else if (actionEvent.getSource().toString().contains("Tower3")) {
+            towerDirection = 3;
+        } else if (actionEvent.getSource().toString().contains("Tower4")) {
+            towerDirection = 4;
+        }
+
     	Turret t = new Turret();
     	if (money >= t.getCost()) {
 			clicked = !clicked;
@@ -359,6 +365,7 @@ public class Controller {
 	public void handle(MouseEvent mouseEvent, int row, int col) {
 		if (clicked == true) {
 			Turret turret = new Turret();
+			turret.setDirection(towerDirection);
 			this.money -= turret.getCost();
 			this.moneyLabel.setText(String.format("Money: %d", this.money));
 
@@ -388,6 +395,36 @@ public class Controller {
             peacePhase = false;
             enemyList.add(createNewBall()); //first ball of wave
         }
-
 	}
+
+    /**
+     * Closes current game and creates new game
+     * @param actionEvent
+     * @throws IOException
+     */
+	public void onNewGame(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        Parent root = (Parent)loader.load();
+        Controller controller = loader.getController();
+        root.setId("gameBoard");
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("Tower Defense");
+
+        Scene scene = new Scene(root, 1170, 720);
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(true);
+        primaryStage.show();
+        closeWindow();
+
+    }
+
+    /**
+     * Closes gameboard window
+     */
+    public void closeWindow() {
+        Scene scene = gameBoard.getScene();
+        Stage closing = new Stage();
+        closing.setScene(scene);
+        closing.hide();
+    }
 }

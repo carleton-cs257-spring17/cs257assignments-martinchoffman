@@ -13,3 +13,19 @@
 #grid {
     -fx-grid-lines-visible: true;
 }
+
+#BuyTower1Button:hover {
+    -fx-background-color: BLACK;
+}
+
+#BuyTower2Button:hover {
+    -fx-background-color: BLACK;
+}
+
+#BuyTower3Button:hover {
+    -fx-background-color: BLACK;
+}
+
+#BuyTower4Button:hover {
+    -fx-background-color: BLACK;
+}

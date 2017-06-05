@@ -31,6 +31,10 @@ public class Turret extends ImageView implements Tower_Interface {
 		return COST;
 	}
 
+	/**
+	 * returns tower health
+	 * @return hp
+	 */
 	public int getHealth() {
 		return hp;
 	}
@@ -39,14 +43,28 @@ public class Turret extends ImageView implements Tower_Interface {
 		return ROF;
 	}
 
+	/**
+	 *
+	 * @param allTargets
+	 * @return
+	 */
 	public List<Enemy> findTargets(List<Enemy> allTargets) {
 		return new ArrayList<Enemy>();
 	}
 
+	/**
+	 *
+	 * @param validTargets
+	 * @return
+	 */
 	public Enemy getTarget(List<Enemy> validTargets) {
 		return null;
 	}
 
+	/**
+	 * Creates shot object
+	 * @return shot
+	 */
 	public Shot fire() {
 		Shot shot = new Shot(10, 10, null);
 		shot.setFill(Color.YELLOW);
@@ -56,11 +74,24 @@ public class Turret extends ImageView implements Tower_Interface {
 		return shot;
 	}
 
+	/**
+	 * Creates shot object
+	 * @param target
+	 * @return shot
+	 */
 	public Shot fire(Enemy target) {
 		Shot shot = new Shot(10, 10, IMG);
 		return shot;
 	}
 
+	/**
+	 * Sets turret position based on row and column of mouseclick in gridpane
+	 * @param row
+	 * @param col
+	 * @param grid_offset_y
+	 * @param grid_offset_x
+	 * @param total_tile_size
+	 */
 	public void setPosition(int row, int col, double grid_offset_y, double grid_offset_x, double total_tile_size) {
 		Double x = grid_offset_x + col * total_tile_size + total_tile_size / 4;
 		Double y = grid_offset_y + row * total_tile_size + total_tile_size / 4;

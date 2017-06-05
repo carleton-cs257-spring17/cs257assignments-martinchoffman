@@ -62,6 +62,7 @@ public class Controller {
     private int wave;
     private int enemyLimit;
     private int numEnemy;
+    private int ballSpawner;
 
     public Controller() {
         this.paused = false;
@@ -72,9 +73,14 @@ public class Controller {
 
         this.enemyLimit = 1;
         this.numEnemy = 0;
+        this.ballSpawner = 0;
     }
 
+	/**
+	 * Controls game time
+	 */
 	private void startTimer() {
+        this.ballSpawner = 0;
 		this.timer = new java.util.Timer();
 		TimerTask timerTask = new TimerTask() {
 			public void run() {
@@ -91,12 +97,19 @@ public class Controller {
 		this.timer.schedule(timerTask, 0, frameTimeInMilliseconds);
 	}
 
+	/**
+	 * Initializes game stats to begin game
+	 */
     public void initialize() {
 		this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
 		this.moneyLabel.setText(String.format("Money: %d", this.money));
 		this.waveLabel.setText(String.format("Wave: %d", this.wave));
     }
 
+	/**
+	 * Updates position of shots using current shot position and current shot velocity
+	 * Checks for collisions
+	 */
     private int counter = 0;
     private void shotAnimation() {
     	if (counter % 30 == 0) {
@@ -117,10 +130,14 @@ public class Controller {
     		shot.step();
     		collisionDectection();
 		}
-
 		counter++;
 	}
 
+	/**
+	 * checks for collisions between enemy and shots
+	 * If collision is detected then enemy health, gameboard, score, and money are updated
+	 * Checks to see if round is over
+	 */
 	private void collisionDectection() {
     	for (Ball ball : enemyList) {
     		for (Shot shot : shots) {
@@ -131,44 +148,49 @@ public class Controller {
     				enemyList.remove(ball);
     				gameBoard.getChildren().remove(ball);
     				score += 10;
-    				money += 2;
+    				this.money += 2;
+                    this.moneyLabel.setText(String.format("Money: %d", this.money));
 					roundOverCheck(enemyList);
 				}
 			}
 		}
 	}
-	private int ballSpawner = 0;
+
+	/**
+	 * Updates the position of each enemy unit on gameboard
+	 * Uses current position and current velocity to determine new position
+	 * monitors when new balls should be added during wave
+	 * Creates tile panes
+	 */
     private void updateAnimation() {
 		if (started == false) {
 			tilePane();
 			started = true;
         }
 
-        if (ballSpawner % 100 == 0 && this.numEnemy < this.enemyLimit) {
-			this.numEnemy++;
+		//adds new enemies during round
+
+        if (ballSpawner % 100 == 0 && this.numEnemy <= this.enemyLimit) {
+
+			System.out.println("num of enemies: " + this.numEnemy);
+            System.out.println("limit of enemies: " + this.enemyLimit);
 			enemyList.add(createNewBall());
+            this.numEnemy++;
 		}
 
-		this.moneyLabel.setText(String.format("Money: %d", this.money));
-
-
-
+		//updates position for all enemies in view
 		for (Ball ball: enemyList) {
             double ballCenterX = ball.getCenterX() + ball.getLayoutX();
             double ballCenterY = ball.getCenterY() + ball.getLayoutY();
             double ballRadius = ball.getRadius();
 
-            // Bounce off walls
             double ballVelocityX = ball.getVelocityX();
             double ballVelocityY = ball.getVelocityY();
 
+            //allows enemies to navigate path
             if (ballCenterX + ballRadius >= this.gameBoard.getWidth() - 60 && ballVelocityX > 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
-               /* if (this.numEnemy < this.enemyLimit) {
-                    enemyList.add(createNewBall());
-                    this.numEnemy++;
-                } */
             } else if (ballCenterX - ballRadius < 50 && ballVelocityX < 0) {
                 ball.setVelocityX(0);
                 ball.setVelocityY(3);
@@ -184,12 +206,16 @@ public class Controller {
 				roundOverCheck(enemyList);
             }
 
-            // Move the sprite.
+            // Moves enemies
             ball.step();
             ballSpawner++;
         }
     }
 
+	/**
+	 * intitiates gridpane object
+	 *
+	 */
     private void tilePane() {
     	GridPane grid1 = createNewTilePane(5, 80, 1045, 280);
 		//GridPane grid2 = createNewTilePane(117, 370, 1157, 570);
@@ -201,6 +227,16 @@ public class Controller {
 		//gameBoard.getChildren().add(grid2);
 	}
 
+	/**
+	 * Fills each gridpane with smaller tiles
+	 * sets features of smaller panes
+	 * passes tile information to mouseclicked method
+	 * @param left_x
+	 * @param top_y
+	 * @param right_x
+	 * @param bot_y
+	 * @return grid
+	 */
     private GridPane createNewTilePane(double left_x, double top_y, double right_x, double bot_y) {
 		GridPane grid = new GridPane();
 		grid.setLayoutX(left_x);
@@ -232,6 +268,11 @@ public class Controller {
 		return grid;
 	}
 
+	/**
+	 * Creates new enemy
+	 * Sets initial velocity and size
+	 * @return ball
+	 */
     private Ball createNewBall() {
         Ball ball = new Ball();
         ball.setFill(Color.BLUE);
@@ -245,6 +286,12 @@ public class Controller {
         return ball;
     }
 
+	/**
+	 * Performs actions when main base is hit by an enemy
+	 * Updates base health
+	 * Removes ball from gameboard view
+	 * @param ball
+	 */
     private void baseHit(Ball ball) {
         gameBoard.getChildren().remove(ball);
         if (base.getHealth() <= 0) {
@@ -256,19 +303,29 @@ public class Controller {
 
     }
 
-    public void roundOverCheck(ArrayList<Ball> enemyList) {
+	/**
+	 * Checks to see if game is over
+	 * Removes shots from view if over
+	 * @param enemyList
+	 */
+	public void roundOverCheck(ArrayList<Ball> enemyList) {
         if (enemyList.size() < 1) {
             System.out.println("round over");
 			gameBoard.getChildren().removeAll(shots);
 			shots.clear();
 			score += 100 * wave;
-			money += 5 * wave;
+			this.money += 5 * wave;
+            this.moneyLabel.setText(String.format("Money: %d", this.money));
 			this.timer.cancel();
 			this.peacePhase = true;
         }
     }
 
-	// Pauses game and brings up menu
+	/**
+	 * Brings up menu options
+	 * Gives user choice to restart game
+	 * @param actionEvent
+	 */
     public void onMenuButton(ActionEvent actionEvent) {
         if (this.paused == false) {
             this.timer.cancel();
@@ -280,22 +337,30 @@ public class Controller {
     }
 
 
-    /* Facilitates buying towers feature
+    /** Facilitates buying towers feature
      * updates money
      * Lets user place tower
      */
     private boolean clicked = false;
     public void onBuyTurretButton(ActionEvent actionEvent) {
     	Turret t = new Turret();
-    	if (money > t.getCost()) {
+    	if (money >= t.getCost()) {
 			clicked = !clicked;
 		}
 	}
 
+	/**
+	 * Places turret where user clicks mouse
+	 * Sets turret size and image
+	 * @param mouseEvent
+	 * @param row
+	 * @param col
+	 */
 	public void handle(MouseEvent mouseEvent, int row, int col) {
 		if (clicked == true) {
 			Turret turret = new Turret();
 			this.money -= turret.getCost();
+			this.moneyLabel.setText(String.format("Money: %d", this.money));
 
 			turret.setPosition(row, col, grids.get(0).getLayoutY(), grids.get(0).getLayoutX(), TILE_SIZE + TILE_PADDING);
 
@@ -310,15 +375,14 @@ public class Controller {
 		}
 	}
 
-    /* Triggers waves of enemies
+    /** Triggers waves of enemies
      * Determines number of enemies in each wave
-     * Checks to make sure previous wave is over
      */
     public void onWaveButton(ActionEvent actionEvent) {
         if (this.paused == false && peacePhase == true) {
             this.wave++;
             this.numEnemy = 0;
-            this.enemyLimit = this.enemyLimit * this.wave + 1;
+            this.enemyLimit = 2 * this.wave + 1;
             this.waveLabel.setText(String.format("Wave: %d", this.wave));
             this.startTimer();
             peacePhase = false;

@@ -1,6 +1,7 @@
 /**
  * Ball.java
- * Jeff Ondich, 10/29/14.
+ *  Most of the class was created by Jeff Ondich, 10/29/14.
+ *  Updated by Chris Tordi and Martin Hoffman
  *
  * A sample subclass of Sprite for CS257.
  */

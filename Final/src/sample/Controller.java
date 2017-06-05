@@ -343,7 +343,7 @@ public class Controller {
      * Lets user place tower
      */
     private boolean clicked = false;
-    private int towerDirection = 0;
+    private int towerDirection = 1;
     public void onBuyTurretButton(ActionEvent actionEvent) {
         if (actionEvent.getSource().toString().contains("Tower1")) {
             towerDirection = 1;

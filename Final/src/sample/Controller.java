@@ -67,7 +67,7 @@ public class Controller {
         this.paused = false;
 		this.peacePhase = true;
 
-		this.money = 0;
+		this.money = 30;
 		this.wave = 0;
 
         this.enemyLimit = 1;
@@ -122,7 +122,6 @@ public class Controller {
 	}
 
 	private void collisionDectection() {
-
     	for (Ball ball : enemyList) {
     		for (Shot shot : shots) {
     			if (shot.getCenterY() - shot.getRadius() < ball.getCenterY() + ball.getRadius() &&
@@ -131,6 +130,8 @@ public class Controller {
 						shot.getCenterX() - shot.getRadius() < ball.getCenterX() + ball.getRadius()) {
     				enemyList.remove(ball);
     				gameBoard.getChildren().remove(ball);
+    				score += 10;
+    				money += 2;
 					roundOverCheck(enemyList);
 				}
 			}
@@ -251,7 +252,6 @@ public class Controller {
 		} else {
 			base.damage();
 		}
-        this.money = this.money + 15;
         this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
 
     }
@@ -261,6 +261,8 @@ public class Controller {
             System.out.println("round over");
 			gameBoard.getChildren().removeAll(shots);
 			shots.clear();
+			score += 100 * wave;
+			money += 5 * wave;
 			this.timer.cancel();
 			this.peacePhase = true;
         }
@@ -284,7 +286,10 @@ public class Controller {
      */
     private boolean clicked = false;
     public void onBuyTurretButton(ActionEvent actionEvent) {
-    	clicked = !clicked;
+    	Turret t = new Turret();
+    	if (money > t.getCost()) {
+			clicked = !clicked;
+		}
 	}
 
 	public void handle(MouseEvent mouseEvent, int row, int col) {
@@ -301,26 +306,6 @@ public class Controller {
 			turret.setImage(img);
 			gameBoard.getChildren().add(turret);
 			grids.get(0).add(turret, col, row);
-			System.out.println(turret.getPosition());
-
-			for (Node child : grids.get(0).getChildren()) {
-				if (GridPane.getRowIndex(child) == null) {
-					System.out.println("Null " + child);
-				} else if (GridPane.getRowIndex(child) == row && GridPane.getColumnIndex(child) == col) {
-					Point2D point = turret.getPosition();
-
-					// System.out.println(child);
-					// System.out.println(point);
-
-					Rectangle rect = new Rectangle();
-					rect.setFill(Color.BLACK);
-					rect.setWidth(10);
-					rect.setHeight(10);
-					rect.setLayoutX(point.getX());
-					rect.setLayoutY(point.getY());
-					gameBoard.getChildren().add(rect);
-				}
-			}
 			clicked = !clicked;
 		}
 	}

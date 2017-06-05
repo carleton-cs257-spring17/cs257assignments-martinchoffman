@@ -41,7 +41,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
 
         // Set up a KeyEvent handler so we can respond to keyboard activity.
-        root.setOnMouseClicked(controller);
+        //root.setOnMouseClicked(controller);
         root.setId("gameBoard");
         primaryStage.setTitle("NAME ME");
 

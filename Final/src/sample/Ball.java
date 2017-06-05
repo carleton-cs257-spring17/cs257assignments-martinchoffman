@@ -13,6 +13,8 @@ import javafx.scene.shape.Circle;
 public class Ball extends Circle {
     @FXML private double velocityX;
     @FXML private double velocityY;
+    private int MAX_HEALTH = 100;
+    private int current_Health = MAX_HEALTH;
 
     public Ball() {
     }
@@ -36,5 +38,14 @@ public class Ball extends Circle {
 
     public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
+    }
+
+    public int getHealth() {
+        return current_Health;
+    }
+
+
+    public void damage() {
+        current_Health = current_Health - 10;
     }
 }

@@ -38,7 +38,7 @@ public class Controller {
 	@FXML private Label waveLabel;
 	@FXML private Label moneyLabel;
 	@FXML private Label baseHealthLabel;
-	@FXML private Label enemyLabel;
+
 
 	private ArrayList<Ball> enemyList = new ArrayList<Ball>();
 	private List<GridPane> grids = new ArrayList<GridPane>();
@@ -100,7 +100,7 @@ public class Controller {
 		this.baseHealthLabel.setText(String.format("Base Health: %d", base.getHealth()));
 		this.moneyLabel.setText(String.format("Money: %d", this.money));
 		this.waveLabel.setText(String.format("Wave: %d", this.wave));
-        this.enemyLabel.setText(String.format("Enemy Num: %d", this.numEnemy));
+
 
     }
 
@@ -170,7 +170,7 @@ public class Controller {
         if (ballSpawner % 100 == 0 && this.numEnemy <= this.enemyLimit) {
 			enemyList.add(createNewBall());
             this.numEnemy++;
-            this.enemyLabel.setText(String.format("Enemy Num: %d", this.numEnemy));
+
 		}
 
 		//updates position for all enemies in view

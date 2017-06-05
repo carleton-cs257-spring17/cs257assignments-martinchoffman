@@ -31,7 +31,6 @@
 
     <Label fx:id="baseHealthLabel" AnchorPane.rightAnchor="250" AnchorPane.topAnchor="15" />
     <Label fx:id="moneyLabel" AnchorPane.rightAnchor="700" AnchorPane.topAnchor="15" />
-    <Label fx:id="enemyLabel" AnchorPane.rightAnchor="800" AnchorPane.topAnchor="15" />
     <Label fx:id="waveLabel" AnchorPane.rightAnchor="150" AnchorPane.topAnchor="15" />
 
     <AnchorPane fx:id="gameBoard" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="5" AnchorPane.rightAnchor="5" AnchorPane.bottomAnchor="20" style="-fx-background-color: #bbb">
